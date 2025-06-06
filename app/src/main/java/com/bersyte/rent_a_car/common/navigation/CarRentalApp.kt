@@ -17,7 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.bersyte.rent_a_car.features.customers.home.ui.screens.HomeScreen
-import com.bersyte.rent_a_car.features.customers.my_cars.ui.screens.MyCarsScreen
+import com.bersyte.rent_a_car.features.customers.my_cars.ui.screens.MyCarsManagementScreen
 import com.bersyte.rent_a_car.features.customers.profile.ui.screens.ProfileManagementScreen
 import com.bersyte.rent_a_car.features.customers.rentals.ui.screens.RentalScreen
 
@@ -70,7 +70,7 @@ fun CarRentalApp() {
                 RentalScreen()
             }
             composable(NavigationItem.MyCars.route) {
-                MyCarsScreen()
+                MyCarsManagementScreen()
             }
             composable(NavigationItem.Profile.route) {
                 ProfileManagementScreen()
