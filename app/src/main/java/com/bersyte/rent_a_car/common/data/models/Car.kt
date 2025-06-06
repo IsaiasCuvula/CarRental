@@ -1,6 +1,5 @@
 package com.bersyte.rent_a_car.common.data.models
 
-import android.media.Rating
 import java.time.LocalDateTime
 
 data class Car(
@@ -21,7 +20,7 @@ data class Car(
     val year: Int,
     val plate: String,
     val address: Address,
-    val ratings: List<Rating>,
+    val ratings: List<CarRating>,
     //val rentals: List<Rental>,
     val createdAt: LocalDateTime
 )
