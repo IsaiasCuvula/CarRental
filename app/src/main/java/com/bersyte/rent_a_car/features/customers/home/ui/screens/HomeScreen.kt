@@ -27,7 +27,7 @@ import com.bersyte.rent_a_car.common.data.models.Car
 import com.bersyte.rent_a_car.common.data.models.CarRating
 import com.bersyte.rent_a_car.features.customers.home.ui.components.CarCard
 import com.bersyte.rent_a_car.features.customers.home.ui.components.HomeSearchBar
-import com.bersyte.rent_a_car.features.customers.home.ui.components.ScrollableFilterChips
+import com.bersyte.rent_a_car.common.ui.components.ScrollableFilterChips
 import java.time.LocalDateTime
 import androidx.compose.material3.TopAppBar as TopAppBar
 

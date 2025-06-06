@@ -1,4 +1,4 @@
-package com.bersyte.rent_a_car.features.customers.home.ui.components
+package com.bersyte.rent_a_car.common.ui.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape

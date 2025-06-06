@@ -1,4 +1,4 @@
-package com.bersyte.rent_a_car.features.customers.home.ui.components
+package com.bersyte.rent_a_car.common.ui.components
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
