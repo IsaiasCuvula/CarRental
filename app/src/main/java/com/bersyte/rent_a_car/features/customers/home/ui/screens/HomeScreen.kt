@@ -22,9 +22,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.bersyte.rent_a_car.common.data.models.Address
-import com.bersyte.rent_a_car.common.data.models.Car
-import com.bersyte.rent_a_car.common.data.models.CarRating
+import com.bersyte.rent_a_car.features.customers.home.data.models.Address
+import com.bersyte.rent_a_car.features.customers.home.data.models.Car
+import com.bersyte.rent_a_car.features.customers.home.data.models.CarRating
 import com.bersyte.rent_a_car.features.customers.home.ui.components.CarCard
 import com.bersyte.rent_a_car.features.customers.home.ui.components.HomeSearchBar
 import com.bersyte.rent_a_car.common.ui.components.ScrollableFilterChips
@@ -40,140 +40,7 @@ fun HomeScreen() {
     var selectedFilter by remember { mutableIntStateOf(0) }
 
     var searchQuery by remember { mutableStateOf("") }
-    val cars = listOf<Car>(
-        Car(
-            color = 0,
-            smokingAllowed = false,
-            seats = 5,
-            discountPercentage = 10,
-            hourlyPrice = 25,
-            feePerHourRented = 2,
-            carClass = "Standard",
-            carType = "Sedan",
-            carStatus = "Available",
-            fuelType = "Gasoline",
-            photos = "car1.jpg",
-            name = "Comfort Plus",
-            description = "A comfortable sedan with great mileage and modern features.",
-            model = "Toyota Camry",
-            year = 2022,
-            plate = "ABC123",
-            address = Address("123 Main St", "New York", "NY"),
-            ratings = listOf(CarRating(4.5), CarRating(5.0), CarRating(4.0)),
-            createdAt = LocalDateTime.now()
-        ),
-
-        Car(
-            color = 0,
-            smokingAllowed = false,
-            seats = 5,
-            discountPercentage = 10,
-            hourlyPrice = 25,
-            feePerHourRented = 2,
-            carClass = "Standard",
-            carType = "Sedan",
-            carStatus = "Available",
-            fuelType = "Gasoline",
-            photos = "car1.jpg",
-            name = "Comfort Plus",
-            description = "A comfortable sedan with great mileage and modern features.",
-            model = "Toyota Camry",
-            year = 2022,
-            plate = "ABC123",
-            address = Address("123 Main St", "New York", "NY"),
-            ratings = listOf(CarRating(4.5), CarRating(5.0), CarRating(4.0)),
-            createdAt = LocalDateTime.now()
-        ),
-
-        Car(
-            color = 0,
-            smokingAllowed = false,
-            seats = 5,
-            discountPercentage = 10,
-            hourlyPrice = 25,
-            feePerHourRented = 2,
-            carClass = "Standard",
-            carType = "Sedan",
-            carStatus = "Available",
-            fuelType = "Gasoline",
-            photos = "car1.jpg",
-            name = "Comfort Plus",
-            description = "A comfortable sedan with great mileage and modern features.",
-            model = "Toyota Camry",
-            year = 2022,
-            plate = "ABC123",
-            address = Address("123 Main St", "New York", "NY"),
-            ratings = listOf(CarRating(4.5), CarRating(5.0), CarRating(4.0)),
-            createdAt = LocalDateTime.now()
-        ),
-
-
-        Car(
-            color = 0,
-            smokingAllowed = false,
-            seats = 5,
-            discountPercentage = 10,
-            hourlyPrice = 25,
-            feePerHourRented = 2,
-            carClass = "Standard",
-            carType = "Sedan",
-            carStatus = "Available",
-            fuelType = "Gasoline",
-            photos = "car1.jpg",
-            name = "Comfort Plus",
-            description = "A comfortable sedan with great mileage and modern features.",
-            model = "Toyota Camry",
-            year = 2022,
-            plate = "ABC123",
-            address = Address("123 Main St", "New York", "NY"),
-            ratings = listOf(CarRating(4.5), CarRating(5.0), CarRating(4.0)),
-            createdAt = LocalDateTime.now()
-        ),
-
-        Car(
-            color = 0,
-            smokingAllowed = false,
-            seats = 5,
-            discountPercentage = 10,
-            hourlyPrice = 25,
-            feePerHourRented = 2,
-            carClass = "Standard",
-            carType = "Sedan",
-            carStatus = "Available",
-            fuelType = "Gasoline",
-            photos = "car1.jpg",
-            name = "Comfort Plus",
-            description = "A comfortable sedan with great mileage and modern features.",
-            model = "Toyota Camry",
-            year = 2022,
-            plate = "ABC123",
-            address = Address("123 Main St", "New York", "NY"),
-            ratings = listOf(CarRating(4.5), CarRating(5.0), CarRating(4.0)),
-            createdAt = LocalDateTime.now()
-        ),
-
-        Car(
-            color = 0,
-            smokingAllowed = false,
-            seats = 5,
-            discountPercentage = 10,
-            hourlyPrice = 25,
-            feePerHourRented = 2,
-            carClass = "Standard",
-            carType = "Sedan",
-            carStatus = "Available",
-            fuelType = "Gasoline",
-            photos = "car1.jpg",
-            name = "Comfort Plus",
-            description = "A comfortable sedan with great mileage and modern features.",
-            model = "Toyota Camry",
-            year = 2022,
-            plate = "ABC123",
-            address = Address("123 Main St", "New York", "NY"),
-            ratings = listOf(CarRating(4.5), CarRating(5.0), CarRating(4.0)),
-            createdAt = LocalDateTime.now()
-        ),
-    )
+    val cars = Car.data
 
     Scaffold (
         topBar = {

@@ -1,4 +1,4 @@
-package com.bersyte.rent_a_car.common.data.models
+package com.bersyte.rent_a_car.features.customers.home.data.models
 
 data class Address(
     val street: String,
