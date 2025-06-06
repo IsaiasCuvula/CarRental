@@ -1,5 +1,6 @@
 package com.bersyte.rent_a_car.features.customers.profile.ui.screens
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,8 +8,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.bersyte.rent_a_car.features.customers.profile.data.User
 import com.bersyte.rent_a_car.features.customers.profile.ui.components.AuthButtons
@@ -18,9 +25,9 @@ import com.bersyte.rent_a_car.features.customers.profile.ui.components.RentalSta
 import com.bersyte.rent_a_car.features.customers.profile.ui.components.UserInfoSection
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen( onEditClick: () -> Unit) {
 
-    val user = User.sampleUser;
+    val user = User.sampleUser
 
 
     Column(
@@ -28,7 +35,24 @@ fun ProfileScreen() {
             .padding(16.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        ProfileHeader(user = user)
+        Box {
+            ProfileHeader(user = user)
+
+            if (user != null) {
+                IconButton(
+                    onClick = onEditClick,
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(16.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = "Edit Profile",
+                        tint = Color.White
+                    )
+                }
+            }
+        }
 
         Spacer(modifier = Modifier.height(24.dp))
 
