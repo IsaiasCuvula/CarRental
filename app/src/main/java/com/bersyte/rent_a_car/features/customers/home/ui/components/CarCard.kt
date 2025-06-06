@@ -33,7 +33,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.bersyte.rent_a_car.R
-import com.bersyte.rent_a_car.features.customers.home.data.models.Car
+import com.bersyte.rent_a_car.common.data.models.Car
 
 
 @Composable

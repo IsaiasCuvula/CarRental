@@ -1,5 +1,7 @@
-package com.bersyte.rent_a_car.features.customers.home.data.models
+package com.bersyte.rent_a_car.common.data.models
 
+import com.bersyte.rent_a_car.features.customers.home.data.models.Address
+import com.bersyte.rent_a_car.features.customers.home.data.models.CarRating
 import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
 import java.time.LocalDateTime
 

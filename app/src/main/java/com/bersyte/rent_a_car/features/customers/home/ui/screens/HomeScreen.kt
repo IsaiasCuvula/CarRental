@@ -22,13 +22,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.bersyte.rent_a_car.features.customers.home.data.models.Address
-import com.bersyte.rent_a_car.features.customers.home.data.models.Car
-import com.bersyte.rent_a_car.features.customers.home.data.models.CarRating
+import com.bersyte.rent_a_car.common.data.models.Car
 import com.bersyte.rent_a_car.features.customers.home.ui.components.CarCard
 import com.bersyte.rent_a_car.features.customers.home.ui.components.HomeSearchBar
 import com.bersyte.rent_a_car.common.ui.components.ScrollableFilterChips
-import java.time.LocalDateTime
 import androidx.compose.material3.TopAppBar as TopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
