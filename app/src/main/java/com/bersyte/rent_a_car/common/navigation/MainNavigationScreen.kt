@@ -23,7 +23,7 @@ import com.bersyte.rent_a_car.features.customers.rentals.ui.screens.RentalScreen
 
 
 @Composable
-fun CarRentalApp() {
+fun MainNavigationScreen() {
     val navController = rememberNavController()
     val items = listOf(
         NavigationItem.Home,

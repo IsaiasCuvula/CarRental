@@ -35,7 +35,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun AuthScreen() {
+fun AuthScreen(
+    onLoginSuccess: () -> Unit
+) {
     var isLogin by remember { mutableStateOf(true) }
 
     val gradient = Brush.verticalGradient(
@@ -121,7 +123,9 @@ fun AuthScreen() {
                     }
 
                     Button(
-                        onClick = {},
+                        onClick = {
+                            onLoginSuccess()
+                        },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(12.dp)
                     ) {
