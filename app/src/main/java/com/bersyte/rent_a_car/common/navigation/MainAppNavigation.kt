@@ -4,9 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.bersyte.rent_a_car.features.admin.dashboard.ui.screens.AdminDashboardManagement
-import com.bersyte.rent_a_car.features.admin.dashboard.ui.screens.OperatorDashboardScreen
+import com.bersyte.rent_a_car.features.company.admin.ui.screens.AdminDashboardManagement
 import com.bersyte.rent_a_car.features.auth.ui.screens.AuthScreen
+import com.bersyte.rent_a_car.features.company.operator.ui.screens.OperatorDashboardApp
 
 @Composable
 fun MainAppNavigation() {
@@ -37,7 +37,7 @@ fun MainAppNavigation() {
         }
 
         composable("operator_dashboard") {
-            OperatorDashboardScreen()
+            OperatorDashboardApp()
         }
 
         composable("admin_dashboard") {

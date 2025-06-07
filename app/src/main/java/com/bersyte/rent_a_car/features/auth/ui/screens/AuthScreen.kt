@@ -125,7 +125,7 @@ fun AuthScreen(
 
                     Button(
                         onClick = {
-                            val userRole = UserRole.ADMIN
+                            val userRole = UserRole.OPERATOR
                             onLoginSuccess(userRole)
                         },
                         modifier = Modifier.fillMaxWidth(),

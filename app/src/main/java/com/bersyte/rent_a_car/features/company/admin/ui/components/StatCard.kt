@@ -1,4 +1,4 @@
-package com.bersyte.rent_a_car.features.admin.dashboard.ui.components
+package com.bersyte.rent_a_car.features.company.admin.ui.components
 
 
 import androidx.compose.foundation.layout.Column

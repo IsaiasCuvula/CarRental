@@ -1,4 +1,4 @@
-package com.bersyte.rent_a_car.features.admin.dashboard.ui.screens
+package com.bersyte.rent_a_car.features.company.admin.ui.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,10 +23,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.bersyte.rent_a_car.features.admin.dashboard.data.AdminDashboardStats
-import com.bersyte.rent_a_car.features.admin.dashboard.data.Operator
-import com.bersyte.rent_a_car.features.admin.dashboard.ui.components.DashboardTab
-import com.bersyte.rent_a_car.features.admin.dashboard.ui.components.OperatorsTab
+import com.bersyte.rent_a_car.features.company.admin.data.AdminDashboardStats
+import com.bersyte.rent_a_car.features.company.admin.data.Operator
+import com.bersyte.rent_a_car.features.company.admin.ui.components.DashboardTab
+import com.bersyte.rent_a_car.features.company.admin.ui.components.OperatorsTab
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

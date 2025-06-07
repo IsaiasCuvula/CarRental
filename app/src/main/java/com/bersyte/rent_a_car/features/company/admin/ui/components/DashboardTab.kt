@@ -1,4 +1,4 @@
-package com.bersyte.rent_a_car.features.admin.dashboard.ui.components
+package com.bersyte.rent_a_car.features.company.admin.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,7 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.bersyte.rent_a_car.features.admin.dashboard.data.AdminDashboardStats
+import com.bersyte.rent_a_car.features.company.admin.data.AdminDashboardStats
 
 @Composable
 fun DashboardTab(stats: AdminDashboardStats) {

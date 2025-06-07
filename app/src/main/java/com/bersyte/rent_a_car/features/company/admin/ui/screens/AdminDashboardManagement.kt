@@ -1,12 +1,12 @@
-package com.bersyte.rent_a_car.features.admin.dashboard.ui.screens
+package com.bersyte.rent_a_car.features.company.admin.ui.screens
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.bersyte.rent_a_car.features.admin.dashboard.data.AdminDashboardStats
-import com.bersyte.rent_a_car.features.admin.dashboard.data.Operator
+import com.bersyte.rent_a_car.features.company.admin.data.AdminDashboardStats
+import com.bersyte.rent_a_car.features.company.admin.data.Operator
 import java.time.LocalDateTime
 
 @Composable
