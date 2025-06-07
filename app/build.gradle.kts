@@ -3,8 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 
-//    alias(libs.plugins.ksp)
-//    alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -31,14 +31,20 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
+    }
+
+    packaging {
+        resources.excludes.add("META-INF/gradle/incremental.annotation.processors")
+        // Optional: If you encounter other merge conflicts
+        resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
     }
 }
 
@@ -77,8 +83,9 @@ dependencies {
 
     //Hilt
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.hilt.compiler)
     implementation(libs.hilt.android)
-    //ksp(libs.hilt.android.compiler)
+    ksp(libs.hilt.android.compiler)
 
     //Retrofit
     implementation(libs.retrofit)
@@ -86,7 +93,4 @@ dependencies {
 
     // Coroutines for asynchronous programming
     implementation (libs.kotlinx.coroutines.android)
-
-
-
 }

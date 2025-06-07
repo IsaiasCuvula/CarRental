@@ -28,25 +28,45 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bersyte.rent_a_car.features.auth.ui.components.AuthTextField
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.bersyte.rent_a_car.common.data.models.Resource
+import com.bersyte.rent_a_car.features.auth.data.models.LoginRequest
+import com.bersyte.rent_a_car.features.auth.data.models.SignUpRequest
+import com.bersyte.rent_a_car.features.auth.viewmodels.AuthViewModel
 import com.bersyte.rent_a_car.utils.enums.UserRole
 
 @Composable
 fun AuthScreen(
-    onLoginSuccess: (role: UserRole) -> Unit
+    onLoginSuccess: (role: UserRole) -> Unit,
+    viewModel: AuthViewModel = hiltViewModel()
 ) {
+
+    val loginState by viewModel.loginState.collectAsState()
+
     var isLogin by remember { mutableStateOf(true) }
 
-    val colors = MaterialTheme.colorScheme;
+    val colors = MaterialTheme.colorScheme
 
     val gradient = Brush.verticalGradient(
-        colors = listOf( colors.secondary, colors.primary)
+        colors = listOf(colors.secondary, colors.primary)
     )
+
+    LaunchedEffect(loginState) {
+        val state = loginState
+        if (state is Resource.Success && state.data != null) {
+            val role = UserRole.valueOf(state.data.role.uppercase())
+            onLoginSuccess(role)
+            viewModel.resetLoginState()
+        }
+    }
 
     Surface (modifier = Modifier.fillMaxSize()) {
         Box(
@@ -130,8 +150,23 @@ fun AuthScreen(
 
                     Button(
                         onClick = {
-                            val userRole = UserRole.CUSTOMER
-                            onLoginSuccess(userRole)
+                            if (isLogin) {
+                                viewModel.login(
+                                    LoginRequest(
+                                        email = email.value,
+                                        password = password.value
+                                    )
+                                )
+                            } else {
+                                viewModel.signup(
+                                    SignUpRequest(
+                                        email = email.value,
+                                        password = password.value,
+                                        role = role.value.uppercase(), // ex: CUSTOMER
+                                        cityName = cityName.value
+                                    )
+                                )
+                            }
                         },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(12.dp)

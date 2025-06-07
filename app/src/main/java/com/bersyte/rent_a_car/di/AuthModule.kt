@@ -8,10 +8,10 @@ import com.bersyte.rent_a_car.features.auth.data.services.AuthApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.components.SingletonComponent
 
 @Module
-@InstallIn(ViewModelComponent::class)
+@InstallIn(SingletonComponent::class)
 object AuthModule {
     @Provides
     fun provideAuthRemoteDataSource(apiService: AuthApiService): AuthRemoteDataSource {

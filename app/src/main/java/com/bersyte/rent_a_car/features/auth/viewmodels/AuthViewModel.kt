@@ -7,11 +7,13 @@ import com.bersyte.rent_a_car.features.auth.data.models.AuthResponse
 import com.bersyte.rent_a_car.features.auth.data.models.LoginRequest
 import com.bersyte.rent_a_car.features.auth.data.models.SignUpRequest
 import com.bersyte.rent_a_car.features.auth.data.repositories.AuthRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class AuthViewModel @Inject constructor(
     private val repository: AuthRepository
 ) : ViewModel() {
