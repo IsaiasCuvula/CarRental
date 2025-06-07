@@ -33,10 +33,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.bersyte.rent_a_car.utils.enums.UserRole
 
 @Composable
 fun AuthScreen(
-    onLoginSuccess: () -> Unit
+    onLoginSuccess: (role: UserRole) -> Unit
 ) {
     var isLogin by remember { mutableStateOf(true) }
 
@@ -124,7 +125,8 @@ fun AuthScreen(
 
                     Button(
                         onClick = {
-                            onLoginSuccess()
+                            val userRole = UserRole.ADMIN
+                            onLoginSuccess(userRole)
                         },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(12.dp)
