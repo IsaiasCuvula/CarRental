@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -41,8 +42,10 @@ fun AuthScreen(
 ) {
     var isLogin by remember { mutableStateOf(true) }
 
+    val colors = MaterialTheme.colorScheme;
+
     val gradient = Brush.verticalGradient(
-        colors = listOf(Color(0xFF4A00E0), Color(0xFF8E2DE2))
+        colors = listOf( colors.secondary, colors.primary)
     )
 
     Surface (modifier = Modifier.fillMaxSize()) {
@@ -56,7 +59,10 @@ fun AuthScreen(
             Card(
                 shape = RoundedCornerShape(24.dp),
                 elevation =  CardDefaults.elevatedCardElevation(4.dp),
-               // backgroundColor = Color.White,
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White,
+                    contentColor = colors.tertiary
+                ),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(
@@ -70,7 +76,6 @@ fun AuthScreen(
                         text = if (isLogin) "Login" else "Sign Up",
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF4A00E0)
                     )
 
                     val email = remember { mutableStateOf("") }
@@ -125,7 +130,7 @@ fun AuthScreen(
 
                     Button(
                         onClick = {
-                            val userRole = UserRole.OPERATOR
+                            val userRole = UserRole.CUSTOMER
                             onLoginSuccess(userRole)
                         },
                         modifier = Modifier.fillMaxWidth(),
