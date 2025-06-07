@@ -4,10 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.bersyte.rent_a_car.features.admin.dashboard.ui.screens.AdminDashboardScreen
+import com.bersyte.rent_a_car.features.admin.dashboard.ui.screens.AdminDashboardManagement
 import com.bersyte.rent_a_car.features.admin.dashboard.ui.screens.OperatorDashboardScreen
 import com.bersyte.rent_a_car.features.auth.ui.screens.AuthScreen
-import java.util.Locale
 
 @Composable
 fun MainAppNavigation() {
@@ -20,7 +19,7 @@ fun MainAppNavigation() {
         composable("login") {
             AuthScreen(
                 onLoginSuccess = { role ->
-                    val route = when (role.name.toLowerCase(Locale.ROOT)) {
+                    val route = when (role.name.lowercase()) {
                         "customer" -> "customer_dashboard"
                         "operator" -> "operator_dashboard"
                         "admin" -> "admin_dashboard"
@@ -42,7 +41,7 @@ fun MainAppNavigation() {
         }
 
         composable("admin_dashboard") {
-            AdminDashboardScreen()
+            AdminDashboardManagement()
         }
     }
 }
