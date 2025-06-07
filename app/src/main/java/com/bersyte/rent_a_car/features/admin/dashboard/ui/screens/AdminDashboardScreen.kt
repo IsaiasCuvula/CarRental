@@ -1,4 +1,4 @@
-package com.bersyte.rent_a_car.features.admin.home.ui.screens
+package com.bersyte.rent_a_car.features.admin.dashboard.ui.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
