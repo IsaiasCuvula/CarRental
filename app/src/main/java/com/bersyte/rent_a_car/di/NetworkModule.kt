@@ -1,6 +1,6 @@
 package com.bersyte.rent_a_car.di
 
-import com.bersyte.rent_a_car.features.auth.data.services.ApiService
+import com.bersyte.rent_a_car.features.auth.data.services.AuthApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,7 +26,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideApiService(retrofit: Retrofit): ApiService {
-        return retrofit.create(ApiService::class.java)
+    fun provideApiService(retrofit: Retrofit): AuthApiService {
+        return retrofit.create(AuthApiService::class.java)
     }
 }
