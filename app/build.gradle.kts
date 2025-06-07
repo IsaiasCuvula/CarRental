@@ -80,4 +80,13 @@ dependencies {
     implementation(libs.hilt.android)
     //ksp(libs.hilt.android.compiler)
 
+    //Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    // Coroutines for asynchronous programming
+    implementation (libs.kotlinx.coroutines.android)
+
+
+
 }
