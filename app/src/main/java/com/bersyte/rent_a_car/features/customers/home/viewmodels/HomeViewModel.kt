@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bersyte.rent_a_car.common.data.models.Car
+import com.bersyte.rent_a_car.features.customers.home.data.models.CarRating
 import com.bersyte.rent_a_car.features.customers.home.data.repositories.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,6 +45,19 @@ class HomeViewModel @Inject constructor(
             } catch (e: Exception) {
                 Log.d("TOTAL_RENTALS", "$e")
                 onResult(null)
+            }
+        }
+    }
+
+
+    fun getCarRatings(plate: String, onResult: (List<CarRating>) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val total = repository.getCarRatings(plate)
+                onResult(total)
+            } catch (e: Exception) {
+                Log.d("TOTAL_RATINGS", "$e")
+                onResult(listOf())
             }
         }
     }

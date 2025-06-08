@@ -7,4 +7,5 @@ class HomeDatasource @Inject constructor(
 ) {
     suspend fun getAvailableCars() = api.getAvailableCars()
     suspend fun getTotalRentalsByPlate(plate: String) = api.getTotalRentalsByPlate(plate)
+    suspend fun getCarRatings(plate: String) = api.getCarRatings(plate)
 }

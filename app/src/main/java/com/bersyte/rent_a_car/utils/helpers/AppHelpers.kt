@@ -7,9 +7,14 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 object AppHelpers{
-    fun List<CarRating>.average(selector: (CarRating) -> Float): Float {
-        if (isEmpty()) return 0f
-        return sumOf { selector(it).toDouble() }.toFloat() / size
+
+    fun calculateRoundedRatingAverage(
+        ratings: List<CarRating>,
+        decimals: Int = 1
+    ): Double {
+        if (ratings.isEmpty()) return 0.0
+        val average = ratings.map { it.rating }.average()
+        return "%.${decimals}f".format(average).toDouble()
     }
 
     fun showToast(context: Context, msg: String){

@@ -12,5 +12,5 @@ class HomeRepository @Inject constructor(
     }
 
     suspend fun getTotalRentalsByPlate(plate: String) = dataSource.getTotalRentalsByPlate(plate)
-
+    suspend fun getCarRatings(plate: String) = dataSource.getCarRatings(plate)
 }
