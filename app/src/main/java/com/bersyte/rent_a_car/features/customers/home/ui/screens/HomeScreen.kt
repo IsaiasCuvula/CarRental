@@ -30,6 +30,8 @@ import com.bersyte.rent_a_car.common.data.models.Car
 import com.bersyte.rent_a_car.features.customers.home.ui.components.CarCard
 import com.bersyte.rent_a_car.features.customers.home.ui.components.HomeSearchBar
 import com.bersyte.rent_a_car.common.ui.components.ScrollableFilterChips
+import com.bersyte.rent_a_car.features.customers.home.ui.components.CarDetailsBottomSheet
+import com.bersyte.rent_a_car.features.customers.home.ui.components.ReservationDateDialog
 import com.bersyte.rent_a_car.features.customers.home.viewmodels.HomeViewModel
 import com.bersyte.rent_a_car.utils.enums.CarType
 import androidx.compose.material3.TopAppBar as TopAppBar
@@ -51,6 +53,10 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         viewModel.loadAvailableCars()
     }
+
+    // Add these state variables to your HomeScreen
+    var selectedCar by remember { mutableStateOf<Car?>(null) }
+    var showDateDialog by remember { mutableStateOf(false) }
 
     val filteredCars = remember(cars, selectedFilter, searchQuery) {
         // First filter by type if something other than "All" is selected
@@ -114,10 +120,32 @@ fun HomeScreen(
                     items(filteredCars) { car ->
                         CarCard(
                             car = car,
-                            onClick = {  }
+                            onClick = { selectedCar = car }
                         )
                     }
                 }
+            }
+
+            // Show bottom sheet when car is selected
+            selectedCar?.let { car ->
+                CarDetailsBottomSheet(
+                    car = car,
+                    onDismiss = { selectedCar = null },
+                    onReserveClick = { showDateDialog = true }
+                )
+            }
+
+            // Show date selection dialog
+            if (showDateDialog) {
+                ReservationDateDialog(
+                    onDismiss = { showDateDialog = false },
+                    onDatesSelected = { start, end ->
+                        // Handle reservation logic here
+                        // viewModel.reserveCar(selectedCar!!.plate, start, end)
+                        showDateDialog = false
+                        selectedCar = null
+                    }
+                )
             }
         }
     }
