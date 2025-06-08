@@ -1,8 +1,6 @@
 package com.bersyte.rent_a_car.features.customers.profile.ui.components
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
@@ -23,26 +21,46 @@ fun RentalStatsSection(
 ) {
     val rentals = viewModel.rentals
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(
-                text = "Rental Stats",
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
+    val activeRentals = rentals.filter { it.status.equals("ACTIVE", ignoreCase = true) }
+    val reservedRentals = rentals.filter { it.status.equals("RESERVED", ignoreCase = true) }
+    val canceledRentals = rentals.filter { it.status.equals("CANCELLED", ignoreCase = true) }
+    val completedRentals = rentals.filter { it.status.equals("COMPLETED", ignoreCase = true) }
 
-            Row (
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
+
+    Column {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth(),
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp)
             ) {
-                StatItem(value = "12", label = "Total Rentals")
-                StatItem(value = "4", label = "Active")
+                Text(
+                    text = "Rental Stats",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
+                StatItem(value = "${rentals.size}", label = "Total Rentals")
+                StatItem(value = "${reservedRentals.size}", label = "Reserved")
+                StatItem(value = "${activeRentals.size}", label = "Active")
+                StatItem(value = "${completedRentals.size}", label = "Completed")
+                StatItem(value = "${canceledRentals.size}", label = "Cancelled")
+                StatItem(value = "${customer.loyaltyPoints}", label = "Loyalty Points")
+            }
+        }
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp)
+            )
+            {
                 StatItem(value = "${customer.loyaltyPoints}", label = "Loyalty Points")
             }
         }
