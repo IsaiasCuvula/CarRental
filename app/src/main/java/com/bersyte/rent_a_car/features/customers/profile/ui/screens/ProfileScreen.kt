@@ -25,10 +25,10 @@ import com.bersyte.rent_a_car.features.customers.profile.ui.components.RentalSta
 import com.bersyte.rent_a_car.features.customers.profile.ui.components.UserInfoSection
 
 @Composable
-fun ProfileScreen( onEditClick: () -> Unit) {
-
-    val user = Customer.sampleUser
-
+fun ProfileScreen(
+    customer: Customer?,
+    onEditClick: () -> Unit
+) {
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -36,9 +36,9 @@ fun ProfileScreen( onEditClick: () -> Unit) {
             .verticalScroll(rememberScrollState())
     ) {
         Box {
-            ProfileHeader(user = user)
+            ProfileHeader(user = customer)
 
-            if (user != null) {
+            if (customer != null) {
                 IconButton(
                     onClick = onEditClick,
                     modifier = Modifier
@@ -56,20 +56,20 @@ fun ProfileScreen( onEditClick: () -> Unit) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        if (user != null) {
-            UserInfoSection(user)
+        if (customer != null) {
+            UserInfoSection(customer)
             Spacer(modifier = Modifier.height(12.dp))
             RentalStatsSection()
             Spacer(modifier = Modifier.height(16.dp))
         }
 
         AuthButtons(
-            isLoggedIn = user != null,
+            isLoggedIn = customer != null,
             onLoginClick = {},
             onLogoutClick = {}
         )
 
-        if (user == null) {
+        if (customer == null) {
             GuestMessage()
         }
     }

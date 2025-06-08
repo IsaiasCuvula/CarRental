@@ -1,30 +1,35 @@
 package com.bersyte.rent_a_car.features.customers.profile.ui.screens
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
+import com.bersyte.rent_a_car.features.customers.profile.viewmodels.ProfileViewModel
 
 @Composable
 fun ProfileManagementScreen(
-    //viewModel: ProfileViewModel = viewModel()
+    viewModel: ProfileViewModel = hiltViewModel()
 ) {
     var showEditScreen by remember { mutableStateOf(false) }
-    val user = Customer.sampleUser
+    val customerState = viewModel.customer.collectAsState()
+    val customer = customerState.value
 
-    if (showEditScreen && user != null) {
+    if (showEditScreen && customer != null) {
         ProfileUpdateScreen(
-            currentUser = user,
+            currentUser = customer,
             onUpdate = { updatedData ->
-               // viewModel.updateProfile(updatedData)
+                //viewModel.updateCustomer(updatedData)
                 showEditScreen = false
             },
             onCancel = { showEditScreen = false }
         )
     } else {
         ProfileScreen(
+            customer,
             onEditClick = { showEditScreen = true }
         )
     }

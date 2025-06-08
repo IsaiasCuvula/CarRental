@@ -29,7 +29,9 @@ import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
         ) {
             InfoRow(icon = Icons.Default.Email, text = user.email)
             InfoRow(icon = Icons.Default.Phone, text = user.phone)
-            InfoRow(icon = Icons.Default.Badge, text = "ID: ${user.id}")
+            InfoRow(icon = Icons.Default.Badge, text = "ID: ${user.idCardNumber}")
+            InfoRow(icon = Icons.Default.Badge, text = "Drive License: ${user.driverLicenseNumber}")
+            InfoRow(icon = Icons.Default.Badge, text = "Expires at: ${user.driverLicenseExpirationDate}")
         }
     }
 }

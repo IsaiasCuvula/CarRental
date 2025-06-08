@@ -6,22 +6,44 @@ import com.bersyte.rent_a_car.features.customers.profile.data.models.UpdateCusto
 import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import com.bersyte.rent_a_car.features.customers.profile.data.repositories.ProfileRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ProfileViewModel : ViewModel() {
-    private val _userData = MutableStateFlow<Customer?>(null)
-    val userData: StateFlow<Customer?> = _userData.asStateFlow()
+@HiltViewModel
+class ProfileViewModel @Inject constructor(
+    private val repository: ProfileRepository
+) : ViewModel() {
 
-    fun updateProfile(updateRequest: UpdateCustomerRequest) {
+    private val _customer = MutableStateFlow<Customer?>(null)
+    val customer: StateFlow<Customer?> = _customer
+
+    private val _error = MutableStateFlow<String?>(null)
+    val error: StateFlow<String?> = _error
+
+    init {
+        fetchCustomer();
+    }
+
+   private fun fetchCustomer() {
         viewModelScope.launch {
             try {
-                // Call your API or repository
-               // val updatedUser = userRepository.updateProfile(updateRequest)
-                //_userData.value = updatedUser
-                // Show success message
+                val response = repository.getCustomer()
+                _customer.value = response
             } catch (e: Exception) {
-                // Handle error
+                _error.value = e.message
+            }
+        }
+    }
+
+    fun updateCustomer(request: UpdateCustomerRequest) {
+        viewModelScope.launch {
+            try {
+                val response = repository.updateCustomer(request)
+                _customer.value = response
+            } catch (e: Exception) {
+                _error.value = e.message
             }
         }
     }

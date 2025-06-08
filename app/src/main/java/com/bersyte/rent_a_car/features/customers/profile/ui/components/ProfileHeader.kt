@@ -61,7 +61,7 @@ fun ProfileHeader(user: Customer?) {
                 )
 
                 Text(
-                    text = "Member since ${user.joinDate}",
+                    text = "Member since ${user.createdAt}",
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.White.copy(alpha = 0.8f)
                 )

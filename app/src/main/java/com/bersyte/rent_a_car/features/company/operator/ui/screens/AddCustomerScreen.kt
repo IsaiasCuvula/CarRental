@@ -12,7 +12,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
-import com.bersyte.rent_a_car.common.data.models.Customer
 import java.time.LocalDateTime
 import java.util.UUID
 import androidx.compose.material3.Icon
@@ -28,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.KeyboardType
+import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,17 +55,17 @@ fun AddCustomerScreen(
         floatingActionButton = {
             ExtendedFloatingActionButton (
                 onClick = {
-                    onSave(
-                        Customer(
-                            id = UUID.randomUUID().toString(),
-                            name = name,
-                            email = email,
-                            phone = phone,
-                            joinDate = LocalDateTime.now(),
-                            idCardNumber = idCardNumber,
-                            driveLicense = driveLicense
-                        )
-                    )
+//                    onSave(
+//                        Customer(
+//                            id = UUID.randomUUID().toString(),
+//                            name = name,
+//                            email = email,
+//                            phone = phone,
+//                            joinDate = LocalDateTime.now(),
+//                            idCardNumber = idCardNumber,
+//                            driveLicense = driveLicense
+//                        )
+//                    )
                 },
                 icon = { Icon(Icons.Default.Save, contentDescription = "Save") },
                 text = { Text("Save Customer") }
