@@ -33,14 +33,14 @@ class AuthViewModel @Inject constructor(
             val response = repository.login(request)
             if (response is Resource.Success) {
                 response.data?.let { data ->
-                    Log.i("LOGIN", "SAVE DATA: $data")
+                    Log.i("LOGIN SUCCESS", "SAVE DATA: $data")
                     tokenManager.saveAuthResponse(data)
                 }
             }
             _loginState.value = response
         } catch (e: Exception) {
             logout()
-            Log.i("LOGIN", "Exception: $e")
+            Log.i("LOGIN EXCEPTION", "Exception: $e")
             _loginState.value = Resource.Error(e.message ?: "Log in- Unknown error occurred")
         }
     }
@@ -51,20 +51,21 @@ class AuthViewModel @Inject constructor(
             val response = repository.signup(request)
             if (response is Resource.Success) {
                 response.data?.let { data ->
-                    Log.i("SIGNUP", "SAVE DATA: $data")
+                    Log.i("SIGNUP SUCCESS", "SAVE DATA: $data")
                     tokenManager.saveAuthResponse(data)
                 }
             }
             _loginState.value = response
         } catch (e: Exception) {
             logout()
-            Log.i("SIGNUP", "Exception: $e")
+            Log.i("SIGNUP EXCEPTION", "Exception: $e")
             _loginState.value = Resource.Error(e.message ?: "Sign up - Unknown error occurred")
         }
     }
 
     fun logout() {
         viewModelScope.launch {
+            Log.i("LOGOUT", "LOGOUT")
             tokenManager.clearAuthResponse()
             _loginState.value = null
         }
