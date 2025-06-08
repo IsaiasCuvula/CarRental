@@ -13,9 +13,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import com.bersyte.rent_a_car.features.customers.my_cars.data.models.CarStats
-import com.bersyte.rent_a_car.features.customers.profile.ui.components.StatItem
 import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 
 @Composable
 fun CarStatsSection(stats: CarStats) {
@@ -37,9 +38,9 @@ fun CarStatsSection(stats: CarStats) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                StatItem(value = stats.totalCars.toString(), label = "Total Cars")
-                StatItem(value = "$${stats.totalRevenue}", label = "Total Revenue")
-                StatItem(value = stats.activeRentals.toString(), label = "Active Rentals")
+                StatItemCar(value = stats.totalCars.toString(), label = "Total Cars")
+                StatItemCar(value = "$${stats.totalRevenue}", label = "Total Revenue")
+                StatItemCar(value = stats.activeRentals.toString(), label = "Active Rentals")
             }
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -48,10 +49,31 @@ fun CarStatsSection(stats: CarStats) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                StatItem(value = "${stats.avgRating}★", label = "Avg Rating")
-                StatItem(value = "${stats.utilizationRate}%", label = "Utilization")
-                StatItem(value = stats.totalRentals.toString(), label = "All Rentals")
+                StatItemCar(value = "${stats.avgRating}★", label = "Avg Rating")
+                StatItemCar(value = "${stats.utilizationRate}%", label = "Utilization")
+                StatItemCar(value = stats.totalRentals.toString(), label = "All Rentals")
             }
         }
+    }
+}
+
+
+@Composable
+private fun StatItemCar(value: String, label: String) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+        )
+        Text(
+            text = " $value",
+            style = MaterialTheme.typography.titleLarge ,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary
+        )
     }
 }
