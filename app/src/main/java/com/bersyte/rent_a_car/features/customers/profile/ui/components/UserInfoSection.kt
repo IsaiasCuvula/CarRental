@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Badge
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Card
@@ -19,8 +20,7 @@ import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
  fun UserInfoSection(user: Customer) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
@@ -31,7 +31,7 @@ import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
             InfoRow(icon = Icons.Default.Phone, text = user.phone)
             InfoRow(icon = Icons.Default.Badge, text = "ID: ${user.idCardNumber}")
             InfoRow(icon = Icons.Default.Badge, text = "Drive License: ${user.driverLicenseNumber}")
-            InfoRow(icon = Icons.Default.Badge, text = "Expires at: ${user.driverLicenseExpirationDate}")
+            InfoRow(icon = Icons.Default.CalendarMonth, text = "Expires at: ${user.driverLicenseExpirationDate}")
         }
     }
 }

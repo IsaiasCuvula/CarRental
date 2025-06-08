@@ -17,8 +17,7 @@ import androidx.compose.ui.Modifier
 fun RentalStatsSection() {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
