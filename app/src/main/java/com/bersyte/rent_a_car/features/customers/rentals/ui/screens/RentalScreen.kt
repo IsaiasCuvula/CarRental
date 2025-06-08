@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -23,18 +24,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.bersyte.rent_a_car.common.ui.components.ScrollableFilterChips
-import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
 import com.bersyte.rent_a_car.features.customers.rentals.ui.components.RentalCard
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.bersyte.rent_a_car.features.customers.rentals.viewmodels.RentalViewModel
 import com.bersyte.rent_a_car.utils.enums.RentalStatus
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RentalScreen() {
+fun RentalScreen(
+    viewModel: RentalViewModel = hiltViewModel()
+) {
 
-    val rentals = Rental.sampleRentals
+    val rentals = viewModel.rentals
+    val isLoading = viewModel.isLoading
+    val error = viewModel.error
 
     val rentalStatusOptions = RentalStatus.entries.map { it.name }
     var selectedFilterIndex by remember { mutableIntStateOf(0) }
@@ -56,41 +62,45 @@ fun RentalScreen() {
         }
     ){ innerPadding ->
 
-        Column(
-            modifier = Modifier.fillMaxSize()
-                .padding(top = innerPadding.calculateTopPadding())
-                .padding(16.dp)
-        ) {
-            // Filter chips
-            ScrollableFilterChips(
-                options = rentalStatusOptions,
-                selectedIndex = selectedFilterIndex,
-                onSelected = { selectedFilterIndex = it }
-            )
-
-            // Rental list
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+        when {
+            isLoading -> CircularProgressIndicator()
+            error != null -> Text("Error: $error")
+            else -> Column(
+                modifier = Modifier.fillMaxSize()
+                    .padding(top = innerPadding.calculateTopPadding())
+                    .padding(16.dp)
             ) {
-                items(filteredRentals) { rental ->
-                    RentalCard(rental = rental)
-                }
+                // Filter chips
+                ScrollableFilterChips(
+                    options = rentalStatusOptions,
+                    selectedIndex = selectedFilterIndex,
+                    onSelected = { selectedFilterIndex = it }
+                )
 
-                if (filteredRentals.isEmpty()) {
-                    item {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(32.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "No rentals found",
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                            )
+                // Rental list
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(vertical =  16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(filteredRentals) { rental ->
+                        RentalCard(rental = rental)
+                    }
+
+                    if (filteredRentals.isEmpty()) {
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(32.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = "No rentals found",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                                )
+                            }
                         }
                     }
                 }
