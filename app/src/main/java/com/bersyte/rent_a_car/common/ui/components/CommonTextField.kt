@@ -27,6 +27,7 @@ fun CommonTextField(
     keyboardType: KeyboardType = KeyboardType.Text,
     isPassword: Boolean = false,
     isError: Boolean = false,
+    readOnly: Boolean = false,
     errorMessage: String? = null,
 ) {
 
@@ -43,6 +44,7 @@ fun CommonTextField(
             ),
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
+            readOnly =readOnly,
             shape = RoundedCornerShape(12.dp)
         )
         if (isError && errorMessage != null) {

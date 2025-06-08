@@ -1,4 +1,4 @@
-package com.bersyte.rent_a_car.features.customers.home.ui.components
+package com.bersyte.rent_a_car.features.customers.home.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -22,6 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import com.bersyte.rent_a_car.R
+import com.bersyte.rent_a_car.features.customers.home.ui.components.CarDetailsGrid
+import com.bersyte.rent_a_car.features.customers.home.ui.components.DisplayCarRating
+import com.bersyte.rent_a_car.features.customers.home.ui.components.ShowDatePickerDialog
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 
@@ -112,4 +115,5 @@ fun CarDetailsBottomSheet(
             }
         }
     }
+
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bersyte.rent_a_car.common.data.models.Car
 import com.bersyte.rent_a_car.features.customers.home.data.models.CarRating
+import com.bersyte.rent_a_car.features.customers.home.data.models.ReservationRequest
 import com.bersyte.rent_a_car.features.customers.home.data.repositories.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -61,4 +62,15 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
+
+     fun reserveCar(carPlate: String, startDate: String, endDate: String) {
+         viewModelScope.launch {
+             try {
+                 val request = ReservationRequest(carPlate, startDate, endDate, false)
+                 repository.reserveCar(request)
+             } catch (e: Exception) {
+                 Log.d("RESERVING_CAR", "$e")
+             }
+         }
+     }
 }

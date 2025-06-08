@@ -96,4 +96,7 @@ dependencies {
 
     // For DataStore
     implementation (libs.androidx.datastore.preferences)
+
+    //Date picker
+    implementation(libs.material3)
 }
