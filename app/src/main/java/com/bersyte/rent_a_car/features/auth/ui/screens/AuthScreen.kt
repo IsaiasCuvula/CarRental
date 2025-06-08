@@ -35,6 +35,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bersyte.rent_a_car.common.data.models.Resource
 import com.bersyte.rent_a_car.common.ui.components.CommonTextField
@@ -42,6 +44,7 @@ import com.bersyte.rent_a_car.features.auth.data.models.LoginRequest
 import com.bersyte.rent_a_car.features.auth.data.models.SignUpRequest
 import com.bersyte.rent_a_car.features.auth.viewmodels.AuthViewModel
 import com.bersyte.rent_a_car.utils.enums.UserRole
+import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 @Composable
 fun AuthScreen(
@@ -58,6 +61,10 @@ fun AuthScreen(
     val gradient = Brush.verticalGradient(
         colors = listOf(colors.secondary, colors.primary)
     )
+
+    val context = LocalContext.current
+    // Add this line to get focus manager
+    val focusManager = LocalFocusManager.current
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -77,11 +84,20 @@ fun AuthScreen(
     }
 
     LaunchedEffect(loginState) {
-        val userState = loginState
-        if (userState is Resource.Success && userState.data != null) {
-            val userRole = UserRole.valueOf(userState.data.role.uppercase())
-            onLoginSuccess(userRole)
-            viewModel.resetLoginState()
+        when (loginState) {
+            is Resource.Success -> {
+                val userState = loginState as Resource.Success
+                if (userState.data != null) {
+                    val userRole = UserRole.valueOf(userState.data.role.uppercase())
+                    onLoginSuccess(userRole)
+                    viewModel.resetLoginState()
+                }
+            }
+            is Resource.Error -> {
+               val error = "Invalid user credentials"
+               AppHelpers.showToast(context, error)
+            }
+            else -> {}
         }
     }
 
@@ -167,6 +183,8 @@ fun AuthScreen(
 
                     Button(
                         onClick = {
+                            focusManager.clearFocus()
+
                             if (isLogin) {
                                 viewModel.login(
                                     LoginRequest(
