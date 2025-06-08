@@ -26,7 +26,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bersyte.rent_a_car.features.auth.ui.components.AuthTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -38,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bersyte.rent_a_car.common.data.models.Resource
+import com.bersyte.rent_a_car.common.ui.components.CommonTextField
 import com.bersyte.rent_a_car.features.auth.data.models.LoginRequest
 import com.bersyte.rent_a_car.features.auth.data.models.SignUpRequest
 import com.bersyte.rent_a_car.features.auth.viewmodels.AuthViewModel
@@ -59,11 +59,28 @@ fun AuthScreen(
         colors = listOf(colors.secondary, colors.primary)
     )
 
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var role by remember { mutableStateOf("") }
+    var cityName by remember { mutableStateOf("") }
+    var street by remember { mutableStateOf("") }
+    var state by remember { mutableStateOf("") }
+
+    // Validation function
+    fun validate(): Boolean {
+        val isEmailValid = email.isNotBlank()
+        val isPasswordValid = password.isNotBlank()
+        val isRoleValid = isLogin || role.isNotBlank()
+        val isCityValid = isLogin || cityName.isNotBlank()
+
+        return isEmailValid && isPasswordValid && isRoleValid && isCityValid
+    }
+
     LaunchedEffect(loginState) {
-        val state = loginState
-        if (state is Resource.Success && state.data != null) {
-            val role = UserRole.valueOf(state.data.role.uppercase())
-            onLoginSuccess(role)
+        val userState = loginState
+        if (userState is Resource.Success && userState.data != null) {
+            val userRole = UserRole.valueOf(userState.data.role.uppercase())
+            onLoginSuccess(userRole)
             viewModel.resetLoginState()
         }
     }
@@ -98,52 +115,52 @@ fun AuthScreen(
                         fontWeight = FontWeight.Bold,
                     )
 
-                    val email = remember { mutableStateOf("") }
-                    val password = remember { mutableStateOf("") }
-                    val role = remember { mutableStateOf("") }
-                    val cityName = remember { mutableStateOf("") }
-                    val street = remember { mutableStateOf("") }
-                    val state = remember { mutableStateOf("") }
-
-                    AuthTextField(
-                        value = email.value,
-                        onValueChange = { email.value = it },
+                    CommonTextField(
+                        value = email,
+                        onValueChange = { email = it },
                         label = "Email",
                         icon = Icons.Default.Email,
-                        keyboardType = KeyboardType.Email
+                        keyboardType = KeyboardType.Email,
+                        isError = email.isBlank()
                     )
 
-                    AuthTextField(
-                        value = password.value,
-                        onValueChange = { password.value = it },
+
+                    CommonTextField(
+                        value = password,
+                        onValueChange = { password = it },
                         label = "Password",
                         icon = Icons.Default.Lock,
                         keyboardType = KeyboardType.Password,
-                        isPassword = true
+                        isPassword = true,
+                        isError = email.isBlank()
                     )
 
                     AnimatedVisibility(visible = !isLogin) {
                         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                            AuthTextField(
-                                value = role.value,
-                                onValueChange = { role.value = it },
+                            CommonTextField(
+                                value = role,
+                                onValueChange = { role = it },
                                 label = "Role",
-                                icon = Icons.Default.Person
+                                icon = Icons.Default.Person,
+                                isError = role.isBlank()
                             )
-                            AuthTextField(
-                                value = cityName.value,
-                                onValueChange = { cityName.value = it },
-                                label = "City"
+                            CommonTextField(
+                                value = cityName,
+                                onValueChange = { cityName = it },
+                                label = "City",
+                                isError = cityName.isBlank()
                             )
-                            AuthTextField(
-                                value = street.value,
-                                onValueChange = { street.value = it },
-                                label = "Street"
+                            CommonTextField(
+                                value = street,
+                                onValueChange = { street = it },
+                                label = "Street",
+                                isError = street.isBlank()
                             )
-                            AuthTextField(
-                                value = state.value,
-                                onValueChange = { state.value = it },
-                                label = "State"
+                            CommonTextField(
+                                value = state,
+                                onValueChange = { state = it },
+                                label = "State",
+                                isError = state.isBlank()
                             )
                         }
                     }
@@ -153,23 +170,24 @@ fun AuthScreen(
                             if (isLogin) {
                                 viewModel.login(
                                     LoginRequest(
-                                        email = email.value,
-                                        password = password.value
+                                        email = email,
+                                        password = password
                                     )
                                 )
                             } else {
                                 viewModel.signup(
                                     SignUpRequest(
-                                        email = email.value,
-                                        password = password.value,
-                                        role = role.value.uppercase(), // ex: CUSTOMER
-                                        cityName = cityName.value
+                                        email = email,
+                                        password = password,
+                                        role = role.uppercase(),
+                                        cityName = cityName
                                     )
                                 )
                             }
                         },
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(12.dp),
+                        enabled = validate()
                     ) {
                         Text(text = if (isLogin) "Login" else "Sign Up")
                     }
