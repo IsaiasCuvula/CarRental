@@ -13,7 +13,11 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    private const val BASE_URL = "http://10.0.2.2:8888"
+    //From Android emulator's terminal
+    //private const val BASE_URL = "http://10.0.2.2:8888"
+
+    //Real device
+    private const val BASE_URL = "http://192.168.8.114:8888/"
 
     @Provides
     @Singleton
