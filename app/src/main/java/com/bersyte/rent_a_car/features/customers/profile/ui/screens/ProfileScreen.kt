@@ -17,6 +17,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.bersyte.rent_a_car.features.auth.viewmodels.AuthViewModel
 import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
 import com.bersyte.rent_a_car.features.customers.profile.ui.components.AuthButtons
 import com.bersyte.rent_a_car.features.customers.profile.ui.components.GuestMessage
@@ -29,6 +32,8 @@ import com.bersyte.rent_a_car.features.customers.profile.ui.components.UserInfoS
 fun ProfileScreen(
     customer: Customer?,
     onEditClick: () -> Unit,
+    navController: NavController,
+    viewModel: AuthViewModel = hiltViewModel()
 ) {
 
     Column(
@@ -66,8 +71,15 @@ fun ProfileScreen(
 
         AuthButtons(
             isLoggedIn = customer != null,
-            onLoginClick = {},
-            onLogoutClick = {}
+            onLoginClick = {
+                navController.navigate("login")
+            },
+            onLogoutClick = {
+                viewModel.logout()
+                navController.navigate("login") {
+                    popUpTo("profile") { inclusive = true }
+                }
+            }
         )
 
         if (customer == null) {

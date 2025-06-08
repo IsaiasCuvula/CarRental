@@ -9,10 +9,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.bersyte.rent_a_car.features.customers.profile.viewmodels.ProfileViewModel
 
 @Composable
 fun ProfileManagementScreen(
+    navController: NavController,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
     var showEditScreen by remember { mutableStateOf(false) }
@@ -37,7 +39,8 @@ fun ProfileManagementScreen(
     } else {
         ProfileScreen(
             customer,
-            onEditClick = { showEditScreen = true }
+            onEditClick = { showEditScreen = true },
+            navController,
         )
     }
 }

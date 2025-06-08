@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -23,8 +24,10 @@ import com.bersyte.rent_a_car.features.customers.rentals.ui.screens.RentalScreen
 
 
 @Composable
-fun MainNavigationScreen() {
-    val navController = rememberNavController()
+fun CustomerNavigationScreen(
+   navController: NavController
+) {
+    val childNavController = rememberNavController()
     val items = listOf(
         NavigationItem.Home,
         NavigationItem.Rentals,
@@ -36,7 +39,7 @@ fun MainNavigationScreen() {
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
             NavigationBar {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val navBackStackEntry by childNavController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
 
                 items.forEach { item ->
@@ -45,8 +48,8 @@ fun MainNavigationScreen() {
                         label = { Text(item.title) },
                         selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
                         onClick = {
-                            navController.navigate(item.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
+                            childNavController.navigate(item.route) {
+                                popUpTo(childNavController.graph.findStartDestination().id) {
                                     saveState = true
                                 }
                                 launchSingleTop = true
@@ -59,7 +62,7 @@ fun MainNavigationScreen() {
         }
     ) { innerPadding ->
         NavHost(
-            navController = navController,
+            navController = childNavController,
             startDestination = NavigationItem.Home.route,
             modifier = Modifier.padding(innerPadding)
         ) {
@@ -73,7 +76,7 @@ fun MainNavigationScreen() {
                 MyCarsManagementScreen()
             }
             composable(NavigationItem.Profile.route) {
-                ProfileManagementScreen()
+                ProfileManagementScreen(navController)
             }
         }
     }

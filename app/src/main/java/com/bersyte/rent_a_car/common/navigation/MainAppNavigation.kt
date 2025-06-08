@@ -51,7 +51,7 @@ fun MainAppNavigation(
             )
         }
         composable("customer_dashboard") {
-            MainNavigationScreen()
+            CustomerNavigationScreen(navController = navController)
         }
         composable("operator_dashboard") {
             OperatorDashboardApp()
