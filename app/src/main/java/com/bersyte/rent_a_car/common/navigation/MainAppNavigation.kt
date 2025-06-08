@@ -1,6 +1,7 @@
 package com.bersyte.rent_a_car.common.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -33,8 +34,26 @@ fun MainAppNavigation(
 
     NavHost(
         navController = navController,
-        startDestination = startDestination
+        startDestination = "start"
     ) {
+
+        composable("start") {
+            val data = authResponse?.data
+            val target = when (data?.role?.lowercase()) {
+                "customer" -> "customer_dashboard"
+                "operator" -> "operator_dashboard"
+                "admin" -> "admin_dashboard"
+                else -> "login"
+            }
+
+            // Immediate redirection based on auth status
+            LaunchedEffect(target) {
+                navController.navigate(target) {
+                    popUpTo("start") { inclusive = true }
+                }
+            }
+        }
+
         composable("login") {
             AuthScreen(
                 onLoginSuccess = { role ->
