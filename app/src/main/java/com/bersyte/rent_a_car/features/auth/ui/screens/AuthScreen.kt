@@ -90,7 +90,7 @@ fun AuthScreen(
                 if (userState.data != null) {
                     val userRole = UserRole.valueOf(userState.data.role.uppercase())
                     onLoginSuccess(userRole)
-                    viewModel.resetLoginState()
+                    viewModel.logout()
                 }
             }
             is Resource.Error -> {

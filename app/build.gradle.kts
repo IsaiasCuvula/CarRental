@@ -93,4 +93,7 @@ dependencies {
 
     // Coroutines for asynchronous programming
     implementation (libs.kotlinx.coroutines.android)
+
+    // For DataStore
+    implementation (libs.androidx.datastore.preferences)
 }
