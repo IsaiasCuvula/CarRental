@@ -10,4 +10,7 @@ class HomeRepository @Inject constructor(
     suspend fun fetchAvailableCars(): List<Car> {
         return dataSource.getAvailableCars()
     }
+
+    suspend fun getTotalRentalsByPlate(plate: String) = dataSource.getTotalRentalsByPlate(plate)
+
 }

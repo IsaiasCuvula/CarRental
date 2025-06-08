@@ -91,12 +91,11 @@ fun CarCard(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = "${car.model} ${car.year}",
-                        style = MaterialTheme.typography.titleLarge,
+                        text = car.name,
+                        style = MaterialTheme.typography.titleMedium,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
-
                     // Rating
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
@@ -115,6 +114,13 @@ fun CarCard(
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "${car.model} ${car.year}",
+                    style = MaterialTheme.typography.titleSmall,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Spacer(modifier = Modifier.height(8.dp))
 
                 // Car type and seats
                 Row(
@@ -129,11 +135,7 @@ fun CarCard(
                         icon = Icons.Default.Person,
                         text = "${car.seats} seats"
                     )
-                    InfoChip(
-                        icon = Icons.Default.Verified,
-                        //text = "${car.rentals.size} rentals"
-                        text = "19 rentals"
-                    )
+                    TotalCarRentals(plate = car.plate)
                 }
 
                 Spacer(modifier = Modifier.height(12.dp))

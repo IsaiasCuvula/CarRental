@@ -1,5 +1,6 @@
 package com.bersyte.rent_a_car.features.customers.home.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bersyte.rent_a_car.common.data.models.Car
@@ -31,6 +32,18 @@ class HomeViewModel @Inject constructor(
                 e.printStackTrace()
             } finally {
                 _isLoading.value = false
+            }
+        }
+    }
+
+    fun fetchTotalRentals(plate: String, onResult: (Int?) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val total = repository.getTotalRentalsByPlate(plate)
+                onResult(total)
+            } catch (e: Exception) {
+                Log.d("TOTAL_RENTALS", "$e")
+                onResult(null)
             }
         }
     }
