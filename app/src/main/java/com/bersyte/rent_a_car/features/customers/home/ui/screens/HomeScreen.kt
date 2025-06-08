@@ -31,6 +31,7 @@ import com.bersyte.rent_a_car.features.customers.home.ui.components.CarCard
 import com.bersyte.rent_a_car.features.customers.home.ui.components.HomeSearchBar
 import com.bersyte.rent_a_car.common.ui.components.ScrollableFilterChips
 import com.bersyte.rent_a_car.features.customers.home.viewmodels.HomeViewModel
+import com.bersyte.rent_a_car.utils.enums.CarType
 import androidx.compose.material3.TopAppBar as TopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,7 +41,7 @@ fun HomeScreen(
 ) {
 
     // Filter chips
-    val filterOptions = listOf("All", "Economy", "Luxury", "SUV", "Electric")
+    val filterOptions = CarType.getAllFilterOptions()
     var selectedFilter by remember { mutableIntStateOf(0) }
 
     var searchQuery by remember { mutableStateOf("") }
@@ -49,6 +50,27 @@ fun HomeScreen(
 
     LaunchedEffect(Unit) {
         viewModel.loadAvailableCars()
+    }
+
+    val filteredCars = remember(cars, selectedFilter, searchQuery) {
+        // First filter by type if something other than "All" is selected
+        val typeFilteredCars = if (selectedFilter == 0) {
+            cars
+        } else {
+            val selectedType = CarType.fromDisplayName(filterOptions[selectedFilter])
+            cars.filter { car -> CarType.valueOf(car.carType) == selectedType }
+        }
+
+        // Then apply search filter
+        if (searchQuery.isEmpty()) {
+            typeFilteredCars
+        } else {
+            typeFilteredCars.filter { car ->
+                car.name.contains(searchQuery, ignoreCase = true) ||
+                        car.model.contains(searchQuery, ignoreCase = true) ||
+                        car.description.contains(searchQuery, ignoreCase = true)
+            }
+        }
     }
 
     Scaffold (
@@ -89,7 +111,7 @@ fun HomeScreen(
                     modifier = Modifier.fillMaxSize(),
                             contentPadding = PaddingValues(top = 8.dp)
                 ) {
-                    items(cars) { car ->
+                    items(filteredCars) { car ->
                         CarCard(
                             car = car,
                             onClick = {  }
