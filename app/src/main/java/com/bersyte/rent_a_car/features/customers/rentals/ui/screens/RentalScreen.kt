@@ -61,7 +61,6 @@ fun RentalScreen(
             )
         }
     ){ innerPadding ->
-
         when {
             isLoading -> CircularProgressIndicator()
             error != null -> Text("Error: $error")
@@ -76,7 +75,6 @@ fun RentalScreen(
                     selectedIndex = selectedFilterIndex,
                     onSelected = { selectedFilterIndex = it }
                 )
-
                 // Rental list
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),

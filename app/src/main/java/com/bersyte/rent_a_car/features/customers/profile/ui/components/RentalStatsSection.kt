@@ -12,9 +12,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
+import com.bersyte.rent_a_car.features.customers.rentals.viewmodels.RentalViewModel
 
 @Composable
-fun RentalStatsSection() {
+fun RentalStatsSection(
+    customer: Customer,
+    viewModel: RentalViewModel = hiltViewModel()
+) {
+    val rentals = viewModel.rentals
+
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -35,7 +43,7 @@ fun RentalStatsSection() {
             ) {
                 StatItem(value = "12", label = "Total Rentals")
                 StatItem(value = "4", label = "Active")
-                StatItem(value = "850", label = "Loyalty Points")
+                StatItem(value = "${customer.loyaltyPoints}", label = "Loyalty Points")
             }
         }
     }

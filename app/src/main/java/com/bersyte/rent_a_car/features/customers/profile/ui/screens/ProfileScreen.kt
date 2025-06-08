@@ -65,7 +65,7 @@ fun ProfileScreen(
         if (customer != null) {
             UserInfoSection(customer)
             Spacer(modifier = Modifier.height(12.dp))
-            RentalStatsSection()
+            RentalStatsSection(customer)
             Spacer(modifier = Modifier.height(16.dp))
         }
 

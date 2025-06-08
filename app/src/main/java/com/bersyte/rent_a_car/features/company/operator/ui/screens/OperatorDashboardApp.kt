@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental.Companion.sampleRentals
 
 @Composable
 fun OperatorDashboardApp() {
@@ -45,7 +44,7 @@ fun OperatorDashboardApp() {
 
         composable("rentalRequests") {
             RentalManagementScreen(
-                rentals = sampleRentals,
+                rentals = listOf(),
                 onApprove = { code -> /* Approve rental */ },
                 onReject = { code -> /* Reject rental */ },
                 onBack = { navController.popBackStack() }

@@ -11,7 +11,7 @@ import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontWeight
@@ -91,7 +91,7 @@ fun RentalCard(rental: Rental) {
             }
 
             // Rental period
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier.padding(vertical = 8.dp),
                 color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
             )
@@ -126,29 +126,23 @@ fun RentalCard(rental: Rental) {
             }
 
             // Total amount and rental code
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier.padding(vertical = 8.dp),
                 color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
             )
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Total: ${rental.totalPaidAmount}",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.primary
-                )
+            Text(
+                text = "Code: ${rental.rentalCode}",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+            )
 
-                Text(
-                    text = "Code: ${rental.rentalCode}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                )
-            }
+            Text(
+                text = "Total: ${rental.formattedAmount}",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.primary
+            )
         }
     }
 }
