@@ -52,7 +52,7 @@ fun AuthScreen(
     viewModel: AuthViewModel = hiltViewModel()
 ) {
 
-    val loginState by viewModel.loginState.collectAsState()
+    val loginState by viewModel.authResponse.collectAsState()
 
     var isLogin by remember { mutableStateOf(true) }
 
