@@ -1,8 +1,7 @@
 package com.bersyte.rent_a_car.features.customers.profile.data.models
 
-import com.bersyte.rent_a_car.features.customers.home.data.models.Address
+import com.bersyte.rent_a_car.common.data.models.Address
 import com.bersyte.rent_a_car.utils.enums.UserRole
-import java.time.LocalDateTime
 
 data class Customer(
     val name: String,
@@ -11,10 +10,10 @@ data class Customer(
     val role: UserRole,
     val address: Address,
     val keycloakId: String,
-    val createdAt: LocalDateTime,
+    val createdAt: String,
     val driverLicenseNumber: String?,
-    val driverLicenseExpirationDate: LocalDateTime?,
+    val driverLicenseExpirationDate: String?,
     val idCardNumber: String?,
     val loyaltyPoints: Long,
-    val updatedAt: LocalDateTime?
+    val updatedAt: String?
 )

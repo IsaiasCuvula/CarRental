@@ -10,8 +10,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,54 +26,67 @@ import com.bersyte.rent_a_car.features.customers.profile.ui.components.GuestMess
 import com.bersyte.rent_a_car.features.customers.profile.ui.components.ProfileHeader
 import com.bersyte.rent_a_car.features.customers.profile.ui.components.RentalStatsSection
 import com.bersyte.rent_a_car.features.customers.profile.ui.components.UserInfoSection
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.bersyte.rent_a_car.features.customers.profile.viewmodels.ProfileViewModel
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     customer: Customer?,
-    onEditClick: () -> Unit
+    onEditClick: () -> Unit,
+    viewModel: ProfileViewModel = hiltViewModel()
 ) {
+    val state = rememberPullToRefreshState()
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState())
+    PullToRefreshBox(
+        isRefreshing = state.isAnimating,
+        onRefresh = {viewModel.fetchCustomer()},
+        state = state,
+        indicator = {},
     ) {
-        Box {
-            ProfileHeader(user = customer)
+        Column(
+            modifier = Modifier.fillMaxSize()
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState())
+        ) {
+            Box {
+                ProfileHeader(user = customer)
 
-            if (customer != null) {
-                IconButton(
-                    onClick = onEditClick,
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(16.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Edit,
-                        contentDescription = "Edit Profile",
-                        tint = Color.White
-                    )
+                if (customer != null) {
+                    IconButton(
+                        onClick = onEditClick,
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(16.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = "Edit Profile",
+                            tint = Color.White
+                        )
+                    }
                 }
             }
-        }
 
-        Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-        if (customer != null) {
-            UserInfoSection(customer)
-            Spacer(modifier = Modifier.height(12.dp))
-            RentalStatsSection()
-            Spacer(modifier = Modifier.height(16.dp))
-        }
+            if (customer != null) {
+                UserInfoSection(customer)
+                Spacer(modifier = Modifier.height(12.dp))
+                RentalStatsSection()
+                Spacer(modifier = Modifier.height(16.dp))
+            }
 
-        AuthButtons(
-            isLoggedIn = customer != null,
-            onLoginClick = {},
-            onLogoutClick = {}
-        )
+            AuthButtons(
+                isLoggedIn = customer != null,
+                onLoginClick = {},
+                onLogoutClick = {}
+            )
 
-        if (customer == null) {
-            GuestMessage()
+            if (customer == null) {
+                GuestMessage()
+            }
         }
     }
 

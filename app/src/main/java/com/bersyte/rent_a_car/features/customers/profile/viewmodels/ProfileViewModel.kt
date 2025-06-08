@@ -1,5 +1,6 @@
 package com.bersyte.rent_a_car.features.customers.profile.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bersyte.rent_a_car.features.customers.profile.data.models.UpdateCustomerRequest
@@ -22,16 +23,14 @@ class ProfileViewModel @Inject constructor(
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
-    init {
-        fetchCustomer();
-    }
-
-   private fun fetchCustomer() {
+    fun fetchCustomer() {
         viewModelScope.launch {
             try {
                 val response = repository.getCustomer()
                 _customer.value = response
+                Log.d("FETCH_CUSTOMER", "$response")
             } catch (e: Exception) {
+                Log.d("FETCH_CUSTOMER", "EXCEPTION - $e")
                 _error.value = e.message
             }
         }
@@ -42,7 +41,9 @@ class ProfileViewModel @Inject constructor(
             try {
                 val response = repository.updateCustomer(request)
                 _customer.value = response
+                Log.d("UPDATE_CUSTOMER", "$response")
             } catch (e: Exception) {
+                Log.d("UPDATE_CUSTOMER", "EXCEPTION - $e")
                 _error.value = e.message
             }
         }

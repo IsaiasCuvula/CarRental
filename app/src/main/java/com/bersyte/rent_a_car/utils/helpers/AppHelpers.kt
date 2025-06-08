@@ -3,6 +3,8 @@ package com.bersyte.rent_a_car.utils.helpers
 import android.content.Context
 import android.widget.Toast
 import com.bersyte.rent_a_car.features.customers.home.data.models.CarRating
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 object AppHelpers{
     fun List<CarRating>.average(selector: (CarRating) -> Float): Float {
@@ -12,5 +14,13 @@ object AppHelpers{
 
     fun showToast(context: Context, msg: String){
         return Toast.makeText(context,msg,Toast.LENGTH_SHORT).show()
+    }
+
+    fun safeParseIsoDateTime(dateString: String): LocalDateTime? {
+        return try {
+            LocalDateTime.parse(dateString, DateTimeFormatter.ISO_DATE_TIME)
+        } catch (e: Exception) {
+            null
+        }
     }
 }
