@@ -18,7 +18,7 @@ class AuthInterceptor @Inject constructor(
             }) return chain.proceed(request)
 
         // Get token synchronously (carefully)
-        val token = runBlocking { tokenManager.getToken() }
+        val token = runBlocking { tokenManager.getAuthResponse()?.token }
 
         return if (token != null) {
             chain.proceed(

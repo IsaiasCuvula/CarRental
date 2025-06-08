@@ -1,5 +1,6 @@
 package com.bersyte.rent_a_car.features.auth.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bersyte.rent_a_car.common.data.models.Resource
@@ -17,25 +18,29 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val repository: AuthRepository,
-    private val tokenManager: TokenManager
+     val tokenManager: TokenManager
 ) : ViewModel() {
 
     private val _loginState = MutableStateFlow<Resource<AuthResponse>?>(null)
     val loginState = _loginState.asStateFlow()
 
+    private val _token = MutableStateFlow<String?>(null)
+    val token = _token.asStateFlow()
 
     fun login(request : LoginRequest) = viewModelScope.launch {
         _loginState.value = Resource.loading()
         try {
             val response = repository.login(request)
             if (response is Resource.Success) {
-                response.data?.token?.let { token ->
-                    tokenManager.saveToken(token)
+                response.data?.let { data ->
+                    Log.i("LOGIN", "SAVE DATA: $data")
+                    tokenManager.saveAuthResponse(data)
                 }
             }
             _loginState.value = response
         } catch (e: Exception) {
             logout()
+            Log.i("LOGIN", "Exception: $e")
             _loginState.value = Resource.Error(e.message ?: "Log in- Unknown error occurred")
         }
     }
@@ -45,20 +50,22 @@ class AuthViewModel @Inject constructor(
         try {
             val response = repository.signup(request)
             if (response is Resource.Success) {
-                response.data?.token?.let { token ->
-                    tokenManager.saveToken(token)
+                response.data?.let { data ->
+                    Log.i("SIGNUP", "SAVE DATA: $data")
+                    tokenManager.saveAuthResponse(data)
                 }
             }
             _loginState.value = response
         } catch (e: Exception) {
             logout()
+            Log.i("SIGNUP", "Exception: $e")
             _loginState.value = Resource.Error(e.message ?: "Sign up - Unknown error occurred")
         }
     }
 
     fun logout() {
         viewModelScope.launch {
-            tokenManager.clearToken()
+            tokenManager.clearAuthResponse()
             _loginState.value = null
         }
     }
