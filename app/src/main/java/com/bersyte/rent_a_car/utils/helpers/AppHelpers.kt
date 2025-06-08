@@ -16,8 +16,21 @@ object AppHelpers{
         return Toast.makeText(context,msg,Toast.LENGTH_SHORT).show()
     }
 
-    fun safeParseIsoDateTime(dateString: String): LocalDateTime? {
+    fun formatDateOnly(dateString: String?): String? {
         return try {
+            if (dateString == null) return null
+            val dateTime = LocalDateTime.parse(dateString, DateTimeFormatter.ISO_DATE_TIME)
+            dateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    fun safeParseIsoDateTime(dateString: String?): LocalDateTime? {
+        return try {
+            if(dateString == null){
+                return null
+            }
             LocalDateTime.parse(dateString, DateTimeFormatter.ISO_DATE_TIME)
         } catch (e: Exception) {
             null

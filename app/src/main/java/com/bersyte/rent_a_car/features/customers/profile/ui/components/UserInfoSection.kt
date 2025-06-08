@@ -15,9 +15,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
+import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 @Composable
  fun UserInfoSection(user: Customer) {
+
+    val driverLicenseExpirationDate = AppHelpers.formatDateOnly(
+        user.driverLicenseExpirationDate
+    )
+
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -31,7 +37,7 @@ import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
             InfoRow(icon = Icons.Default.Phone, text = user.phone)
             InfoRow(icon = Icons.Default.Badge, text = "ID: ${user.idCardNumber}")
             InfoRow(icon = Icons.Default.Badge, text = "Drive License: ${user.driverLicenseNumber}")
-            InfoRow(icon = Icons.Default.CalendarMonth, text = "Expires at: ${user.driverLicenseExpirationDate}")
+            InfoRow(icon = Icons.Default.CalendarMonth, text = "Expires at: $driverLicenseExpirationDate")
         }
     }
 }

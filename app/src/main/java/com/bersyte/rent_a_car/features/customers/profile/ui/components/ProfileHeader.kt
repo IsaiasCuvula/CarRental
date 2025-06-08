@@ -26,9 +26,14 @@ import androidx.compose.ui.graphics.Color
 import coil.compose.AsyncImage
 import com.bersyte.rent_a_car.R
 import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
+import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 @Composable
 fun ProfileHeader(user: Customer?) {
+
+    val joinedDate = AppHelpers.formatDateOnly(
+        user?.createdAt
+    )
 
     Box(
         modifier = Modifier
@@ -61,7 +66,7 @@ fun ProfileHeader(user: Customer?) {
                 )
 
                 Text(
-                    text = "Member since ${user.createdAt}",
+                    text = "Member since $joinedDate",
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.White.copy(alpha = 0.8f)
                 )
