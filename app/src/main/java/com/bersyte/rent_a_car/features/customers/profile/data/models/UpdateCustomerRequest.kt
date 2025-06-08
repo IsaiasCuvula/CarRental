@@ -1,4 +1,4 @@
-package com.bersyte.rent_a_car.features.customers.profile.data
+package com.bersyte.rent_a_car.features.customers.profile.data.models
 
 import java.time.LocalDateTime
 

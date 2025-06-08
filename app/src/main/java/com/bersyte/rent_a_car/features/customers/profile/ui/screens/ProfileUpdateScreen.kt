@@ -13,8 +13,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.bersyte.rent_a_car.features.customers.profile.data.UpdateCustomerRequest
-import com.bersyte.rent_a_car.features.customers.profile.data.User
+import com.bersyte.rent_a_car.features.customers.profile.data.models.UpdateCustomerRequest
+import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
 import java.time.format.DateTimeFormatter
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,7 +32,7 @@ import java.time.LocalDateTime
 
 @Composable
 fun ProfileUpdateScreen(
-    currentUser: User,
+    currentUser: Customer,
     onUpdate: (UpdateCustomerRequest) -> Unit,
     onCancel: () -> Unit
 ) {

@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.bersyte.rent_a_car.features.company.admin.data.Operator
+import com.bersyte.rent_a_car.features.company.admin.data.models.Operator
 
 
 @Composable

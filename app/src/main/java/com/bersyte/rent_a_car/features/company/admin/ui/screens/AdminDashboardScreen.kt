@@ -24,7 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.bersyte.rent_a_car.features.company.admin.data.AdminDashboardStats
-import com.bersyte.rent_a_car.features.company.admin.data.Operator
+import com.bersyte.rent_a_car.features.company.admin.data.models.Operator
 import com.bersyte.rent_a_car.features.company.admin.ui.components.DashboardTab
 import com.bersyte.rent_a_car.features.company.admin.ui.components.OperatorsTab
 

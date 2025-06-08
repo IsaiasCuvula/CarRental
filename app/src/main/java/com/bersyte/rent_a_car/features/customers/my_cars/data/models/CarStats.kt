@@ -1,4 +1,4 @@
-package com.bersyte.rent_a_car.features.customers.my_cars.data
+package com.bersyte.rent_a_car.features.customers.my_cars.data.models
 
 data class CarStats(
     val totalCars: Int,

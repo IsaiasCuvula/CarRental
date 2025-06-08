@@ -30,7 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.bersyte.rent_a_car.features.company.admin.data.Operator
+import com.bersyte.rent_a_car.features.company.admin.data.models.Operator
 import java.time.LocalDateTime
 import java.util.UUID
 

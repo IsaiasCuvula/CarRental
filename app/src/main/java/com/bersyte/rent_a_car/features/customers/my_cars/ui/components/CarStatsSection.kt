@@ -12,7 +12,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
-import com.bersyte.rent_a_car.features.customers.my_cars.data.CarStats
+import com.bersyte.rent_a_car.features.customers.my_cars.data.models.CarStats
 import com.bersyte.rent_a_car.features.customers.profile.ui.components.StatItem
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier

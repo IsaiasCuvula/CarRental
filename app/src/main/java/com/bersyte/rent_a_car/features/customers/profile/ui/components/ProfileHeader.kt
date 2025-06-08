@@ -25,10 +25,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import coil.compose.AsyncImage
 import com.bersyte.rent_a_car.R
-import com.bersyte.rent_a_car.features.customers.profile.data.User
+import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
 
 @Composable
-fun ProfileHeader(user: User?) {
+fun ProfileHeader(user: Customer?) {
 
     Box(
         modifier = Modifier

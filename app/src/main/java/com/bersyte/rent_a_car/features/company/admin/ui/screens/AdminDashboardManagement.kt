@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.bersyte.rent_a_car.features.company.admin.data.AdminDashboardStats
-import com.bersyte.rent_a_car.features.company.admin.data.Operator
+import com.bersyte.rent_a_car.features.company.admin.data.models.Operator
 import java.time.LocalDateTime
 
 @Composable

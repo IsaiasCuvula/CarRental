@@ -17,7 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.bersyte.rent_a_car.features.customers.profile.data.User
+import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
 import com.bersyte.rent_a_car.features.customers.profile.ui.components.AuthButtons
 import com.bersyte.rent_a_car.features.customers.profile.ui.components.GuestMessage
 import com.bersyte.rent_a_car.features.customers.profile.ui.components.ProfileHeader
@@ -27,7 +27,7 @@ import com.bersyte.rent_a_car.features.customers.profile.ui.components.UserInfoS
 @Composable
 fun ProfileScreen( onEditClick: () -> Unit) {
 
-    val user = User.sampleUser
+    val user = Customer.sampleUser
 
 
     Column(

@@ -13,10 +13,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.bersyte.rent_a_car.features.customers.profile.data.User
+import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
 
 @Composable
- fun UserInfoSection(user: User) {
+ fun UserInfoSection(user: Customer) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
