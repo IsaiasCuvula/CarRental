@@ -1,9 +1,5 @@
 package com.bersyte.rent_a_car.common.data.models
 
-import com.bersyte.rent_a_car.features.customers.home.data.models.CarRating
-import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
-import java.time.LocalDateTime
-
 data class Car(
     val color: Int,
     val smokingAllowed: Boolean,
