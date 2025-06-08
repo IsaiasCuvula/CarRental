@@ -34,6 +34,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.bersyte.rent_a_car.R
 import com.bersyte.rent_a_car.common.data.models.Car
+import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 
 @Composable
@@ -42,6 +43,9 @@ fun CarCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
+
+    val pricePerHour = AppHelpers.centsToUsd(car.hourlyPrice)
+
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -70,7 +74,7 @@ fun CarCard(
                         shape = RoundedCornerShape(16.dp)
                     ) {
                         Text(
-                            text = "$${car.hourlyPrice}/h",
+                            text = "$pricePerHour/h",
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
@@ -103,7 +107,8 @@ fun CarCard(
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            text = "${car.ratings.size}",
+                            //text = "${car.ratings.size}",
+                            text = "8",
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }

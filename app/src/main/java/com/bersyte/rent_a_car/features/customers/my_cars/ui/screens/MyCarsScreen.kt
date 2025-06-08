@@ -36,7 +36,7 @@ fun MyCarsScreen(
     modifier: Modifier = Modifier
 ) {
 
-    val cars = Car.data
+    val cars = listOf<Car>()
     val stats = CarStats.stats
 
     Scaffold(

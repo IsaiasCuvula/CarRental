@@ -36,4 +36,9 @@ object AppHelpers{
             null
         }
     }
+
+    fun centsToUsd(amountInCents: Long): String {
+        return "$%.2f".format(amountInCents / 100.0)
+    }
+
 }
