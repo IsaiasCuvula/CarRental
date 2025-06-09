@@ -28,6 +28,7 @@ import com.bersyte.rent_a_car.features.customers.rentals.ui.components.RentalCar
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.bersyte.rent_a_car.features.customers.rentals.data.models.CancelRental
 import com.bersyte.rent_a_car.features.customers.rentals.viewmodels.RentalViewModel
 import com.bersyte.rent_a_car.utils.enums.RentalStatus
 
@@ -85,7 +86,8 @@ fun RentalScreen(
                         RentalCard(
                             rental = rental,
                             onCancel = { currentRental ->
-                                viewModel.ca
+                                val request = CancelRental(currentRental.rentalCode)
+                                viewModel.cancelRenting(request)
                             }
                         )
                     }
