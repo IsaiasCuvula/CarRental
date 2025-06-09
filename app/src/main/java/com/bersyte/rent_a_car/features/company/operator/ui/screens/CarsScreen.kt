@@ -3,9 +3,7 @@ package com.bersyte.rent_a_car.features.company.operator.ui.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,8 +16,10 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,6 +33,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bersyte.rent_a_car.common.data.models.Car
+import com.bersyte.rent_a_car.common.ui.components.AddCarScreen
 import com.bersyte.rent_a_car.common.ui.components.CommonSearchBar
 import com.bersyte.rent_a_car.common.ui.components.ScrollableFilterChips
 import com.bersyte.rent_a_car.features.company.operator.viewmodels.OperatorViewModel
@@ -44,10 +45,10 @@ import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 @Composable
 fun CarsScreen(
     onCancel: () -> Unit,
-    onAddCar: () -> Unit,
     viewModel: OperatorViewModel = hiltViewModel()
 ) {
 
+   var showAddCarScreen by remember { mutableStateOf(false) }
     var allCars by remember { mutableStateOf<List<Car>>(emptyList()) }
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
@@ -105,7 +106,7 @@ fun CarsScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = onAddCar,
+                onClick = { showAddCarScreen = false},
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary
             ) {
@@ -145,5 +146,29 @@ fun CarsScreen(
                    }
                }
             }
+    }
+    if(showAddCarScreen){
+        ModalBottomSheet(
+            onDismissRequest = { showAddCarScreen = false },
+            sheetState = rememberModalBottomSheetState()
+        ) {
+            AddCarScreen(
+                onSave = { carRequest ->
+    //                viewModel.registerCar(
+    //                    carRequest,
+    //                    onSuccess = {result ->
+    //                        if(result != null){
+    //                            showAddCarScreen = false
+    //                        }
+    //                    },
+    //                    onError = {error ->
+    //                        AppHelpers.showToast(context, "$error")
+    //                    }
+    //                )
+
+                },
+                onCancel = { showAddCarScreen = false }
+            )
+        }
     }
 }

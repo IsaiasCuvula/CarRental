@@ -7,6 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.bersyte.rent_a_car.common.ui.components.AddCarScreen
 import com.bersyte.rent_a_car.features.customers.my_cars.viewmodels.MyCarsViewModel
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
