@@ -2,6 +2,7 @@ package com.bersyte.rent_a_car.features.customers.home.data.services
 import com.bersyte.rent_a_car.common.data.models.Car
 import com.bersyte.rent_a_car.features.customers.home.data.models.CarRating
 import com.bersyte.rent_a_car.features.customers.home.data.models.ReservationRequest
+import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -19,5 +20,5 @@ interface HomeApiService {
     suspend fun getCarRatings(@Path("plate") plate: String): List<CarRating>
 
     @POST("api/v1/rentals/reserving")
-    suspend fun reserveCar(@Body request: ReservationRequest)
+    suspend fun reserveCar(@Body request: ReservationRequest): Rental
 }

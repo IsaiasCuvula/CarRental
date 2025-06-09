@@ -7,10 +7,15 @@ import com.bersyte.rent_a_car.common.data.models.Car
 import com.bersyte.rent_a_car.features.customers.home.data.models.CarRating
 import com.bersyte.rent_a_car.features.customers.home.data.models.ReservationRequest
 import com.bersyte.rent_a_car.features.customers.home.data.repositories.HomeRepository
+import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -63,13 +68,25 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-     fun reserveCar(carPlate: String, startDate: String, endDate: String) {
+     fun reserveCar(request :ReservationRequest, onResult: (Rental?) -> Unit) {
          viewModelScope.launch {
-             try {
-                 val request = ReservationRequest(carPlate, startDate, endDate, false)
-                 repository.reserveCar(request)
+             val result = try {
+                 Log.d("RESERVING_CAR", "Request: $request")
+                 val response = repository.reserveCar(request)
+                 Log.d("RESERVING_CAR", "RESULT: $response")
+                 response
+             } catch (e: HttpException) {
+                 val errorBody = e.response()?.errorBody()?.string()
+                 Log.d("RESERVING_CAR", "HTTP Error: ${e.code()}, Body: $errorBody")
+                 null
              } catch (e: Exception) {
-                 Log.d("RESERVING_CAR", "$e")
+                 Log.d("RESERVING_CAR", "Error: ${e.message}")
+                 null
+             }
+
+             // Make sure to call onResult on the main thread
+             withContext(Dispatchers.Main) {
+                 onResult(result)
              }
          }
      }

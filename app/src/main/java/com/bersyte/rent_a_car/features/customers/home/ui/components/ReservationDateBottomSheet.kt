@@ -28,16 +28,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReservationDateBottomSheet(
     onDismiss: () -> Unit,
-    onDatesSelected: (startDate: LocalDate, endDate: LocalDate) -> Unit,
+    onDatesSelected: (startDate: LocalDateTime, endDate: LocalDateTime) -> Unit,
     sheetState: SheetState = rememberModalBottomSheetState()
 ) {
-    val today = LocalDate.now()
+    val today = LocalDateTime.now().plusHours(2)
 
     var startDateText by remember { mutableStateOf(today) }
     var endDateText by remember { mutableStateOf(today.plusDays(1)) }
@@ -109,7 +109,7 @@ fun ReservationDateBottomSheet(
             onDismiss = { showStartDatePicker = false },
             onDateSelected = { dateLong ->
                 dateLong?.let {
-                    startDateText = AppHelpers.longToLocalDateTime(it).toLocalDate()
+                    startDateText = AppHelpers.longToLocalDateTime(it)
                 }
             }
         )
@@ -120,7 +120,7 @@ fun ReservationDateBottomSheet(
             onDismiss = { showEndDatePicker = false },
             onDateSelected = { dateLong ->
                 dateLong?.let {
-                    endDateText = AppHelpers.longToLocalDateTime(it).toLocalDate()
+                    endDateText = AppHelpers.longToLocalDateTime(it)
                 }
             }
         )
@@ -130,7 +130,7 @@ fun ReservationDateBottomSheet(
 @Composable
 private fun DateSelectionRow(
     label: String,
-    selectedDate: LocalDate,
+    selectedDate: LocalDateTime,
     onClick: () -> Unit
 ) {
     Row(
@@ -144,7 +144,7 @@ private fun DateSelectionRow(
         )
         Spacer(modifier = Modifier.width(12.dp))
         Text(
-            text = selectedDate.toString(),
+            text = selectedDate.toLocalDate().toString(),
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.weight(1f)
         )

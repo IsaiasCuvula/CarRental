@@ -31,6 +31,7 @@ import com.bersyte.rent_a_car.common.data.models.Car
 import com.bersyte.rent_a_car.features.customers.home.ui.components.CarCard
 import com.bersyte.rent_a_car.features.customers.home.ui.components.HomeSearchBar
 import com.bersyte.rent_a_car.common.ui.components.ScrollableFilterChips
+import com.bersyte.rent_a_car.features.customers.home.data.models.ReservationRequest
 import com.bersyte.rent_a_car.features.customers.home.ui.components.ReservationDateBottomSheet
 import com.bersyte.rent_a_car.features.customers.home.viewmodels.HomeViewModel
 import com.bersyte.rent_a_car.utils.enums.CarType
@@ -148,15 +149,24 @@ fun HomeScreen(
                 val plate = selectedCar?.plate
                 if(plate != null){
                     if(end.isAfter(start)){
-                        viewModel.reserveCar(plate, start.toString(),
-                            end.toString()
+                        val request = ReservationRequest(
+                            plate, start.toString(),
+                            end.toString(), false
                         )
+                        viewModel.reserveCar(request, onResult = { rental ->
+                            if(rental != null){
+                                AppHelpers.showToast(context,"Reservation made successfully")
+                                showDateDialog = false
+                                selectedCar = null
+                            }else{
+                                AppHelpers.showToast(context,"Something went wrong")
+                            }
+                        } )
                     } else{
                         AppHelpers.showToast(context,"End date must be after start date!")
                     }
                 }
-                showDateDialog = false
-                selectedCar = null
+
             }
         )
     }
