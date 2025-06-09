@@ -8,4 +8,5 @@ class MyCarsRepository @Inject constructor(
     private val myCarsApiService: MyCarsApiService
 ) {
     suspend fun saveCar(carRequest: CarRequest)= myCarsApiService.saveCar(carRequest)
+    suspend fun getAllCars()= myCarsApiService.getAllCars()
 }

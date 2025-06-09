@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -21,23 +22,30 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.bersyte.rent_a_car.common.data.models.Car
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.bersyte.rent_a_car.features.customers.home.ui.components.CarCard
 import com.bersyte.rent_a_car.features.customers.my_cars.data.models.CarStats
 import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.CarStatsSection
+import com.bersyte.rent_a_car.features.customers.my_cars.viewmodels.MyCarsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyCarsScreen(
     onAddCarClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: MyCarsViewModel = hiltViewModel()
 ) {
 
-    val cars = listOf<Car>()
+    val cars by viewModel.saveResult.collectAsState()
+    val loading by viewModel.loading.collectAsState()
     val stats = CarStats.stats
+
 
     Scaffold(
         topBar = {
@@ -62,21 +70,20 @@ fun MyCarsScreen(
                 .padding(top = innerPadding.calculateTopPadding())
                 .fillMaxSize()
                 .padding(16.dp)
-                //.verticalScroll(rememberScrollState())
         ) {
-            // Statistics Section
-            CarStatsSection(stats = stats.first())
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Cars List
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(top = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                items(cars) { car ->
-                    CarCard(car = car, onClick = {  })
+            if (loading) {
+                CircularProgressIndicator()
+            }else{
+                CarStatsSection(stats = stats.first())
+                Spacer(modifier = Modifier.height(16.dp))
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(top = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(cars) { car ->
+                        CarCard(car = car, onClick = {  })
+                    }
                 }
             }
         }
