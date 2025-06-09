@@ -47,7 +47,6 @@ fun RentalStatsSection(
                 StatItem(value = "${activeRentals.size}", label = "Active")
                 StatItem(value = "${completedRentals.size}", label = "Completed")
                 StatItem(value = "${canceledRentals.size}", label = "Cancelled")
-                StatItem(value = "${customer.loyaltyPoints}", label = "Loyalty Points")
             }
         }
 
