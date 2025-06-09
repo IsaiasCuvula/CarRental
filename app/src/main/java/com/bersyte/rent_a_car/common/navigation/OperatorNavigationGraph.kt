@@ -31,7 +31,7 @@ fun OperatorNavigationGraph(
         }
     }
 
-    val operatorState = viewModel.selectedOperator.collectAsState()
+    val operatorState = viewModel.operator.collectAsState()
     val operator = operatorState.value
 
     NavHost(

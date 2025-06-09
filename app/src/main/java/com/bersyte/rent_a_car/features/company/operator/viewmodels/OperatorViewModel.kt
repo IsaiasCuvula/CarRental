@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -19,11 +18,8 @@ class OperatorViewModel @Inject constructor(
     private val repository: OperatorRepository
 ) : ViewModel() {
 
-    private val _operators = MutableStateFlow<Operator?>(null)
-    val operators = _operators.asStateFlow()
-
-    private val _selectedOperator = MutableStateFlow<Operator?>(null)
-    val selectedOperator: StateFlow<Operator?> = _selectedOperator
+    private val _operator = MutableStateFlow<Operator?>(null)
+    val operator = _operator.asStateFlow()
 
     init {
         fetchOperator(onError = {})
@@ -33,7 +29,7 @@ class OperatorViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = repository.fetchOperator()
-                _operators.value = response
+                _operator.value = response
                 Log.d("FETCH_OPERATOR", "$response")
             }catch (e: HttpException) {
                 val error = e.response()?.errorBody()?.string()
