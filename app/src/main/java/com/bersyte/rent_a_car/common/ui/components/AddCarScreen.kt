@@ -1,4 +1,4 @@
-package com.bersyte.rent_a_car.features.customers.my_cars.ui.screens
+package com.bersyte.rent_a_car.common.ui.components
 
 
 import androidx.compose.foundation.layout.Arrangement
