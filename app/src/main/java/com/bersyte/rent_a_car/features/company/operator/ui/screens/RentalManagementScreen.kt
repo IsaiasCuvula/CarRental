@@ -30,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bersyte.rent_a_car.common.ui.components.ScrollableFilterChips
 import com.bersyte.rent_a_car.features.company.operator.data.models.RentingCarRequest
 import com.bersyte.rent_a_car.features.company.operator.ui.components.EnterInitialConditions
+import com.bersyte.rent_a_car.features.company.operator.ui.components.FinalizeRentalBottomSheet
 import com.bersyte.rent_a_car.features.company.operator.ui.components.RentalRequestCard
 import com.bersyte.rent_a_car.features.company.operator.viewmodels.OperatorViewModel
 import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
@@ -47,6 +48,7 @@ fun RentalManagementScreen(
     var selectedFilterIndex by remember { mutableIntStateOf(0) }
 
     var showBottomSheet by remember { mutableStateOf<Rental?>(null) }
+    var showFinalizeBottomSheet by remember { mutableStateOf<Rental?>(null) }
 
     val context = LocalContext.current
 
@@ -102,6 +104,7 @@ fun RentalManagementScreen(
                    RentalRequestCard(
                        rental = rental,
                        onApprove = {showBottomSheet = rental},
+                       onFinalize = {showFinalizeBottomSheet = rental},
                        onReject = {
                            viewModel.cancelRenting(
                                rentalCode = rental.rentalCode, onSuccess = { data ->
@@ -116,11 +119,32 @@ fun RentalManagementScreen(
                                }
                            )
                        },
-                       onFinalize = {}
                    )
                }
            }
        }
+    }
+
+    showFinalizeBottomSheet?.let { rental ->
+       FinalizeRentalBottomSheet(
+           onDismissRequest = { showFinalizeBottomSheet = null },
+           rental= rental,
+           onSave = { request ->
+               viewModel.finalizeRental(
+                   request,
+                   onSuccess = { data ->
+                       if (data != null) {
+                           AppHelpers.showToast(context, "Rental finalized successfully")
+                       }
+                   },
+                   onError = { error ->
+                       if (error != null) {
+                           AppHelpers.showToast(context, error)
+                       }
+                   }
+               )
+           }
+       )
     }
 
     showBottomSheet?.let { rental ->
