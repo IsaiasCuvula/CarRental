@@ -1,12 +1,12 @@
 package com.bersyte.rent_a_car.features.customers.home.ui.components
 
-import android.util.Log
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
@@ -15,7 +15,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -25,32 +25,36 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
+import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReservationDateDialog(
-onDismiss: () -> Unit,
-onDatesSelected: (startDate: LocalDate, endDate: LocalDate) -> Unit
+    onDismiss: () -> Unit,
+    onDatesSelected: (startDate: LocalDate, endDate: LocalDate) -> Unit,
+    sheetState: SheetState = rememberModalBottomSheetState()
 ) {
-    var startDateText by remember { mutableStateOf("") }
-    var endDateText by remember { mutableStateOf("") }
+    val today = LocalDate.now()
+
+    var startDateText by remember { mutableStateOf(today) }
+    var endDateText by remember { mutableStateOf(today.plusDays(1)) }
 
     var showStartDatePicker by remember { mutableStateOf(false) }
     var showEndDatePicker by remember { mutableStateOf(false) }
 
-    val dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
-
     ModalBottomSheet(
         onDismissRequest = onDismiss,
-        sheetState = rememberModalBottomSheetState()
+        sheetState = sheetState,
+        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+        containerColor = MaterialTheme.colorScheme.surface
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(horizontal = 16.dp, vertical = 24.dp)
         ) {
             Text(
                 text = "Select Rental Dates",
@@ -58,64 +62,30 @@ onDatesSelected: (startDate: LocalDate, endDate: LocalDate) -> Unit
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
-            // Start Date Field
-            OutlinedTextField(
-                value = startDateText,
-                onValueChange = {},
-                label = { Text("Pick Up Date") },
-                readOnly = true,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { showStartDatePicker = true },
-                shape = RoundedCornerShape(12.dp),
-                trailingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.DateRange,
-                        contentDescription = "Select date"
-                    )
-                }
+            // Pick Up Date Row
+            DateSelectionRow(
+                label = "Pick Up Date",
+                selectedDate = startDateText,
+                onClick = { showStartDatePicker = true }
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // End Date Field
-            OutlinedTextField(
-                value = endDateText,
-                onValueChange = {},
-                label = { Text("Return Date") },
-                readOnly = true,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        Log.d("showEndDatePicker", "$showEndDatePicker")
-                        showEndDatePicker = true
-                        Log.d("showEndDatePicker", "$showEndDatePicker")
-                    },
-                shape = RoundedCornerShape(12.dp),
-                trailingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.DateRange,
-                        contentDescription = "Select date"
-                    )
-                }
+            // Return Date Row
+            DateSelectionRow(
+                label = "Return Date",
+                selectedDate = endDateText,
+                onClick = { showEndDatePicker = true }
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
+            // Confirm Button
             Button(
-                onClick = {
-                    try {
-                        val startDate = LocalDate.parse(startDateText, dateFormatter)
-                        val endDate = LocalDate.parse(endDateText, dateFormatter)
-                        onDatesSelected(startDate, endDate)
-                    } catch (e: Exception) {
-                        // Handle date parsing error
-                    }
-                },
+                onClick = { onDatesSelected(startDateText, endDateText) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp),
-                enabled = startDateText.isNotEmpty() && endDateText.isNotEmpty(),
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text("Confirm Reservation")
@@ -123,23 +93,24 @@ onDatesSelected: (startDate: LocalDate, endDate: LocalDate) -> Unit
 
             Spacer(modifier = Modifier.height(8.dp))
 
+            // Cancel Button
             TextButton(
                 onClick = onDismiss,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Cancel")
             }
-
-            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 
-    // Show date pickers when triggered
+    // Date Pickers
     if (showStartDatePicker) {
         ShowDatePickerDialog(
             onDismiss = { showStartDatePicker = false },
             onDateSelected = { dateLong ->
-                startDateText = dateLong.toString()
+                dateLong?.let {
+                    startDateText = AppHelpers.longToLocalDateTime(it).toLocalDate()
+                }
             }
         )
     }
@@ -148,8 +119,40 @@ onDatesSelected: (startDate: LocalDate, endDate: LocalDate) -> Unit
         ShowDatePickerDialog(
             onDismiss = { showEndDatePicker = false },
             onDateSelected = { dateLong ->
-                endDateText = dateLong.toString()
+                dateLong?.let {
+                    endDateText = AppHelpers.longToLocalDateTime(it).toLocalDate()
+                }
             }
         )
+    }
+}
+
+@Composable
+private fun DateSelectionRow(
+    label: String,
+    selectedDate: LocalDate,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = Icons.Default.DateRange,
+            contentDescription = "Select date",
+            tint = MaterialTheme.colorScheme.primary
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        Text(
+            text = selectedDate.toString(),
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.weight(1f)
+        )
+        Button(
+            onClick = onClick,
+            shape = RoundedCornerShape(8.dp)
+        ) {
+            Text(label)
+        }
     }
 }

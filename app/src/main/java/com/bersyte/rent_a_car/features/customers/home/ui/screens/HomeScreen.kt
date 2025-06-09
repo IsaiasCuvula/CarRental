@@ -42,7 +42,6 @@ import androidx.compose.material3.TopAppBar as TopAppBar
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-
     // Filter chips
     val filterOptions = CarType.getAllFilterOptions()
     var selectedFilter by remember { mutableIntStateOf(0) }
@@ -81,75 +80,75 @@ fun HomeScreen(
         }
     }
 
-    Scaffold (
-        topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor =  MaterialTheme.colorScheme.primary
-                ),
-                title = { Text("Find Your Perfect Ride", color = Color.White)}
-            )
-        }
-    ){ innerPadding ->
-
-        Column(
-            modifier = Modifier.fillMaxSize()
-             .padding(top = innerPadding.calculateTopPadding())
-            .padding(16.dp)
-        ) {
-            // Search bar
-            HomeSearchBar(
-                query = searchQuery,
-                onQueryChange = { searchQuery = it },
-                onSearch = { /* Handle search */ },
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            ScrollableFilterChips(
-                options = filterOptions,
-                selectedIndex = selectedFilter,
-                onSelected = { selectedFilter = it }
-            )
-
-            if (isLoading) {
-                CircularProgressIndicator()
-            } else {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                            contentPadding = PaddingValues(top = 8.dp)
-                ) {
-                    items(filteredCars) { car ->
-                        CarCard(
-                            car = car,
-                            onClick = { selectedCar = car }
-                        )
-                    }
-                }
-            }
-
-            // Show bottom sheet when car is selected
-            selectedCar?.let { car ->
-                CarDetailsBottomSheet(
-                    car = car,
-                    onDismiss = { selectedCar = null },
-                    onReserveClick = { showDateDialog = true }
+        Scaffold (
+            topBar = {
+                TopAppBar(
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor =  MaterialTheme.colorScheme.primary
+                    ),
+                    title = { Text("Find Your Perfect Ride", color = Color.White)}
                 )
             }
+        ){ innerPadding ->
 
-            // Show date selection dialog
-            if (showDateDialog) {
-                ReservationDateDialog(
-                        onDismiss = { showDateDialog = false },
-                        onDatesSelected = { start, end ->
-                            viewModel.reserveCar(selectedCar!!.plate, start.toString(),
-                                end.toString()
+            Column(
+                modifier = Modifier.fillMaxSize()
+                 .padding(top = innerPadding.calculateTopPadding())
+                .padding(16.dp)
+            ) {
+                // Search bar
+                HomeSearchBar(
+                    query = searchQuery,
+                    onQueryChange = { searchQuery = it },
+                    onSearch = { /* Handle search */ },
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                ScrollableFilterChips(
+                    options = filterOptions,
+                    selectedIndex = selectedFilter,
+                    onSelected = { selectedFilter = it }
+                )
+
+                if (isLoading) {
+                    CircularProgressIndicator()
+                } else {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                                contentPadding = PaddingValues(top = 8.dp)
+                    ) {
+                        items(filteredCars) { car ->
+                            CarCard(
+                                car = car,
+                                onClick = { selectedCar = car }
                             )
-                            showDateDialog = false
-                            selectedCar = null
                         }
+                    }
+                }
+
+                // Show bottom sheet when car is selected
+                selectedCar?.let { car ->
+                    CarDetailsBottomSheet(
+                        car = car,
+                        onDismiss = { selectedCar = null },
+                        onReserveClick = { showDateDialog = true }
                     )
+                }
             }
         }
+
+    // Show date selection dialog
+    if (showDateDialog) {
+        ReservationDateDialog(
+            onDismiss = { showDateDialog = false },
+            onDatesSelected = { start, end ->
+                viewModel.reserveCar(selectedCar!!.plate, start.toString(),
+                    end.toString()
+                )
+                showDateDialog = false
+                selectedCar = null
+            }
+        )
     }
 }
