@@ -72,7 +72,10 @@ fun ProfileScreen(
         AuthButtons(
             isLoggedIn = customer != null,
             onLoginClick = {
-                navController.navigate("login")
+                viewModel.logout()
+                navController.navigate("login") {
+                    popUpTo("profile") { inclusive = true }
+                }
             },
             onLogoutClick = {
                 viewModel.logout()

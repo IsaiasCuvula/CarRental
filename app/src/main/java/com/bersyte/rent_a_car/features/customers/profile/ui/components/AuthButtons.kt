@@ -40,7 +40,7 @@ fun AuthButtons(
                 onClick = onLoginClick,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Sign In")
+                Text(text = "Login In")
             }
         }
     }

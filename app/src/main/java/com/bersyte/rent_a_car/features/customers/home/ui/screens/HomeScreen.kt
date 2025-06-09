@@ -1,6 +1,5 @@
 package com.bersyte.rent_a_car.features.customers.home.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -25,16 +24,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bersyte.rent_a_car.common.data.models.Car
 import com.bersyte.rent_a_car.features.customers.home.ui.components.CarCard
 import com.bersyte.rent_a_car.features.customers.home.ui.components.HomeSearchBar
 import com.bersyte.rent_a_car.common.ui.components.ScrollableFilterChips
-import com.bersyte.rent_a_car.features.customers.home.ui.components.ReservationDateDialog
-import com.bersyte.rent_a_car.features.customers.home.ui.components.ShowDatePickerDialog
+import com.bersyte.rent_a_car.features.customers.home.ui.components.ReservationDateBottomSheet
 import com.bersyte.rent_a_car.features.customers.home.viewmodels.HomeViewModel
 import com.bersyte.rent_a_car.utils.enums.CarType
+import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 import androidx.compose.material3.TopAppBar as TopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,6 +49,8 @@ fun HomeScreen(
     var searchQuery by remember { mutableStateOf("") }
     val cars by viewModel.cars.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
+
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.loadAvailableCars()
@@ -140,12 +142,19 @@ fun HomeScreen(
 
     // Show date selection dialog
     if (showDateDialog) {
-        ReservationDateDialog(
+        ReservationDateBottomSheet(
             onDismiss = { showDateDialog = false },
             onDatesSelected = { start, end ->
-                viewModel.reserveCar(selectedCar!!.plate, start.toString(),
-                    end.toString()
-                )
+                val plate = selectedCar?.plate
+                if(plate != null){
+                    if(end.isAfter(start)){
+                        viewModel.reserveCar(plate, start.toString(),
+                            end.toString()
+                        )
+                    } else{
+                        AppHelpers.showToast(context,"End date must be after start date!")
+                    }
+                }
                 showDateDialog = false
                 selectedCar = null
             }

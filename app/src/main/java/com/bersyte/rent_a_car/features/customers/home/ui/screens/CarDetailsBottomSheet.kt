@@ -24,7 +24,6 @@ import androidx.compose.ui.res.painterResource
 import com.bersyte.rent_a_car.R
 import com.bersyte.rent_a_car.features.customers.home.ui.components.CarDetailsGrid
 import com.bersyte.rent_a_car.features.customers.home.ui.components.DisplayCarRating
-import com.bersyte.rent_a_car.features.customers.home.ui.components.ShowDatePickerDialog
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 

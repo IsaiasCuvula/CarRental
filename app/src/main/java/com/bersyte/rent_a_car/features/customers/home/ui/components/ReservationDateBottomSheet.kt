@@ -32,7 +32,7 @@ import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReservationDateDialog(
+fun ReservationDateBottomSheet(
     onDismiss: () -> Unit,
     onDatesSelected: (startDate: LocalDate, endDate: LocalDate) -> Unit,
     sheetState: SheetState = rememberModalBottomSheetState()
