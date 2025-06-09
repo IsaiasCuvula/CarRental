@@ -21,7 +21,6 @@ fun ProfileManagementScreen(
 
     LaunchedEffect(Unit) {
         viewModel.fetchCustomer()
-        Log.d("ProfileManagementScreen", "ProfileManagementScreen")
     }
 
     val customerState = viewModel.customer.collectAsState()
