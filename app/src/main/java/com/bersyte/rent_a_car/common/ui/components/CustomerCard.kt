@@ -115,15 +115,18 @@ fun CustomerCard(
 
                         Spacer(modifier = Modifier.height(4.dp))
 
-                        // Email and phone
                         CustomerDetailRow(
                             icon = Icons.Default.Person,
                             text = customer.email
                         )
-                        CustomerDetailRow(
-                            icon = Icons.Default.Person,
-                            text = customer.phone
-                        )
+
+                        if(customer.phone !=null){
+                           CustomerDetailRow(
+                               icon = Icons.Default.Person,
+                               text = customer.phone
+                           )
+                        }
+
 
                         Spacer(modifier = Modifier.height(8.dp))
 

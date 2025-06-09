@@ -19,18 +19,23 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.bersyte.rent_a_car.common.ui.components.CommonSearchBar
 import com.bersyte.rent_a_car.common.ui.components.CustomerCard
 import com.bersyte.rent_a_car.common.ui.components.EmptyState
+import com.bersyte.rent_a_car.features.company.operator.viewmodels.OperatorViewModel
 import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
+import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,16 +44,30 @@ fun CustomersScreen(
     modifier: Modifier = Modifier,
     onCancel: () -> Unit,
     onAddCustomer: () -> Unit,
+    viewModel: OperatorViewModel = hiltViewModel()
 ) {
-    val customers = listOf<Customer>()
+
+    val context = LocalContext.current
+    var allCustomers by remember { mutableStateOf<List<Customer>>(emptyList()) }
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchAllCustomers(
+            onSuccess = { customers ->
+                allCustomers = customers
+            },
+            onError = { error ->
+                AppHelpers.showToast(context, error)
+            }
+        )
+    }
+
     var searchQuery by remember { mutableStateOf("") }
     val filteredCustomers = if (searchQuery.isBlank()) {
-        customers
+        allCustomers
     } else {
-        customers.filter { customer ->
+        allCustomers.filter { customer ->
             customer.name.contains(searchQuery, ignoreCase = true) ||
-                    customer.email.contains(searchQuery, ignoreCase = true) ||
-                    customer.phone.contains(searchQuery, ignoreCase = true)
+                    customer.email.contains(searchQuery, ignoreCase = true)
         }
     }
     val focusManager = LocalFocusManager.current

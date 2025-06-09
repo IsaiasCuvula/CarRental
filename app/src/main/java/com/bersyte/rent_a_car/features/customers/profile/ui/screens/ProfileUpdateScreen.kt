@@ -38,9 +38,10 @@ fun ProfileUpdateScreen(
     onCancel: () -> Unit
 ) {
     val address = currentUser.address
+    val customerPhone = currentUser.phone ?: ""
     // State for form fields
     var name by remember { mutableStateOf(currentUser.name) }
-    var phone by remember { mutableStateOf(currentUser.phone) }
+    var phone by remember { mutableStateOf(customerPhone) }
     var idCardNumber by remember { mutableStateOf(currentUser.idCardNumber.toString()) }
     var driveLicense by remember { mutableStateOf(currentUser.driverLicenseNumber.toString()) }
     var driveLicenseExpirationDate by remember {

@@ -9,4 +9,5 @@ class OperatorRepository @Inject constructor(
 ) {
     suspend fun fetchOperator() = apiService.fetchOperator()
     suspend fun createCustomer(customer: CreateCustomerRequest) = apiService.createCustomer(customer)
+    suspend fun fetchAllCustomers() = apiService.fetchAllCustomers()
 }
