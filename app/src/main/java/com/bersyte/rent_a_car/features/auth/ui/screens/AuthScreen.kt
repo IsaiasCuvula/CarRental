@@ -148,7 +148,7 @@ fun AuthScreen(
                         icon = Icons.Default.Lock,
                         keyboardType = KeyboardType.Password,
                         isPassword = true,
-                        isError = email.isBlank()
+                        isError = password.isBlank()
                     )
 
                     AnimatedVisibility(visible = !isLogin) {
