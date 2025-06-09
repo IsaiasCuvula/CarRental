@@ -14,12 +14,69 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import com.bersyte.rent_a_car.features.customers.my_cars.data.models.CarStats
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.bersyte.rent_a_car.common.data.models.Car
+import com.bersyte.rent_a_car.features.customers.my_cars.viewmodels.MyCarsViewModel
+import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
+import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 @Composable
-fun CarStatsSection(stats: CarStats) {
+fun CarStatsSection(
+    cars: List<Car>,
+    viewModel: MyCarsViewModel = hiltViewModel()
+) {
+     var rentals by remember { mutableStateOf<List<Rental>>(listOf()) }
+    val totalCarsInFleet = remember(cars) { cars.size }
+
+    val context = LocalContext.current
+
+    LaunchedEffect("fetchRentals") {
+        viewModel.fetchRentals(
+            onSuccess = { result ->
+                rentals = result ?: listOf()
+            },
+            onError = { error ->
+                AppHelpers.showToast(context,"$error")
+            }
+        )
+    }
+
+    val completedRentals = remember(rentals) {
+        rentals.filter { it.status.equals("Completed", ignoreCase = true) }
+    }
+
+    val totalRevenue = remember(completedRentals) {
+        completedRentals.sumOf { it.totalPaidAmount } / 100L
+    }
+
+    val activeRentals = remember(rentals) {
+        rentals.count { it.status.equals("Active", ignoreCase = true) }
+    }
+    val utilizationRate = if (totalCarsInFleet > 0) {
+        (activeRentals * 100) / totalCarsInFleet
+    } else {
+        0
+    }
+
+    val totalRentals = rentals.size
+    val stats =   CarStats(
+        totalCars = totalCarsInFleet,
+        totalRevenue = totalRevenue,
+        activeRentals = activeRentals,
+        avgRating = 4.5,
+        utilizationRate = utilizationRate,
+        totalRentals = totalRentals
+    )
+
     Card(
         modifier = Modifier
             .fillMaxWidth(),

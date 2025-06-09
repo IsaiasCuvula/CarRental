@@ -22,7 +22,7 @@ fun MyCarsManagementScreen(
         showAddCarScreen -> {
             AddCarScreen(
                 onSave = { carRequest ->
-                    viewModel.saveCar(
+                    viewModel.registerCar(
                         carRequest,
                         onSuccess = {result ->
                             if(result != null){

@@ -30,7 +30,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bersyte.rent_a_car.features.customers.home.ui.components.CarCard
-import com.bersyte.rent_a_car.features.customers.my_cars.data.models.CarStats
 import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.CarStatsSection
 import com.bersyte.rent_a_car.features.customers.my_cars.viewmodels.MyCarsViewModel
 
@@ -44,8 +43,10 @@ fun MyCarsScreen(
 
     val cars by viewModel.saveResult.collectAsState()
     val loading by viewModel.loading.collectAsState()
-    val stats = CarStats.stats
 
+    LaunchedEffect("getAllCars") {
+        viewModel.getAllCars()
+    }
 
     Scaffold(
         topBar = {
@@ -74,7 +75,7 @@ fun MyCarsScreen(
             if (loading) {
                 CircularProgressIndicator()
             }else{
-                CarStatsSection(stats = stats.first())
+                CarStatsSection(cars)
                 Spacer(modifier = Modifier.height(16.dp))
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth(),

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.bersyte.rent_a_car.common.data.models.Car
 import com.bersyte.rent_a_car.common.data.models.CarRequest
 import com.bersyte.rent_a_car.features.customers.my_cars.data.repositories.MyCarsRepository
+import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,7 +30,7 @@ class MyCarsViewModel @Inject constructor(
         getAllCars()
     }
 
-     private fun getAllCars() {
+    fun getAllCars() {
         viewModelScope.launch {
             _loading.value = true
             try {
@@ -48,10 +49,10 @@ class MyCarsViewModel @Inject constructor(
         }
     }
 
-    fun saveCar(carRequest: CarRequest, onSuccess: (Car?)-> Unit, onError: (String?) -> Unit) {
+    fun registerCar(carRequest: CarRequest, onSuccess: (Car?)-> Unit, onError: (String?) -> Unit) {
         viewModelScope.launch {
            try {
-              val result = repository.saveCar(carRequest)
+              val result = repository.registerCar(carRequest)
                onSuccess(result)
                getAllCars()
            } catch (e: HttpException) {
@@ -64,4 +65,21 @@ class MyCarsViewModel @Inject constructor(
            }
         }
     }
+
+    fun fetchRentals(onSuccess: (List<Rental>?)-> Unit, onError: (String?) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val rentals = repository.getAllRentals()
+                onSuccess(rentals)
+            } catch (e: HttpException) {
+                val errorBody = e.response()?.errorBody()?.string()
+                Log.d("FETCH_ALL_RENTALS", "HTTP Error: ${e.code()}, Body: $errorBody")
+                onError(e.localizedMessage)
+            }catch (e: Exception){
+                Log.d("FETCH_ALL_RENTALS", "exception: $e")
+                onError(e.localizedMessage)
+            }
+        }
+    }
+
 }

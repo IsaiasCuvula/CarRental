@@ -7,6 +7,7 @@ import javax.inject.Inject
 class MyCarsRepository @Inject constructor(
     private val myCarsApiService: MyCarsApiService
 ) {
-    suspend fun saveCar(carRequest: CarRequest)= myCarsApiService.saveCar(carRequest)
+    suspend fun registerCar(carRequest: CarRequest)= myCarsApiService.registerCar(carRequest)
     suspend fun getAllCars()= myCarsApiService.getAllCars()
+    suspend fun getAllRentals() = myCarsApiService.fetchCustomerRentals()
 }
