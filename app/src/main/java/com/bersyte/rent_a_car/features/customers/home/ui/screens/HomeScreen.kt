@@ -25,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bersyte.rent_a_car.common.data.models.Car
@@ -53,6 +54,7 @@ fun HomeScreen(
     val isLoading by viewModel.isLoading.collectAsState()
 
     val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
 
     LaunchedEffect(Unit) {
         viewModel.loadAvailableCars()
@@ -103,6 +105,7 @@ fun HomeScreen(
                 CommonSearchBar(
                     query = searchQuery,
                     onQueryChange = { searchQuery = it },
+                    onSearch = { focusManager.clearFocus() },
                     hintText = "Search cars by model or type"
                 )
 

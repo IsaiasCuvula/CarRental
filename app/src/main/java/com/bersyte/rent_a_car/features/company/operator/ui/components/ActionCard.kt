@@ -19,10 +19,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ActionCard(title: String, icon: ImageVector, onClick: () -> Unit) {
+fun ActionCard(
+    modifier: Modifier = Modifier,
+    title: String,
+    icon: ImageVector,
+    onClick: () -> Unit,
+
+) {
     Card(
         onClick = onClick,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(

@@ -9,9 +9,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.bersyte.rent_a_car.features.auth.viewmodels.AuthViewModel
 import com.bersyte.rent_a_car.features.company.operator.ui.screens.AddCustomerScreen
 import com.bersyte.rent_a_car.features.company.operator.ui.screens.CarRegistrationApprovalScreen
 import com.bersyte.rent_a_car.features.company.operator.ui.screens.CreateRentalScreen
+import com.bersyte.rent_a_car.features.company.operator.ui.screens.CustomersScreen
 import com.bersyte.rent_a_car.features.company.operator.ui.screens.OperatorDashboardScreen
 import com.bersyte.rent_a_car.features.company.operator.ui.screens.RentalManagementScreen
 import com.bersyte.rent_a_car.features.company.operator.viewmodels.OperatorViewModel
@@ -20,7 +22,8 @@ import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 @Composable
 fun OperatorNavigationGraph(
     navController: NavController,
-    viewModel: OperatorViewModel = hiltViewModel()
+    viewModel: OperatorViewModel = hiltViewModel(),
+    authVM: AuthViewModel = hiltViewModel()
 ) {
     val childNavController = rememberNavController()
     val context = LocalContext.current
@@ -41,9 +44,13 @@ fun OperatorNavigationGraph(
         composable("dashboard") {
             OperatorDashboardScreen(
                 operator = operator,
-                navController = navController,
-                onAddCustomer = { childNavController.navigate("addCustomer") },
-                onCreateRental = {},
+                navController = childNavController,
+                onLogout = {
+                    authVM.logout()
+                    navController.navigate("login") {
+                        popUpTo("profile") { inclusive = true }
+                    }
+                }
             )
         }
 
@@ -92,6 +99,13 @@ fun OperatorNavigationGraph(
             CreateRentalScreen(
                 onCancel = { childNavController.popBackStack() },
                 onConfirm = { /* Logic to create rental */ }
+            )
+        }
+
+        composable("customers") {
+            CustomersScreen(
+                onCancel = {childNavController.popBackStack()},
+                onAddCustomer = { childNavController.navigate("addCustomer") },
             )
         }
     }
