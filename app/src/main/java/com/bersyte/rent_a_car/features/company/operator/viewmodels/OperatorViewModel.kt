@@ -6,6 +6,7 @@ import com.bersyte.rent_a_car.features.company.operator.data.repositories.Operat
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bersyte.rent_a_car.common.data.models.Car
 import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustomerRequest
 import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustomerResponse
 import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
@@ -26,6 +27,7 @@ class OperatorViewModel @Inject constructor(
 
     init {
         fetchOperator(onError = {})
+        fetchAllCars(onError = {}, onSuccess = {})
     }
 
     fun createCustomer(
@@ -83,5 +85,23 @@ class OperatorViewModel @Inject constructor(
             }
         }
     }
+
+    fun fetchAllCars(onSuccess: (List<Car>) -> Unit, onError:(String)-> Unit) {
+        viewModelScope.launch {
+            try {
+                val response = repository.fetchAllCars()
+                Log.d("FETCH_CARS", "$response")
+                onSuccess(response)
+            }catch (e: HttpException) {
+                val error = e.response()?.errorBody()?.string()
+                Log.d("FETCH_CARS", "Error body: $error")
+                error?.let { onError(error) }
+            } catch (e: Exception) {
+                Log.d("FETCH_CARS", "EXCEPTION - $e")
+                e.localizedMessage?.let { onError(it) }
+            }
+        }
+    }
+
 
 }

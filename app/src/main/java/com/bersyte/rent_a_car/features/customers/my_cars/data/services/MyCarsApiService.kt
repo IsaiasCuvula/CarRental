@@ -11,7 +11,7 @@ interface MyCarsApiService {
     @POST("api/v1/car-registrations")
     suspend fun registerCar(@Body carRequest: CarRequest): Car
 
-    @GET("api/v1/cars")
+    @GET("api/v1/cars/customer")
     suspend fun getAllCars(): List<Car>
 
     @GET("api/v1/rentals")

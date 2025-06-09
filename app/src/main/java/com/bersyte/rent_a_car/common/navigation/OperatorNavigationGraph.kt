@@ -12,7 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.bersyte.rent_a_car.features.auth.viewmodels.AuthViewModel
 import com.bersyte.rent_a_car.features.company.operator.ui.screens.AddCustomerScreen
 import com.bersyte.rent_a_car.features.company.operator.ui.screens.CarRegistrationApprovalScreen
-import com.bersyte.rent_a_car.features.company.operator.ui.screens.CreateRentalScreen
+import com.bersyte.rent_a_car.features.company.operator.ui.screens.CarsScreen
 import com.bersyte.rent_a_car.features.company.operator.ui.screens.CustomersScreen
 import com.bersyte.rent_a_car.features.company.operator.ui.screens.OperatorDashboardScreen
 import com.bersyte.rent_a_car.features.company.operator.ui.screens.RentalManagementScreen
@@ -96,9 +96,9 @@ fun OperatorNavigationGraph(
         }
 
         composable("createRental") {
-            CreateRentalScreen(
+            CarsScreen(
                 onCancel = { childNavController.popBackStack() },
-                onConfirm = { /* Logic to create rental */ }
+                onAddCar = { childNavController.navigate("addCustomer") },
             )
         }
 
