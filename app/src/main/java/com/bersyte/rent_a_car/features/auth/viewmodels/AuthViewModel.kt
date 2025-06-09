@@ -13,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,15 +39,24 @@ class AuthViewModel @Inject constructor(
             val response = repository.login(request)
             if (response is Resource.Success) {
                 response.data?.let { data ->
-                    Log.i("LOGIN SUCCESS", "SAVE DATA: $data")
                     tokenManager.saveAuthResponse(data)
                     _authResponse.value = response
                 }
             }
-        } catch (e: Exception) {
-            logout()
-            Log.i("LOGIN EXCEPTION", "Exception: $e")
+            if (response is Resource.Error) {
+                response.data?.let { data ->
+                    Log.i("LOGIN EXCEPTION", "Exception: $data")
+                    _authResponse.value = response
+                }
+            }
+        }catch (e: HttpException) {
+            Log.d("LOGIN EXCEPTION", "Error body: ${e.response()?.errorBody()?.string()}")
             _authResponse.value = Resource.Error(e.message ?: "Log in- Unknown error occurred")
+        }
+        catch (e: Exception) {
+                logout()
+                Log.i("LOGIN EXCEPTION", "Exception: $e")
+                _authResponse.value = Resource.Error(e.message ?: "Log in- Unknown error occurred")
         }
     }
 
