@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,15 +20,8 @@ fun MainAppNavigation(
     val navController = rememberNavController()
     val authResponse by authViewModel.authResponse.collectAsState()
 
-    val startDestination = remember(authResponse) {
-        val data = authResponse?.data
-        when (data?.role?.lowercase()) {
-            null, "" -> "login"
-            "customer" -> "customer_dashboard"
-            "operator" -> "operator_dashboard"
-            "admin" -> "admin_dashboard"
-            else -> "login"
-        }
+    LaunchedEffect ("GetCustomerToken"){
+        authViewModel.tokenManager.getAuthResponse()
     }
 
     NavHost(
