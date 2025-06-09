@@ -4,11 +4,13 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.People
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -28,11 +30,16 @@ import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 
 @Composable
-fun RentalCard(rental: Rental) {
-    val borderColor = when (rental.status) {
-        RentalStatus.ACTIVE.name -> Color(0xFF4CAF50)
-        RentalStatus.COMPLETED.name -> Color(0xFF2196F3)
-        RentalStatus.CANCELLED.name -> Color(0xFFF44336)
+fun RentalCard(
+    rental: Rental,
+    onCancel: (Rental) -> Unit
+) {
+    val rentalStatus = RentalStatus.valueOf(rental.status)
+
+    val borderColor = when (rentalStatus) {
+        RentalStatus.ACTIVE -> Color(0xFF4CAF50)
+        RentalStatus.COMPLETED -> Color(0xFF2196F3)
+        RentalStatus.CANCELLED -> Color(0xFFF44336)
         else -> Color(0xFFFFC107)
     }
 
@@ -137,12 +144,27 @@ fun RentalCard(rental: Rental) {
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
             )
 
-            Text(
-                text = "Total: ${rental.formattedAmount}",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.primary
-            )
+           Row(
+               modifier = Modifier.fillMaxWidth(),
+               verticalAlignment = Alignment.CenterVertically
+           ) {
+               Text(
+                   text = "Total: ${rental.formattedAmount}",
+                   style = MaterialTheme.typography.titleMedium,
+                   fontWeight = FontWeight.SemiBold,
+                   color = MaterialTheme.colorScheme.primary
+               )
+
+               if(rentalStatus == RentalStatus.RESERVED){
+                   Spacer(modifier = Modifier.weight(1f))
+
+                   Button(onClick = { onCancel(rental) }) {
+                       Text(
+                           text = "Cancel",
+                       )
+                   }
+               }
+           }
         }
     }
 }

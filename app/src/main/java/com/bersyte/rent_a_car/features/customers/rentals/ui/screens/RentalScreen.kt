@@ -82,7 +82,12 @@ fun RentalScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(filteredRentals) { rental ->
-                        RentalCard(rental = rental)
+                        RentalCard(
+                            rental = rental,
+                            onCancel = { currentRental ->
+                                viewModel.ca
+                            }
+                        )
                     }
 
                     if (filteredRentals.isEmpty()) {
