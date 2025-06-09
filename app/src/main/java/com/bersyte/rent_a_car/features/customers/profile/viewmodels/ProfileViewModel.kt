@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.bersyte.rent_a_car.features.customers.profile.data.repositories.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,6 +44,9 @@ class ProfileViewModel @Inject constructor(
                 val response = repository.updateCustomer(request)
                 _customer.value = response
                 Log.d("UPDATE_CUSTOMER", "$response")
+            }catch (e: HttpException) {
+                Log.d("UPDATE_CUSTOMER", "Error body: ${e.response()?.errorBody()?.string()}")
+                _error.value = e.message
             } catch (e: Exception) {
                 Log.d("UPDATE_CUSTOMER", "EXCEPTION - $e")
                 _error.value = e.message

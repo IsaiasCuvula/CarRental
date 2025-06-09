@@ -176,12 +176,12 @@ fun ProfileUpdateScreen(
             Button(
                 onClick = {
                     val updateRequest = UpdateCustomerRequest(
+                        driveLicenseExpirationDate = driveLicenseExpirationDate.toString(),
                         name = name,
                         phone = phone,
                         cityName = cityName,
                         idCardNumber = idCardNumber,
                         driveLicense = driveLicense,
-                        driveLicenseExpirationDate = driveLicenseExpirationDate,
                         street = street,
                         state = state
                     )
