@@ -9,6 +9,6 @@ data class Rental(
     val rentStartDate: String,
     val rentEndDate: String,
     val formattedAmount: String,
-     val totalPaidAmount: Int,
+    val totalPaidAmount: Int,
     val status: String
 )

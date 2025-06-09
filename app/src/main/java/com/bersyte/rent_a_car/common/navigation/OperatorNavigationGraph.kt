@@ -85,9 +85,6 @@ fun OperatorNavigationGraph(
 
         composable("rentalRequests") {
             RentalManagementScreen(
-                rentals = listOf(),
-                onApprove = { code -> /* Approve rental */ },
-                onReject = { code -> /* Reject rental */ },
                 onBack = { childNavController.popBackStack() }
             )
         }

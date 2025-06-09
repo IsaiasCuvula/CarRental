@@ -9,11 +9,15 @@ import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustom
 import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustomerResponse
 import com.bersyte.rent_a_car.features.company.operator.data.models.UpdateCarRegistrationStatus
 import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
+import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface OperatorApiService {
+
+    @GET("api/v1/rentals/history")
+    suspend fun fetchAllRentals(): List<Rental>
 
     @POST("api/v1/car-registrations/update-status")
     suspend fun updateRegistration(@Body request: UpdateCarRegistrationStatus): CarRegistration

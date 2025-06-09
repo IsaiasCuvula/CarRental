@@ -16,10 +16,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
-import java.time.format.DateTimeFormatter
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 
 @Composable
@@ -46,15 +46,15 @@ fun RentalRequestCard(
                 style = MaterialTheme.typography.bodyMedium
             )
             Text(
-                text = "Period: ${rental.rentStartDate.format(DateTimeFormatter.ofPattern("MMM dd"))} - ${rental.rentEndDate.format(DateTimeFormatter.ofPattern("MMM dd"))}",
+                text = "Period: ${AppHelpers.formatDateTime(rental.rentStartDate)} - ${AppHelpers.formatDateTime(rental.rentEndDate)}",
                 style = MaterialTheme.typography.bodyMedium
             )
             Text(
-                text = "Amount: ${rental.totalPaidAmount}",
+                text = "Amount: ${rental.formattedAmount}",
                 style = MaterialTheme.typography.bodyMedium
             )
 
-            if (rental.status == "PENDING") {
+            if (rental.status == "RESERVED") {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End,

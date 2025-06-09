@@ -16,4 +16,5 @@ class OperatorRepository @Inject constructor(
     suspend fun registerCar(carRequest: CarRequest) = apiService.registerCar(carRequest)
     suspend fun fetchAllRegistrations()= apiService.fetchAllRegistrations()
     suspend fun updateRegistration(request: UpdateCarRegistrationStatus)= apiService.updateRegistration(request)
+    suspend fun fetchAllRentals() = apiService.fetchAllRentals()
 }

@@ -13,6 +13,7 @@ import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustom
 import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustomerResponse
 import com.bersyte.rent_a_car.features.company.operator.data.models.UpdateCarRegistrationStatus
 import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
+import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
 import com.bersyte.rent_a_car.utils.enums.RegistrationStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,12 +40,15 @@ class OperatorViewModel @Inject constructor(
     private val _customers = MutableStateFlow<List<Customer>>(listOf())
     val customers = _customers.asStateFlow()
 
+    private val _rentals = MutableStateFlow<List<Rental>>(listOf())
+    val rentals = _rentals.asStateFlow()
 
 
     init {
         fetchOperator(onError = {})
         fetchAllCars(onError = {})
         fetchAllRegistrations(onError = {})
+        fetchAllRentals(onError = {})
     }
 
     fun createCustomer(
@@ -85,6 +89,22 @@ class OperatorViewModel @Inject constructor(
         }
     }
 
+    fun fetchAllRentals(onError:(String)-> Unit) {
+        viewModelScope.launch {
+            try {
+                val response = repository.fetchAllRentals()
+                Log.d("FETCH_RENTALS", "$response")
+                _rentals.value = response
+            }catch (e: HttpException) {
+                val error = e.response()?.errorBody()?.string()
+                Log.d("FETCH_RENTALS", "Error body: $error")
+                error?.let { onError(error) }
+            } catch (e: Exception) {
+                Log.d("FETCH_RENTALS", "EXCEPTION - $e")
+                e.localizedMessage?.let { onError(it) }
+            }
+        }
+    }
 
     fun fetchAllCustomers(onError:(String)-> Unit) {
         viewModelScope.launch {
