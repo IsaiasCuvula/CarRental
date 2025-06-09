@@ -6,6 +6,8 @@ import com.bersyte.rent_a_car.features.company.operator.data.repositories.Operat
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustomerRequest
+import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustomerResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,6 +25,27 @@ class OperatorViewModel @Inject constructor(
 
     init {
         fetchOperator(onError = {})
+    }
+
+    fun createCustomer(
+        customer: CreateCustomerRequest,
+        onSuccess: (CreateCustomerResponse) -> Unit,
+        onError:(String)-> Unit
+    ){
+        viewModelScope.launch {
+            try {
+                val response = repository.createCustomer(customer)
+                Log.d("CREATE_CUSTOMER", "$response")
+                onSuccess(response)
+            }catch (e: HttpException) {
+                val error = e.response()?.errorBody()?.string()
+                Log.d("CREATE_CUSTOMER", "Error body: $error")
+                error?.let { onError(error) }
+            } catch (e: Exception) {
+                Log.d("CREATE_CUSTOMER", "EXCEPTION - $e")
+                e.localizedMessage?.let { onError(it) }
+            }
+        }
     }
 
     fun fetchOperator(onError:(String)-> Unit) {

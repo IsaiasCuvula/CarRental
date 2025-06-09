@@ -49,7 +49,23 @@ fun OperatorNavigationGraph(
 
         composable("addCustomer") {
             AddCustomerScreen(
-                onSave = { /* Save to backend */ childNavController.popBackStack() },
+                onSave = { customerRequest ->
+                    viewModel.createCustomer(
+                        customerRequest, onSuccess = {customer ->
+
+                            if(customer.email.isNotBlank()){
+                                AppHelpers.showToast(context,
+                                    "Customer Created Successfully"
+                                )
+                                childNavController.popBackStack()
+                            }
+                        },
+                        onError = {error->
+                            AppHelpers.showToast(context, "Something ent wrong \n$error")
+                        }
+                    )
+
+                },
                 onCancel = { childNavController.popBackStack() }
             )
         }
