@@ -1,12 +1,14 @@
 package com.bersyte.rent_a_car.features.company.admin.data.models
 
-import java.time.LocalDateTime
+import com.bersyte.rent_a_car.common.data.models.Address
+import com.bersyte.rent_a_car.utils.enums.UserRole
 
 data class Operator(
-    val id: String,
     val name: String,
     val email: String,
     val phone: String,
-    val dateCreated: LocalDateTime,
-    val isActive: Boolean
+    val role: UserRole,
+    val address: Address,
+    val keycloakId: String,
+    val createdAt: String
 )

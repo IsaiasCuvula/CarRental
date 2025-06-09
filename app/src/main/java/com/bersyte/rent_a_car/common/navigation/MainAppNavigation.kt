@@ -11,7 +11,6 @@ import androidx.navigation.compose.rememberNavController
 import com.bersyte.rent_a_car.features.company.admin.ui.screens.AdminDashboardManagement
 import com.bersyte.rent_a_car.features.auth.ui.screens.AuthScreen
 import com.bersyte.rent_a_car.features.auth.viewmodels.AuthViewModel
-import com.bersyte.rent_a_car.features.company.operator.ui.screens.OperatorDashboardApp
 
 @Composable
 fun MainAppNavigation(
@@ -62,10 +61,10 @@ fun MainAppNavigation(
             )
         }
         composable("customer_dashboard") {
-            CustomerNavigationScreen(navController = navController)
+            CustomerNavigationGraph(navController = navController)
         }
         composable("operator_dashboard") {
-            OperatorDashboardApp()
+            OperatorNavigationGraph(navController = navController)
         }
         composable("admin_dashboard") {
             AdminDashboardManagement()

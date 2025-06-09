@@ -7,7 +7,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.bersyte.rent_a_car.features.company.admin.data.AdminDashboardStats
 import com.bersyte.rent_a_car.features.company.admin.data.models.Operator
-import java.time.LocalDateTime
 
 @Composable
 fun AdminDashboardManagement() {
@@ -20,32 +19,7 @@ fun AdminDashboardManagement() {
         availableCars = 38
     )
 
-    val operators = listOf(
-        Operator(
-            id = "OP-001",
-            name = "Alex Johnson",
-            email = "alex.j@example.com",
-            phone = "+1 (555) 123-4567",
-            dateCreated = LocalDateTime.now().minusDays(30),
-            isActive = true
-        ),
-        Operator(
-            id = "OP-002",
-            name = "Maria Garcia",
-            email = "maria.g@example.com",
-            phone = "+1 (555) 987-6543",
-            dateCreated = LocalDateTime.now().minusDays(15),
-            isActive = true
-        ),
-        Operator(
-            id = "OP-003",
-            name = "James Wilson",
-            email = "james.w@example.com",
-            phone = "+1 (555) 456-7890",
-            dateCreated = LocalDateTime.now().minusDays(5),
-            isActive = false
-        )
-    )
+    val operators = listOf<Operator>()
 
     var showAddOperator by remember { mutableStateOf(false) }
 

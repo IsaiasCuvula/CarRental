@@ -64,16 +64,16 @@ fun AddOperatorScreen(
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = {
-                    onSave(
-                        Operator(
-                            id = UUID.randomUUID().toString(),
-                            name = name,
-                            email = email,
-                            phone = phone,
-                            dateCreated = LocalDateTime.now(),
-                            isActive = isActive
-                        )
-                    )
+                   // onSave(
+//                        Operator(
+//                            id = UUID.randomUUID().toString(),
+//                            name = name,
+//                            email = email,
+//                            phone = phone,
+//                            dateCreated = LocalDateTime.now(),
+//                            isActive = isActive
+//                        )
+                   // )
                 },
                 icon = { Icon(Icons.Default.Done, contentDescription = "Save") },
                 text = { Text("Save Operator") },

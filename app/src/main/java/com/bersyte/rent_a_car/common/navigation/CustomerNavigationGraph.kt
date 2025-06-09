@@ -24,7 +24,7 @@ import com.bersyte.rent_a_car.features.customers.rentals.ui.screens.RentalScreen
 
 
 @Composable
-fun CustomerNavigationScreen(
+fun CustomerNavigationGraph(
    navController: NavController
 ) {
     val childNavController = rememberNavController()

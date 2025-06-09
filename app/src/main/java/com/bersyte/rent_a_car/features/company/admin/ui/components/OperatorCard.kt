@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.AssistChip
-import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -18,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.bersyte.rent_a_car.features.company.admin.data.models.Operator
@@ -67,28 +64,6 @@ fun OperatorCard(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                 )
             }
-
-            AssistChip(
-                onClick = {},
-                label = {
-                    Text(
-                        text = if (operator.isActive) "Active" else "Inactive",
-                        style = MaterialTheme.typography.labelSmall
-                    )
-                },
-                colors = AssistChipDefaults.assistChipColors(
-                    containerColor = if (operator.isActive) {
-                        Color(0xFF4CAF50).copy(alpha = 0.2f)
-                    } else {
-                        Color(0xFFF44336).copy(alpha = 0.2f)
-                    },
-                    labelColor = if (operator.isActive) Color(0xFF4CAF50) else Color(0xFFF44336)
-                ),
-//                border = AssistChipDefaults.assistChipBorder(
-//                    borderColor = if (operator.isActive) Color(0xFF4CAF50) else Color(0xFFF44336),
-//                    borderWidth = 1.dp
-//                )
-            )
         }
     }
 }
