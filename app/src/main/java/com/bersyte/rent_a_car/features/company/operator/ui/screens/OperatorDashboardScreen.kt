@@ -6,14 +6,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import com.bersyte.rent_a_car.features.company.operator.ui.components.QuickActionsGrid
@@ -27,7 +24,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bersyte.rent_a_car.features.auth.viewmodels.AuthViewModel
 import com.bersyte.rent_a_car.features.company.admin.data.models.Operator
-import com.bersyte.rent_a_car.features.customers.profile.ui.components.AuthButtons
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
