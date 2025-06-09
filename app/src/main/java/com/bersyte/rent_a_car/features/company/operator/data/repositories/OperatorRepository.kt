@@ -2,6 +2,7 @@ package com.bersyte.rent_a_car.features.company.operator.data.repositories
 
 import com.bersyte.rent_a_car.common.data.models.CarRequest
 import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustomerRequest
+import com.bersyte.rent_a_car.features.company.operator.data.models.UpdateCarRegistrationStatus
 import com.bersyte.rent_a_car.features.company.operator.data.services.OperatorApiService
 import javax.inject.Inject
 
@@ -14,4 +15,5 @@ class OperatorRepository @Inject constructor(
     suspend fun fetchAllCars() = apiService.fetchAllCars()
     suspend fun registerCar(carRequest: CarRequest) = apiService.registerCar(carRequest)
     suspend fun fetchAllRegistrations()= apiService.fetchAllRegistrations()
+    suspend fun updateRegistration(request: UpdateCarRegistrationStatus)= apiService.updateRegistration(request)
 }

@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -32,7 +33,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.bersyte.rent_a_car.common.data.models.Car
 import com.bersyte.rent_a_car.common.ui.components.AddCarScreen
 import com.bersyte.rent_a_car.common.ui.components.CommonSearchBar
 import com.bersyte.rent_a_car.common.ui.components.ScrollableFilterChips
@@ -48,16 +48,14 @@ fun CarsScreen(
     viewModel: OperatorViewModel = hiltViewModel()
 ) {
 
-   var showAddCarScreen by remember { mutableStateOf(false) }
-    var allCars by remember { mutableStateOf<List<Car>>(emptyList()) }
+    var showAddCarScreen by remember { mutableStateOf(false) }
+    val allCarsState= viewModel.cars.collectAsState()
+    val allCars = allCarsState.value
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
     LaunchedEffect(Unit) {
         viewModel.fetchAllCars(
-           onSuccess = { cars ->
-               allCars = cars
-           },
            onError = { error ->
                AppHelpers.showToast(context, error)
            }

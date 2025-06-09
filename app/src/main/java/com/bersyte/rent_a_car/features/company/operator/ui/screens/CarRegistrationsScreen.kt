@@ -1,6 +1,7 @@
 package com.bersyte.rent_a_car.features.company.operator.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -18,14 +19,16 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.bersyte.rent_a_car.features.company.operator.data.models.CarRegistration
+import com.bersyte.rent_a_car.common.ui.components.ScrollableFilterChips
 import com.bersyte.rent_a_car.features.company.operator.viewmodels.OperatorViewModel
+import com.bersyte.rent_a_car.utils.enums.RegistrationStatus
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 
@@ -36,18 +39,30 @@ fun CarRegistrationsScreen(
     viewModel: OperatorViewModel = hiltViewModel()
 
 ) {
-    var allCarRegistrations by remember { mutableStateOf<List<CarRegistration>>(emptyList()) }
+    val registrationsState= viewModel.registrations.collectAsState()
+    val allRegistrations = registrationsState.value
+
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.fetchAllRegistrations(
-            onSuccess = { registrations ->
-                allCarRegistrations = registrations
-            },
             onError = { error ->
                 AppHelpers.showToast(context, error)
             }
         )
+    }
+
+    val filterOptions = RegistrationStatus.getAllFilterOptions()
+    var selectedFilter by remember { mutableIntStateOf(0) }
+
+
+    val filteredRegistrations = remember(allRegistrations, selectedFilter) {
+        when {
+            selectedFilter == 0 -> allRegistrations
+            else -> allRegistrations.filter {
+                it.status.equals(filterOptions[selectedFilter], ignoreCase = true)
+            }
+        }
     }
 
     Scaffold(
@@ -62,19 +77,54 @@ fun CarRegistrationsScreen(
             )
         }
     ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier
+        Column(
+            modifier = Modifier.fillMaxSize()
                 .padding(innerPadding)
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(16.dp)
         ) {
-            items(allCarRegistrations) { registration ->
-                CarRegistrationCard(
-                    registration = registration,
-                    onApprove = {  },
-                    onReject = {  }
-                )
+            ScrollableFilterChips(
+                options = filterOptions,
+                selectedIndex = selectedFilter,
+                onSelected = { selectedFilter = it }
+            )
+
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(filteredRegistrations) { registration ->
+                    val plate =registration.plate
+                    val number = registration.registrationNumber
+
+                    CarRegistrationCard(
+                        registration = registration,
+                        onApprove = {
+                            if(plate != null){
+                                viewModel.approveRegistration(
+                                    plate = plate, registrationNumber = number, onSuccess = {},
+                                    onError = {error->
+                                        if (error != null) {
+                                            AppHelpers.showToast(context, error)
+                                        }
+                                    }
+                                )
+                            }
+                        },
+                        onReject = {
+                            if(plate != null){
+                                viewModel.rejectRegistration(
+                                    plate = plate, registrationNumber = number, onSuccess = {},
+                                    onError = {error->
+                                        if (error != null) {
+                                            AppHelpers.showToast(context, error)
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                    )
+                }
             }
         }
     }

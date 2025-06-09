@@ -11,7 +11,9 @@ import com.bersyte.rent_a_car.common.data.models.CarRequest
 import com.bersyte.rent_a_car.features.company.operator.data.models.CarRegistration
 import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustomerRequest
 import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustomerResponse
+import com.bersyte.rent_a_car.features.company.operator.data.models.UpdateCarRegistrationStatus
 import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
+import com.bersyte.rent_a_car.utils.enums.RegistrationStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,10 +29,22 @@ class OperatorViewModel @Inject constructor(
     private val _operator = MutableStateFlow<Operator?>(null)
     val operator = _operator.asStateFlow()
 
+    private val _cars = MutableStateFlow<List<Car>>(listOf())
+    val cars = _cars.asStateFlow()
+
+
+    private val _registrations = MutableStateFlow<List<CarRegistration>>(listOf())
+    val registrations = _registrations.asStateFlow()
+
+    private val _customers = MutableStateFlow<List<Customer>>(listOf())
+    val customers = _customers.asStateFlow()
+
+
+
     init {
         fetchOperator(onError = {})
-        fetchAllCars(onError = {}, onSuccess = {})
-        fetchAllRegistrations(onError = {}, onSuccess = {})
+        fetchAllCars(onError = {})
+        fetchAllRegistrations(onError = {})
     }
 
     fun createCustomer(
@@ -72,12 +86,12 @@ class OperatorViewModel @Inject constructor(
     }
 
 
-    fun fetchAllCustomers(onSuccess: (List<Customer>) -> Unit, onError:(String)-> Unit) {
+    fun fetchAllCustomers(onError:(String)-> Unit) {
         viewModelScope.launch {
             try {
                 val response = repository.fetchAllCustomers()
                 Log.d("FETCH_CUSTOMERS", "$response")
-                onSuccess(response)
+                _customers.value = response
             }catch (e: HttpException) {
                 val error = e.response()?.errorBody()?.string()
                 Log.d("FETCH_CUSTOMERS", "Error body: $error")
@@ -89,12 +103,12 @@ class OperatorViewModel @Inject constructor(
         }
     }
 
-    fun fetchAllCars(onSuccess: (List<Car>) -> Unit, onError:(String)-> Unit) {
+    fun fetchAllCars(onError:(String)-> Unit) {
         viewModelScope.launch {
             try {
                 val response = repository.fetchAllCars()
                 Log.d("FETCH_CARS", "$response")
-                onSuccess(response)
+                _cars.value = response
             }catch (e: HttpException) {
                 val error = e.response()?.errorBody()?.string()
                 Log.d("FETCH_CARS", "Error body: $error")
@@ -111,7 +125,7 @@ class OperatorViewModel @Inject constructor(
             try {
                 val result = repository.registerCar(carRequest)
                 onSuccess(result)
-                fetchAllCars(onError = {}, onSuccess = {})
+                fetchAllCars(onError = {})
             } catch (e: HttpException) {
                 val errorBody = e.response()?.errorBody()?.string()
                 Log.d("SAVE_CAR_OPERATOR", "HTTP Error: ${e.code()}, Body: $errorBody")
@@ -123,12 +137,12 @@ class OperatorViewModel @Inject constructor(
         }
     }
 
-    fun fetchAllRegistrations(onSuccess: (List<CarRegistration>) -> Unit, onError:(String)-> Unit) {
+    fun fetchAllRegistrations(onError:(String)-> Unit) {
         viewModelScope.launch {
             try {
                 val response = repository.fetchAllRegistrations()
                 Log.d("FETCH_CAR_REGISTRATIONS", "$response")
-                onSuccess(response)
+                _registrations.value = response
             }catch (e: HttpException) {
                 val error = e.response()?.errorBody()?.string()
                 Log.d("FETCH_CAR_REGISTRATIONS", "Error body: $error")
@@ -136,6 +150,59 @@ class OperatorViewModel @Inject constructor(
             } catch (e: Exception) {
                 Log.d("FETCH_CAR_REGISTRATIONS", "EXCEPTION - $e")
                 e.localizedMessage?.let { onError(it) }
+            }
+        }
+    }
+
+
+    fun rejectRegistration(
+        registrationNumber: String,
+        plate: String,
+        onSuccess: (CarRegistration?)-> Unit,
+        onError: (String?) -> Unit
+    ) {
+        val request = UpdateCarRegistrationStatus(
+            registrationNumber , plate, RegistrationStatus.REJECTED.name
+        )
+        updateRegistration(
+            onSuccess = onSuccess, onError = onError,
+            request = request
+        )
+    }
+
+    fun approveRegistration(
+        registrationNumber: String,
+        plate: String,
+        onSuccess: (CarRegistration?)-> Unit,
+        onError: (String?) -> Unit
+    ) {
+        val request = UpdateCarRegistrationStatus(
+            registrationNumber , plate, RegistrationStatus.APPROVED.name
+        )
+        updateRegistration(
+            onSuccess = onSuccess, onError = onError,
+            request = request
+        )
+    }
+
+
+   private fun updateRegistration(
+       request: UpdateCarRegistrationStatus,
+       onSuccess: (CarRegistration?)-> Unit,
+       onError: (String?) -> Unit
+   ) {
+        viewModelScope.launch {
+            try {
+                val result = repository.updateRegistration(request)
+                fetchAllRegistrations(onError = {})
+                onSuccess(result)
+            } catch (e: HttpException) {
+                val errorBody = e.response()?.errorBody()?.string()
+                Log.d("UPDATE_CAR_REGISTRATION", "HTTP Error: ${e.code()}, Body: $errorBody")
+                onError(e.localizedMessage)
+            }catch (e: Exception){
+                Log.d("UPDATE_CAR_REGISTRATION", "exception: $e")
+                onError(e.localizedMessage)
             }
         }
     }

@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,7 +35,6 @@ import com.bersyte.rent_a_car.common.ui.components.CommonSearchBar
 import com.bersyte.rent_a_car.common.ui.components.CustomerCard
 import com.bersyte.rent_a_car.common.ui.components.EmptyState
 import com.bersyte.rent_a_car.features.company.operator.viewmodels.OperatorViewModel
-import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 
@@ -48,13 +48,11 @@ fun CustomersScreen(
 ) {
 
     val context = LocalContext.current
-    var allCustomers by remember { mutableStateOf<List<Customer>>(emptyList()) }
+    val allCustomersState= viewModel.customers.collectAsState()
+    val allCustomers = allCustomersState.value
 
     LaunchedEffect(Unit) {
         viewModel.fetchAllCustomers(
-            onSuccess = { customers ->
-                allCustomers = customers
-            },
             onError = { error ->
                 AppHelpers.showToast(context, error)
             }
