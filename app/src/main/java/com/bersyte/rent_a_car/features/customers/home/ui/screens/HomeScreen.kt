@@ -36,6 +36,7 @@ import com.bersyte.rent_a_car.features.customers.home.ui.components.ReservationD
 import com.bersyte.rent_a_car.features.customers.home.viewmodels.HomeViewModel
 import com.bersyte.rent_a_car.utils.enums.CarType
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
+import java.time.format.DateTimeFormatter
 import androidx.compose.material3.TopAppBar as TopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -149,9 +150,12 @@ fun HomeScreen(
                 val plate = selectedCar?.plate
                 if(plate != null){
                     if(end.isAfter(start)){
+                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+                        val startFormatted = start.format(formatter)
+                        val endFormatted = end.format(formatter)
+
                         val request = ReservationRequest(
-                            plate, start.toString(),
-                            end.toString(), false
+                            plate, startFormatted, endFormatted, false
                         )
                         viewModel.reserveCar(request, onResult = { rental ->
                             if(rental != null){

@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
-import java.time.format.DateTimeFormatter
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
@@ -25,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import com.bersyte.rent_a_car.utils.enums.RentalStatus
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.SuggestionChipDefaults
+import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 
 @Composable
@@ -107,7 +107,7 @@ fun RentalCard(rental: Rental) {
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                     )
                     Text(
-                        text = rental.rentStartDate.format(DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm")),
+                        text = AppHelpers.formatDateTime(rental.rentStartDate),
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -119,7 +119,7 @@ fun RentalCard(rental: Rental) {
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                     )
                     Text(
-                        text = rental.rentEndDate.format(DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm")),
+                        text = AppHelpers.formatDateTime(rental.rentEndDate),
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }

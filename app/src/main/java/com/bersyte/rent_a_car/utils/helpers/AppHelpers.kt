@@ -10,6 +10,12 @@ import java.time.format.DateTimeFormatter
 
 object AppHelpers{
 
+    fun formatDateTime(datetimeStr: String): String {
+        val inputFormatter = DateTimeFormatter.ISO_DATE_TIME
+        val dateTime = LocalDateTime.parse(datetimeStr, inputFormatter)
+        return "${dateTime.toLocalDate()} - ${dateTime.hour}:${dateTime.minute}"
+    }
+
     fun longToLocalDateTime(timestamp: Long): LocalDateTime {
         return Instant.ofEpochMilli(timestamp)
             .atZone(ZoneId.systemDefault())
