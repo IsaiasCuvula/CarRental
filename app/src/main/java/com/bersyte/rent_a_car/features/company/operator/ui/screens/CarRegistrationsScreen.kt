@@ -22,10 +22,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.bersyte.rent_a_car.common.ui.components.CommonSearchBar
 import com.bersyte.rent_a_car.common.ui.components.ScrollableFilterChips
 import com.bersyte.rent_a_car.features.company.operator.viewmodels.OperatorViewModel
 import com.bersyte.rent_a_car.utils.enums.RegistrationStatus
@@ -54,13 +57,25 @@ fun CarRegistrationsScreen(
 
     val filterOptions = RegistrationStatus.getAllFilterOptions()
     var selectedFilter by remember { mutableIntStateOf(0) }
+    var searchQuery by remember { mutableStateOf("") }
+
+    val focusManager = LocalFocusManager.current
 
 
-    val filteredRegistrations = remember(allRegistrations, selectedFilter) {
-        when {
-            selectedFilter == 0 -> allRegistrations
-            else -> allRegistrations.filter {
+    val filteredRegistrations = remember(allRegistrations, selectedFilter, searchQuery) {
+        val statusFiltered = if (selectedFilter == 0) {
+            allRegistrations
+        } else {
+            allRegistrations.filter {
                 it.status.equals(filterOptions[selectedFilter], ignoreCase = true)
+            }
+        }
+
+        if (searchQuery.isEmpty()) {
+            statusFiltered
+        } else {
+            statusFiltered.filter { registration ->
+                registration.registrationNumber.contains(searchQuery, ignoreCase = true)
             }
         }
     }
@@ -82,6 +97,14 @@ fun CarRegistrationsScreen(
                 .padding(innerPadding)
                 .padding(16.dp)
         ) {
+            CommonSearchBar(
+                query = searchQuery,
+                onQueryChange = { searchQuery = it },
+                onSearch = { focusManager.clearFocus() },
+                hintText = "Search registration by number"
+            )
+
+
             ScrollableFilterChips(
                 options = filterOptions,
                 selectedIndex = selectedFilter,
