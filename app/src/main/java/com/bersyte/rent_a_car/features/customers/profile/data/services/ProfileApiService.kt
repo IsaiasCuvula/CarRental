@@ -8,7 +8,7 @@ import retrofit2.http.Body
 
 interface ProfileApiService {
 
-    @GET("api/v1/customers")
+    @GET("api/v1/customers/current")
     suspend fun getCustomer(): Customer
 
     @POST("api/v1/customers/update")
