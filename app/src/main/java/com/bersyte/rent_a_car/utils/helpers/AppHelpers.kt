@@ -61,8 +61,8 @@ object AppHelpers{
             }
 
             val validatedCity = validateStringField(context, cityName, "City") ?: return null
-            val validatedStreet = street.ifBlank { "" }
-            val validatedState = state.ifBlank { "" }
+            val validatedStreet = validateStringField(context, street, "City") ?: return null
+            val validatedState = validateStringField(context, state, "City") ?: return null
 
             return CarRequest(
                 color = selectedColor,

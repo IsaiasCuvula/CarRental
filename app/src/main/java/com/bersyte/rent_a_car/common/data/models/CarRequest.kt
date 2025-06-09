@@ -1,7 +1,5 @@
 package com.bersyte.rent_a_car.common.data.models
 
-import com.bersyte.rent_a_car.utils.enums.CarStatus
-import java.time.LocalDateTime
 
 data class CarRequest(
     val color: Int,
@@ -19,7 +17,5 @@ data class CarRequest(
     val mileage: Long,
     val cityName: String,
     val street: String,
-    val state: String,
-    val createdAt: LocalDateTime = LocalDateTime.now(),
-    val carStatus: CarStatus = CarStatus.AVAILABLE
+    val state: String
 )

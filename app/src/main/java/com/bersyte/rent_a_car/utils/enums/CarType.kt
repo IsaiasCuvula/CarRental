@@ -4,9 +4,7 @@ enum class CarType(val displayName: String) {
     SEDAN("Sedan"),
     SUV("SUV"),
     HATCHBACK("Hatchback"),
-    COUPE("Coupe"),
-    ECONOMY("Economy"),
-    LUXURY("Luxury");
+    COUPE("Coupe");
 
     companion object {
         fun getAllFilterOptions(): List<String> = listOf("All") + entries.map { it.displayName }
