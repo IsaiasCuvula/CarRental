@@ -4,6 +4,7 @@ package com.bersyte.rent_a_car.features.company.operator.data.services
 import com.bersyte.rent_a_car.common.data.models.Car
 import com.bersyte.rent_a_car.common.data.models.CarRequest
 import com.bersyte.rent_a_car.features.company.admin.data.models.Operator
+import com.bersyte.rent_a_car.features.company.operator.data.models.CarRegistration
 import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustomerRequest
 import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustomerResponse
 import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
@@ -12,6 +13,10 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface OperatorApiService {
+
+    @GET("api/v1/car-registrations")
+    suspend fun fetchAllRegistrations(): List<CarRegistration>
+
     @POST("api/v1/car-registrations")
     suspend fun registerCar(@Body carRequest: CarRequest): Car
 

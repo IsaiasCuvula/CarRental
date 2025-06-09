@@ -11,7 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.bersyte.rent_a_car.features.auth.viewmodels.AuthViewModel
 import com.bersyte.rent_a_car.features.company.operator.ui.screens.AddCustomerScreen
-import com.bersyte.rent_a_car.features.company.operator.ui.screens.CarRegistrationApprovalScreen
+import com.bersyte.rent_a_car.features.company.operator.ui.screens.CarRegistrationsScreen
 import com.bersyte.rent_a_car.features.company.operator.ui.screens.CarsScreen
 import com.bersyte.rent_a_car.features.company.operator.ui.screens.CustomersScreen
 import com.bersyte.rent_a_car.features.company.operator.ui.screens.OperatorDashboardScreen
@@ -78,10 +78,7 @@ fun OperatorNavigationGraph(
         }
 
         composable("carRegistrations") {
-            CarRegistrationApprovalScreen(
-                registrations = listOf(),
-                onApprove = { id -> /* Approve registration */ },
-                onReject = { id -> /* Reject registration */ },
+            CarRegistrationsScreen(
                 onBack = { childNavController.popBackStack() }
             )
         }

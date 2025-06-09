@@ -15,19 +15,26 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.bersyte.rent_a_car.features.company.operator.data.models.CarRegistrationRequest
-import java.time.format.DateTimeFormatter
+import com.bersyte.rent_a_car.features.company.operator.data.models.CarRegistration
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 
 @Composable
 fun CarRegistrationCard(
-    registration: CarRegistrationRequest,
+    registration: CarRegistration,
     onApprove: () -> Unit,
     onReject: () -> Unit
 ) {
+
+    val canceledBy = registration.canceledBy ?: ""
+    val registeredBy = registration.registeredBy
+    val processedBy = registration.processedBy ?: ""
+    val registrationNumber = registration.registrationNumber
+    val updatedAt = registration.updatedAt
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -36,17 +43,48 @@ fun CarRegistrationCard(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            registration.plate?.let {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
+            }
             Text(
-                text = registration.carRequest.name,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = "Submitted: ${registration.submissionDate.format(DateTimeFormatter.ofPattern("MMM dd, yyyy"))}",
+                text = "Submitted: ${AppHelpers.formatDateTime(registration.registrationDate)}",
                 style = MaterialTheme.typography.bodySmall
             )
+            if(updatedAt.isNotBlank()){
+                Text(
+                    text = "Updated: ${AppHelpers.formatDateTime(updatedAt)}",
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+
+            Text(
+                text = "Registered by: $registeredBy",
+                style = MaterialTheme.typography.bodyMedium
+            )
+            if(processedBy.isNotBlank()){
+                Text(
+                    text = "Processed by: $processedBy",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+            if(canceledBy.isNotBlank()){
+                Text(
+                    text = "Canceled by: $canceledBy",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+
             Text(
                 text = "Status: ${registration.status}",
+                style = MaterialTheme.typography.bodyMedium
+            )
+
+            Text(
+                text = "Number: $registrationNumber",
                 style = MaterialTheme.typography.bodyMedium
             )
 
