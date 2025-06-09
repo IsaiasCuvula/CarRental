@@ -36,6 +36,8 @@ import com.bersyte.rent_a_car.common.data.models.CarRequest
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.CarClassSelector
 import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.CarSeatsSelector
 import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.CarTypeSelector
@@ -43,6 +45,7 @@ import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.ColorPick
 import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.FuelTypeSelector
 import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.SmokingAllowedToggle
 import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.YearSelector
+import com.bersyte.rent_a_car.utils.helpers.AppHelpers.validateAndSave
 import java.time.LocalDateTime
 
 
@@ -72,6 +75,9 @@ fun AddCarScreen(
     var selectedYear by remember { mutableStateOf(yearNow.toString()) }
 
     val scrollState = rememberScrollState()
+
+    val focusManager = LocalFocusManager.current
+    val context = LocalContext.current;
 
     Scaffold(
         topBar = {
@@ -115,6 +121,7 @@ fun AddCarScreen(
                     onValueChange = { name = it },
                     label = { Text("Car Name") },
                     modifier = Modifier.weight(2f),
+                    maxLines = 1,
                 )
 
                 YearSelector(
@@ -132,14 +139,16 @@ fun AddCarScreen(
                     onValueChange = { mileage = it },
                     label = { Text("Mileage") },
                     modifier = Modifier.weight(1f),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    maxLines = 1,
                 )
 
                 OutlinedTextField(
                     value = plate,
                     onValueChange = { plate = it },
                     label = { Text("License Plate") },
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    maxLines = 1,
                 )
             }
 
@@ -152,6 +161,7 @@ fun AddCarScreen(
                     onValueChange = { model = it },
                     label = { Text("Model") },
                     modifier = Modifier.weight(1f),
+                    maxLines = 1,
                 )
 
                 OutlinedTextField(
@@ -160,7 +170,8 @@ fun AddCarScreen(
                     label = { Text("Hourly Price") },
                     modifier = Modifier.weight(1f),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    leadingIcon = { Text("$") }
+                    leadingIcon = { Text("$") },
+                    maxLines = 1,
                 )
             }
 
@@ -208,7 +219,8 @@ fun AddCarScreen(
                 value = street,
                 onValueChange = { street = it },
                 label = { Text("Street Address") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                maxLines = 1,
             )
 
             Row(
@@ -219,14 +231,17 @@ fun AddCarScreen(
                     value = cityName,
                     onValueChange = { cityName = it },
                     label = { Text("City") },
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    maxLines = 1,
+
                 )
 
                 OutlinedTextField(
                     value = state,
                     onValueChange = { state = it },
                     label = { Text("State") },
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    maxLines = 1,
                 )
             }
 
@@ -234,9 +249,8 @@ fun AddCarScreen(
                 value = description,
                 onValueChange = { description = it },
                 label = { Text("Description") },
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.fillMaxWidth(),
                 maxLines = 3,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
 
             SmokingAllowedToggle(
@@ -257,28 +271,31 @@ fun AddCarScreen(
             Button(
                 modifier = Modifier.fillMaxWidth(),
                  onClick = {
-                     val request = CarRequest(
-                         color = selectedColor,
-                         smokingAllowed = smokingAllowed,
-                         seats = selectedSeats.toInt(),
-                         hourlyPrice = hourlyPrice.toLongOrNull() ?: 0,
+                     focusManager.clearFocus()
+                     validateAndSave(
+                         context = context,
+                         name = name,
+                         model = model,
+                         plate = plate,
+                         selectedSeats = selectedSeats,
+                         hourlyPrice = hourlyPrice,
                          carClass = carClass,
                          carType = carType,
                          fuelType = fuelType,
-                         name = name,
+                         smokingAllowed = smokingAllowed,
+                         mileage = mileage,
                          description = description,
-                         model = model,
-                         year = selectedYear.toInt(),
-                         plate = plate,
-                         mileage = mileage.toLongOrNull() ?: 0,
                          cityName = cityName,
                          street = street,
-                         state = state
-                     )
-
-                      onSave(request)
+                         state = state,
+                         selectedColor = selectedColor,
+                         selectedYear = selectedYear
+                     )?.let { carRequest ->
+                         onSave(carRequest)
+                     }
                  },
             ){ Text("Save Car")}
         }
     }
+
 }

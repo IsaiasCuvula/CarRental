@@ -36,9 +36,7 @@ object AppHelpers{
             val validatedName = validateStringField(context, name, "Car name") ?: return null
             val validatedModel = validateStringField(context, model, "Model") ?: return null
             val validatedPlate = validateStringField(context, plate, "License plate") ?: return null
-            val validatedCity = validateStringField(context, cityName, "City") ?: return null
-            val validatedStreet = street.ifBlank { "" }
-            val validatedState = state.ifBlank { "" }
+
 
             // Validate numeric fields
             val validatedSeats = validateNumberField(context, selectedSeats, "Seats", 1, 10) ?: return null
@@ -61,6 +59,10 @@ object AppHelpers{
                 showToast(context, "Please select a fuel type")
                 return null
             }
+
+            val validatedCity = validateStringField(context, cityName, "City") ?: return null
+            val validatedStreet = street.ifBlank { "" }
+            val validatedState = state.ifBlank { "" }
 
             return CarRequest(
                 color = selectedColor,
