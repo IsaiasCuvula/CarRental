@@ -3,10 +3,18 @@ package com.bersyte.rent_a_car.utils.helpers
 import android.content.Context
 import android.widget.Toast
 import com.bersyte.rent_a_car.features.customers.home.data.models.CarRating
+import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 object AppHelpers{
+
+    fun longToLocalDateTime(timestamp: Long): LocalDateTime {
+        return Instant.ofEpochMilli(timestamp)
+            .atZone(ZoneId.systemDefault())
+            .toLocalDateTime()
+    }
 
     fun calculateRoundedRatingAverage(
         ratings: List<CarRating>,
@@ -31,14 +39,11 @@ object AppHelpers{
         }
     }
 
-    fun safeParseIsoDateTime(dateString: String?): LocalDateTime? {
+    fun safeParseIsoDateTime(dateString: String?): LocalDateTime {
         return try {
-            if(dateString == null){
-                return null
-            }
             LocalDateTime.parse(dateString, DateTimeFormatter.ISO_DATE_TIME)
         } catch (e: Exception) {
-            null
+            LocalDateTime.now()
         }
     }
 

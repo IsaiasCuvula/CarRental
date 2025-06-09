@@ -28,7 +28,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import java.time.LocalDateTime
+import com.bersyte.rent_a_car.features.customers.home.ui.components.ShowDatePickerDialog
+import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 @Composable
 fun ProfileUpdateScreen(
@@ -36,15 +37,22 @@ fun ProfileUpdateScreen(
     onUpdate: (UpdateCustomerRequest) -> Unit,
     onCancel: () -> Unit
 ) {
+    val address = currentUser.address
     // State for form fields
     var name by remember { mutableStateOf(currentUser.name) }
     var phone by remember { mutableStateOf(currentUser.phone) }
-    var cityName by remember { mutableStateOf("") }
-    var idCardNumber by remember { mutableStateOf("") }
-    var driveLicense by remember { mutableStateOf("") }
-    var driveLicenseExpirationDate by remember { mutableStateOf(LocalDateTime.now().plusYears(1)) }
-    var street by remember { mutableStateOf("") }
-    var state by remember { mutableStateOf("") }
+    var idCardNumber by remember { mutableStateOf(currentUser.idCardNumber.toString()) }
+    var driveLicense by remember { mutableStateOf(currentUser.driverLicenseNumber.toString()) }
+    var driveLicenseExpirationDate by remember {
+        mutableStateOf(AppHelpers.safeParseIsoDateTime(currentUser.driverLicenseExpirationDate))
+    }
+
+    var cityName by remember { mutableStateOf(address.city.name) }
+    var street by remember { mutableStateOf(address.street) }
+    var state by remember { mutableStateOf(address.state) }
+
+    var showDatePicker by remember { mutableStateOf(false) }
+
 
     val dateFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy")
 
@@ -147,7 +155,7 @@ fun ProfileUpdateScreen(
                 text = "License Expiration: ${driveLicenseExpirationDate.format(dateFormatter)}",
                 modifier = Modifier.weight(1f)
             )
-            Button(onClick = { /* Show date picker */ }) {
+            Button(onClick = { showDatePicker = true}) {
                 Text("Change")
             }
         }
@@ -184,5 +192,16 @@ fun ProfileUpdateScreen(
                 Text("Save Changes")
             }
         }
+    }
+
+    if (showDatePicker) {
+        ShowDatePickerDialog(
+            onDismiss = { showDatePicker = false },
+            onDateSelected = { dateLong ->
+                if(dateLong != null){
+                    driveLicenseExpirationDate =AppHelpers.longToLocalDateTime(dateLong)
+                }
+            }
+        )
     }
 }

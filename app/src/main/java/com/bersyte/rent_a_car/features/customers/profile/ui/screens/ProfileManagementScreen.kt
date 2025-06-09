@@ -31,7 +31,7 @@ fun ProfileManagementScreen(
         ProfileUpdateScreen(
             currentUser = customer,
             onUpdate = { updatedData ->
-                //viewModel.updateCustomer(updatedData)
+                viewModel.updateCustomer(updatedData)
                 showEditScreen = false
             },
             onCancel = { showEditScreen = false }

@@ -37,6 +37,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun updateCustomer(request: UpdateCustomerRequest) {
+        Log.d("UPDATE_CUSTOMER", "$request")
         viewModelScope.launch {
             try {
                 val response = repository.updateCustomer(request)
