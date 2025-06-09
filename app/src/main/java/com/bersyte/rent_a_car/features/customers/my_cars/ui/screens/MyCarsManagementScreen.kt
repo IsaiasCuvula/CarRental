@@ -5,19 +5,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.bersyte.rent_a_car.features.customers.my_cars.viewmodels.MyCarsViewModel
 
 @Composable
 fun MyCarsManagementScreen(
-    //viewModel: MyCarsViewModel = viewModel()
+    viewModel: MyCarsViewModel = hiltViewModel()
 ) {
-   // val uiState by viewModel.uiState.collectAsState()
     var showAddCarScreen by remember { mutableStateOf(false) }
 
     when {
         showAddCarScreen -> {
             AddCarScreen(
                 onSave = { carRequest ->
-//                    viewModel.addCar(carRequest)
+                    viewModel.saveCar(carRequest)
                     showAddCarScreen = false
                 },
                 onCancel = { showAddCarScreen = false }
@@ -25,11 +26,6 @@ fun MyCarsManagementScreen(
         }
         else -> {
             MyCarsScreen(
-//                cars = uiState.cars,
-//                stats = uiState.stats,
-//                onCarClick = { car ->
-//                    // Navigate to car details
-//                },
                 onAddCarClick = { showAddCarScreen = true }
             )
         }
