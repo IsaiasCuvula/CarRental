@@ -1,19 +1,21 @@
 package com.bersyte.rent_a_car.features.customers.my_cars.ui.screens
 
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -33,6 +35,15 @@ import androidx.compose.ui.unit.dp
 import com.bersyte.rent_a_car.common.data.models.CarRequest
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.CarClassSelector
+import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.CarSeatsSelector
+import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.CarTypeSelector
+import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.ColorPicker
+import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.FuelTypeSelector
+import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.SmokingAllowedToggle
+import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.YearSelector
+import java.time.LocalDateTime
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,12 +52,12 @@ fun AddCarScreen(
     onSave: (CarRequest) -> Unit,
     onCancel: () -> Unit
 ) {
+    val yearNow = LocalDateTime.now().year
+
     var name by remember { mutableStateOf("") }
     var model by remember { mutableStateOf("") }
-    var year by remember { mutableStateOf("") }
     var plate by remember { mutableStateOf("") }
-    var seats by remember { mutableStateOf("") }
-    var color by remember { mutableIntStateOf(0) }
+    var selectedSeats by remember { mutableStateOf("") }
     var hourlyPrice by remember { mutableStateOf("") }
     var carClass by remember { mutableStateOf("") }
     var carType by remember { mutableStateOf("") }
@@ -57,6 +68,8 @@ fun AddCarScreen(
     var cityName by remember { mutableStateOf("") }
     var street by remember { mutableStateOf("") }
     var state by remember { mutableStateOf("") }
+    var selectedColor by remember { mutableIntStateOf(Color.Red.toArgb()) }
+    var selectedYear by remember { mutableStateOf(yearNow.toString()) }
 
     val scrollState = rememberScrollState()
 
@@ -78,35 +91,6 @@ fun AddCarScreen(
                    },
               )
         },
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                onClick = {
-                    onSave(
-                        CarRequest(
-                            color = color,
-                            smokingAllowed = smokingAllowed,
-                            seats = seats.toIntOrNull() ?: 0,
-                            hourlyPrice = hourlyPrice.toLongOrNull() ?: 0,
-                            carClass = carClass,
-                            carType = carType,
-                            fuelType = fuelType,
-                            name = name,
-                            description = description,
-                            model = model,
-                            year = year.toIntOrNull() ?: 0,
-                            plate = plate,
-                            mileage = mileage.toLongOrNull() ?: 0,
-                            cityName = cityName,
-                            street = street,
-                            state = state
-                        )
-                    )
-                },
-                icon = { Icon(Icons.Default.Done, contentDescription = "Save") },
-                text = { Text("Save Car") },
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
-        }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -122,28 +106,31 @@ fun AddCarScreen(
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
-            OutlinedTextField(
-                value = name,
-                onValueChange = { name = it },
-                label = { Text("Car Name") },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            OutlinedTextField(
-                value = model,
-                onValueChange = { model = it },
-                label = { Text("Model") },
-                modifier = Modifier.fillMaxWidth()
-            )
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 OutlinedTextField(
-                    value = year,
-                    onValueChange = { if (it.length <= 4) year = it },
-                    label = { Text("Year") },
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text("Car Name") },
+                    modifier = Modifier.weight(2f),
+                )
+
+                YearSelector(
+                    selectedYear = selectedYear,
+                    modifier = Modifier.weight(1f),
+                    onYearSelected = { year -> selectedYear = year }
+                )
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                OutlinedTextField(
+                    value = mileage,
+                    onValueChange = { mileage = it },
+                    label = { Text("Mileage") },
                     modifier = Modifier.weight(1f),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
@@ -161,11 +148,10 @@ fun AddCarScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 OutlinedTextField(
-                    value = seats,
-                    onValueChange = { seats = it },
-                    label = { Text("Seats") },
+                    value = model,
+                    onValueChange = { model = it },
+                    label = { Text("Model") },
                     modifier = Modifier.weight(1f),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
 
                 OutlinedTextField(
@@ -178,13 +164,44 @@ fun AddCarScreen(
                 )
             }
 
-            // More fields for car class, type, fuel, etc.
-            // ... (similar pattern as above fields)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                FuelTypeSelector(
+                    selectedFuel = fuelType,
+                    onFuelSelected = { fuelType = it },
+                    modifier = Modifier.weight(1f),
+                )
+
+                CarSeatsSelector(
+                    selectedSeats = selectedSeats,
+                    modifier = Modifier.weight(1f),
+                    onSeatsSelected = { seats -> selectedSeats = seats }
+                )
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                CarClassSelector(
+                    selectedClass = carClass,
+                    onClassSelected = { carClass = it },
+                    modifier = Modifier.weight(1f),
+                )
+
+                CarTypeSelector(
+                    selectedType = carType,
+                    onTypeSelected = { carType = it },
+                    modifier = Modifier.weight(1f),
+                )
+            }
 
             Text(
                 text = "Location",
                 style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(vertical = 8.dp)
+                modifier = Modifier.padding(top = 8.dp)
             )
 
             OutlinedTextField(
@@ -212,6 +229,56 @@ fun AddCarScreen(
                     modifier = Modifier.weight(1f)
                 )
             }
+
+            OutlinedTextField(
+                value = description,
+                onValueChange = { description = it },
+                label = { Text("Description") },
+                modifier = Modifier.weight(1f),
+                maxLines = 3,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
+
+            SmokingAllowedToggle(
+                isSmokingAllowed = smokingAllowed,
+                onSmokingAllowedChanged = { smokingAllowed = it },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            ColorPicker(
+                initialColor = Color(selectedColor),
+                onColorSelected = { colorInt ->
+                    selectedColor = colorInt
+                }
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                 onClick = {
+                     val request = CarRequest(
+                         color = selectedColor,
+                         smokingAllowed = smokingAllowed,
+                         seats = selectedSeats.toInt(),
+                         hourlyPrice = hourlyPrice.toLongOrNull() ?: 0,
+                         carClass = carClass,
+                         carType = carType,
+                         fuelType = fuelType,
+                         name = name,
+                         description = description,
+                         model = model,
+                         year = selectedYear.toInt(),
+                         plate = plate,
+                         mileage = mileage.toLongOrNull() ?: 0,
+                         cityName = cityName,
+                         street = street,
+                         state = state
+                     )
+
+                      onSave(request)
+                 },
+            ){ Text("Save Car")}
         }
     }
 }
