@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bersyte.rent_a_car.common.data.models.Car
 import com.bersyte.rent_a_car.features.customers.home.ui.components.CarCard
-import com.bersyte.rent_a_car.features.customers.home.ui.components.HomeSearchBar
+import com.bersyte.rent_a_car.common.ui.components.CommonSearchBar
 import com.bersyte.rent_a_car.common.ui.components.ScrollableFilterChips
 import com.bersyte.rent_a_car.features.customers.home.data.models.ReservationRequest
 import com.bersyte.rent_a_car.features.customers.home.ui.components.ReservationDateBottomSheet
@@ -100,11 +100,10 @@ fun HomeScreen(
                  .padding(top = innerPadding.calculateTopPadding())
                 .padding(16.dp)
             ) {
-                // Search bar
-                HomeSearchBar(
+                CommonSearchBar(
                     query = searchQuery,
                     onQueryChange = { searchQuery = it },
-                    onSearch = { /* Handle search */ },
+                    hintText = "Search cars by model or type"
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))

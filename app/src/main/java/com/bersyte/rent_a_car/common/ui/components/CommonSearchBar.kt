@@ -1,7 +1,8 @@
-package com.bersyte.rent_a_car.features.customers.home.ui.components
+package com.bersyte.rent_a_car.common.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
@@ -16,11 +17,12 @@ import androidx.compose.ui.graphics.Color
 
 
 @Composable
-fun HomeSearchBar(
+fun CommonSearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
     onSearch: () -> Unit,
-    modifier: Modifier = Modifier
+    hintText: String
 ) {
     TextField(
         value = query,
@@ -32,8 +34,9 @@ fun HomeSearchBar(
             )
         },
         placeholder = {
-            Text("Search cars by model or type")
+            Text(hintText)
         },
+        keyboardActions = KeyboardActions(onSearch = { onSearch() }),
         shape = RoundedCornerShape(16.dp),
         colors = TextFieldDefaults.colors(
             unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
