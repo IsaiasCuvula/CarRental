@@ -7,6 +7,7 @@ import com.bersyte.rent_a_car.features.company.operator.data.repositories.Operat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bersyte.rent_a_car.common.data.models.Car
+import com.bersyte.rent_a_car.common.data.models.CarRequest
 import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustomerRequest
 import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustomerResponse
 import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
@@ -99,6 +100,23 @@ class OperatorViewModel @Inject constructor(
             } catch (e: Exception) {
                 Log.d("FETCH_CARS", "EXCEPTION - $e")
                 e.localizedMessage?.let { onError(it) }
+            }
+        }
+    }
+
+    fun registerCar(carRequest: CarRequest, onSuccess: (Car?)-> Unit, onError: (String?) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val result = repository.registerCar(carRequest)
+                onSuccess(result)
+                fetchAllCars(onError = {}, onSuccess = {})
+            } catch (e: HttpException) {
+                val errorBody = e.response()?.errorBody()?.string()
+                Log.d("SAVE_CAR_OPERATOR", "HTTP Error: ${e.code()}, Body: $errorBody")
+                onError(e.localizedMessage)
+            }catch (e: Exception){
+                Log.d("SAVE_CAR_OPERATOR", "exception: $e")
+                onError(e.localizedMessage)
             }
         }
     }

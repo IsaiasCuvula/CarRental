@@ -98,7 +98,6 @@ fun OperatorNavigationGraph(
         composable("createRental") {
             CarsScreen(
                 onCancel = { childNavController.popBackStack() },
-                onAddCar = { childNavController.navigate("addCustomer") },
             )
         }
 

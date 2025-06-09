@@ -106,7 +106,7 @@ fun CarsScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { showAddCarScreen = false},
+                onClick = { showAddCarScreen = true},
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary
             ) {
@@ -154,18 +154,17 @@ fun CarsScreen(
         ) {
             AddCarScreen(
                 onSave = { carRequest ->
-    //                viewModel.registerCar(
-    //                    carRequest,
-    //                    onSuccess = {result ->
-    //                        if(result != null){
-    //                            showAddCarScreen = false
-    //                        }
-    //                    },
-    //                    onError = {error ->
-    //                        AppHelpers.showToast(context, "$error")
-    //                    }
-    //                )
-
+                    viewModel.registerCar(
+                        carRequest,
+                        onSuccess = {result ->
+                            if(result != null){
+                                showAddCarScreen = false
+                            }
+                        },
+                        onError = {error ->
+                            AppHelpers.showToast(context, "$error")
+                        }
+                    )
                 },
                 onCancel = { showAddCarScreen = false }
             )
