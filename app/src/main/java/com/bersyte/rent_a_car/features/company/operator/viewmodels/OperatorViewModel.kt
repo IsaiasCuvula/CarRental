@@ -6,11 +6,15 @@ import com.bersyte.rent_a_car.features.company.operator.data.repositories.Operat
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bersyte.rent_a_car.common.data.models.CancelRental
 import com.bersyte.rent_a_car.common.data.models.Car
 import com.bersyte.rent_a_car.common.data.models.CarRequest
 import com.bersyte.rent_a_car.features.company.operator.data.models.CarRegistration
 import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustomerRequest
 import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustomerResponse
+import com.bersyte.rent_a_car.features.company.operator.data.models.FinalizeRentalRequest
+import com.bersyte.rent_a_car.features.company.operator.data.models.FinalizeRentalResponse
+import com.bersyte.rent_a_car.features.company.operator.data.models.RentingCarRequest
 import com.bersyte.rent_a_car.features.company.operator.data.models.UpdateCarRegistrationStatus
 import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
 import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
@@ -222,6 +226,71 @@ class OperatorViewModel @Inject constructor(
                 onError(e.localizedMessage)
             }catch (e: Exception){
                 Log.d("UPDATE_CAR_REGISTRATION", "exception: $e")
+                onError(e.localizedMessage)
+            }
+        }
+    }
+
+    fun cancelRenting(
+        rentalCode: String,
+        onSuccess: (Rental?)-> Unit,
+        onError: (String?) -> Unit
+    ) {
+        viewModelScope.launch {
+            try {
+                val request = CancelRental(rentalCode)
+               val result = repository.cancelRental(request)
+                fetchAllRentals(onError = {})
+                onSuccess(result)
+            } catch (e: HttpException) {
+                val errorBody = e.response()?.errorBody()?.string()
+                Log.d("CANCEL_RENTAL", "HTTP Error: ${e.code()}, Body: $errorBody")
+                onError(e.localizedMessage)
+            }catch (e: Exception){
+                Log.d("CANCEL_RENTAL", "exception: $e")
+                onError(e.localizedMessage)
+            }
+        }
+    }
+
+
+    fun finalizeRental(
+        request: FinalizeRentalRequest,
+        onSuccess: (FinalizeRentalResponse?)-> Unit,
+        onError: (String?) -> Unit
+    ) {
+        viewModelScope.launch {
+            try {
+                val result = repository.finalizeRental(request)
+                fetchAllRentals(onError = {})
+                onSuccess(result)
+            } catch (e: HttpException) {
+                val errorBody = e.response()?.errorBody()?.string()
+                Log.d("FINALIZE_RENTAL", "HTTP Error: ${e.code()}, Body: $errorBody")
+                onError(e.localizedMessage)
+            }catch (e: Exception){
+                Log.d("FINALIZE_RENTAL", "exception: $e")
+                onError(e.localizedMessage)
+            }
+        }
+    }
+
+    fun approveRental(
+        request: RentingCarRequest,
+        onSuccess: (Rental?)-> Unit,
+        onError: (String?) -> Unit
+    ) {
+        viewModelScope.launch {
+            try {
+                val result = repository.approveRental(request)
+                fetchAllRentals(onError = {})
+                onSuccess(result)
+            } catch (e: HttpException) {
+                val errorBody = e.response()?.errorBody()?.string()
+                Log.d("APPROVE_RENTAL", "HTTP Error: ${e.code()}, Body: $errorBody")
+                onError(e.localizedMessage)
+            }catch (e: Exception){
+                Log.d("APPROVE_RENTAL", "exception: $e")
                 onError(e.localizedMessage)
             }
         }

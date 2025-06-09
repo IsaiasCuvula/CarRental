@@ -1,12 +1,16 @@
 package com.bersyte.rent_a_car.features.company.operator.data.services
 
 
+import com.bersyte.rent_a_car.common.data.models.CancelRental
 import com.bersyte.rent_a_car.common.data.models.Car
 import com.bersyte.rent_a_car.common.data.models.CarRequest
 import com.bersyte.rent_a_car.features.company.admin.data.models.Operator
 import com.bersyte.rent_a_car.features.company.operator.data.models.CarRegistration
 import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustomerRequest
 import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustomerResponse
+import com.bersyte.rent_a_car.features.company.operator.data.models.FinalizeRentalRequest
+import com.bersyte.rent_a_car.features.company.operator.data.models.FinalizeRentalResponse
+import com.bersyte.rent_a_car.features.company.operator.data.models.RentingCarRequest
 import com.bersyte.rent_a_car.features.company.operator.data.models.UpdateCarRegistrationStatus
 import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
 import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
@@ -15,6 +19,15 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface OperatorApiService {
+
+    @POST("api/v1/rentals/renting")
+    suspend fun approveRental(@Body request: RentingCarRequest): Rental
+
+    @POST("api/v1/rentals/finalize")
+    suspend fun finalizeRental(@Body request: FinalizeRentalRequest): FinalizeRentalResponse
+
+    @POST("api/v1/rentals/cancel")
+    suspend fun cancelRental(@Body request: CancelRental): Rental
 
     @GET("api/v1/rentals/history")
     suspend fun fetchAllRentals(): List<Rental>

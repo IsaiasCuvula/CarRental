@@ -19,6 +19,7 @@ import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.bersyte.rent_a_car.utils.enums.RentalStatus
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 
@@ -26,7 +27,8 @@ import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 fun RentalRequestCard(
     rental: Rental,
     onApprove: () -> Unit,
-    onReject: () -> Unit
+    onReject: () -> Unit,
+    onFinalize: () -> Unit,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -54,7 +56,7 @@ fun RentalRequestCard(
                 style = MaterialTheme.typography.bodyMedium
             )
 
-            if (rental.status == "RESERVED") {
+            if (rental.status == RentalStatus.RESERVED.name) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End,
@@ -66,6 +68,18 @@ fun RentalRequestCard(
                     Spacer(modifier = Modifier.width(8.dp))
                     Button(onClick = onApprove) {
                         Text("Approve")
+                    }
+                }
+            }
+
+            if (rental.status == RentalStatus.ACTIVE.name) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Button(onClick = onFinalize) {
+                        Text("Finalize")
                     }
                 }
             }
