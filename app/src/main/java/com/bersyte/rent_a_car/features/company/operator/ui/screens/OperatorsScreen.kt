@@ -34,8 +34,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bersyte.rent_a_car.common.ui.components.CommonSearchBar
 import com.bersyte.rent_a_car.common.ui.components.EmptyState
+import com.bersyte.rent_a_car.features.auth.viewmodels.AuthViewModel
 import com.bersyte.rent_a_car.features.company.operator.ui.components.OperatorCard
 import com.bersyte.rent_a_car.features.company.operator.viewmodels.OperatorViewModel
+import com.bersyte.rent_a_car.utils.enums.UserRole
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,13 +46,18 @@ fun OperatorsScreen(
     modifier: Modifier = Modifier,
     onCancel: () -> Unit,
     onAddOperator: () -> Unit,
-    viewModel: OperatorViewModel = hiltViewModel()
+    viewModel: OperatorViewModel = hiltViewModel(),
+    authViewModel: AuthViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val allOperatorsState= viewModel.operators.collectAsState()
     val allOperators = allOperatorsState.value
 
+    val authResponse = authViewModel.authResponse.collectAsState()
+    val auth = authResponse.value
+
     LaunchedEffect(Unit) {
+        authViewModel.tokenManager.getAuthResponse()
         viewModel.fetchAllOperators(
             onError = { error ->
                 AppHelpers.showToast(context, error)
@@ -84,13 +91,23 @@ fun OperatorsScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick =onAddOperator,
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
-            ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Operator")
+            val authData = auth?.data
+
+            if( authData != null){
+                val role = UserRole.valueOf(authData.role)
+
+                if(role == UserRole.ADMIN){
+                    FloatingActionButton(
+                        onClick =onAddOperator,
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    ) {
+                        Icon(Icons.Default.Add, contentDescription = "Add Operator")
+                    }
+                }
+
             }
+
         },
         modifier = modifier
     ) { innerPadding ->

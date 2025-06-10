@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -14,7 +14,7 @@ import com.bersyte.rent_a_car.features.auth.viewmodels.AuthViewModel
 
 @Composable
 fun MainAppNavigation(
-   authViewModel: AuthViewModel = viewModel()
+   authViewModel: AuthViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
     val authResponse by authViewModel.authResponse.collectAsState()
