@@ -19,7 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.bersyte.rent_a_car.common.ui.components.CommonTextField
 import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
-import com.bersyte.rent_a_car.utils.enums.DamageStatus
+import com.bersyte.rent_a_car.utils.enums.ReturnDamageStatus
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,7 +29,7 @@ fun FinalizeRentalBottomSheet(
     onDismissRequest: () -> Unit,
     rental: Rental
 ) {
-    var damageStatus by remember { mutableStateOf(DamageStatus.NONE) }
+    var damageStatus by remember { mutableStateOf(ReturnDamageStatus.NONE) }
     var returnConditionReport by remember { mutableStateOf("") }
     var returnedMileage by remember { mutableStateOf("") }
     var damageDescription by remember { mutableStateOf("") }
@@ -71,7 +71,7 @@ fun FinalizeRentalBottomSheet(
                 modifier = Modifier.fillMaxWidth(),
             )
 
-            if (damageStatus != DamageStatus.NONE) {
+            if (damageStatus != ReturnDamageStatus.NONE) {
                 CommonTextField(
                     value = damageDescription,
                     onValueChange = { damageDescription = it },
@@ -101,9 +101,9 @@ fun FinalizeRentalBottomSheet(
                         returnConditionReport = returnConditionReport,
                         returnedMileage = returnedMileage.toLongOrNull() ?: 0,
                         damageStatus = damageStatus.name,
-                        damageDescription = if (damageStatus != DamageStatus.NONE) damageDescription else "",
-                        estimatedRepairCost = if (damageStatus != DamageStatus.NONE) estimatedRepairCost.toLongOrNull() ?: 0 else 0,
-                        damageLocation = if (damageStatus != DamageStatus.NONE) damageLocation else ""
+                        damageDescription = if (damageStatus != ReturnDamageStatus.NONE) damageDescription else "",
+                        estimatedRepairCost = if (damageStatus != ReturnDamageStatus.NONE) estimatedRepairCost.toLongOrNull() ?: 0 else 0,
+                        damageLocation = if (damageStatus != ReturnDamageStatus.NONE) damageLocation else ""
                     )
                     onSave(request)
                 },

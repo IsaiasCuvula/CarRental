@@ -1,20 +1,17 @@
 package com.bersyte.rent_a_car.features.company.data.models
 
-import com.bersyte.rent_a_car.utils.enums.VehicleDamageStatus
-import java.time.LocalDateTime
 
 data class VehicleDamage(
-    val id: Long? = null,
+    val rentalCode: String,
     val description: String,
     val estimatedRepairCost: Long,
     val isPaid: Boolean,
-    val paidAt: LocalDateTime,
-    val reportedAt: LocalDateTime,
-    val fixedAt: LocalDateTime,
+    val paidAt: String,
+    val reportedAt: String,
+    val fixedAt: String,
     val damageLocation: String,
-    val rentalId: Long,
-    val carId: Long,
-    val markAsPaidByEmployeeId: Long?,
-    val markAsFixedEmployeeId: Long?,
-    val status: VehicleDamageStatus
+    val carPlate: String,
+    val markAsPaidBy: String?,
+    val markAsFixed: Long?,
+    val status: String
 )

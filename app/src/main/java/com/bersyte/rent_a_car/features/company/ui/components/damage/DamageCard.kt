@@ -29,6 +29,9 @@ import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 @Composable
 fun DamageCard(damage: VehicleDamage) {
+
+    val status = VehicleDamageStatus.valueOf(damage.status)
+
     Card(
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
@@ -51,7 +54,7 @@ fun DamageCard(damage: VehicleDamage) {
                     fontWeight = FontWeight.Bold
                 )
 
-                DamageStatusChip(status = damage.status)
+                DamageStatusChip(status = status)
             }
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -75,14 +78,14 @@ fun DamageCard(damage: VehicleDamage) {
                 text = "Reported: ${AppHelpers.formatDateTime(damage.reportedAt)}"
             )
 
-            if (damage.status == VehicleDamageStatus.FIXED) {
+            if (status == VehicleDamageStatus.FIXED) {
                 DamageDetailRow(
                     icon = Icons.Default.Build,
                     text = "Fixed: ${AppHelpers.formatDateTime(damage.fixedAt)}"
                 )
             }
 
-            if (damage.status == VehicleDamageStatus.FIXED) {
+            if (status == VehicleDamageStatus.PAID) {
                 DamageDetailRow(
                     icon = Icons.Default.Payment,
                     text = "Paid: ${AppHelpers.formatDateTime(damage.paidAt)}"

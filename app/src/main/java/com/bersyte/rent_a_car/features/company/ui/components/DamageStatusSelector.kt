@@ -14,13 +14,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.bersyte.rent_a_car.utils.enums.DamageStatus
+import com.bersyte.rent_a_car.utils.enums.ReturnDamageStatus
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DamageStatusSelector(
     selectedDamage: String,
-    onDamageSelected: (DamageStatus) -> Unit,
+    onDamageSelected: (ReturnDamageStatus) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -45,7 +45,7 @@ fun DamageStatusSelector(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            DamageStatus.entries.forEach { item ->
+            ReturnDamageStatus.entries.forEach { item ->
                 DropdownMenuItem(
                     text = { Text(item.name) },
                     onClick = {
