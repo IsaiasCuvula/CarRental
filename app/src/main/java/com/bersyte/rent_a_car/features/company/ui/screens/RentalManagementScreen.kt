@@ -135,6 +135,7 @@ fun RentalManagementScreen(
                    onSuccess = { data ->
                        if (data != null) {
                            AppHelpers.showToast(context, "Rental finalized successfully")
+                           showFinalizeBottomSheet = null
                        }
                    },
                    onError = { error ->

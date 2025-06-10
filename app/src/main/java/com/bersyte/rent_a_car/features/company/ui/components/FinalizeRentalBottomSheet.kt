@@ -94,8 +94,6 @@ fun FinalizeRentalBottomSheet(
 
             Button (
                 onClick = {
-                    onDismissRequest()
-
                     val request = FinalizeRentalRequest(
                         rentalCode = rental.rentalCode,
                         returnConditionReport = returnConditionReport,

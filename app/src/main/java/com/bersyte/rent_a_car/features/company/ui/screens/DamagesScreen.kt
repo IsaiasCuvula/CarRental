@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.bersyte.rent_a_car.features.company.ui.components.damage.DamageList
 import com.bersyte.rent_a_car.features.company.ui.components.damage.EmptyState
 import com.bersyte.rent_a_car.features.company.viewmodels.VehicleDamagesViewModel
@@ -30,7 +31,7 @@ import com.bersyte.rent_a_car.features.company.viewmodels.VehicleDamagesViewMode
 fun DamagesScreen(
     modifier: Modifier = Modifier,
     onCancel: () -> Unit,
-    viewModel: VehicleDamagesViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    viewModel: VehicleDamagesViewModel = hiltViewModel()
 ) {
     val damages by viewModel.damages.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()

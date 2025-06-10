@@ -32,6 +32,8 @@ class VehicleDamagesViewModel @Inject constructor(
     }
 
     fun loadDamages(onError:(String)-> Unit){
+        _isLoading.value = true
+
         viewModelScope.launch {
             try {
                 val response = repository.fetchAllDamages()
@@ -44,6 +46,8 @@ class VehicleDamagesViewModel @Inject constructor(
             } catch (e: Exception) {
                 Log.e("❌ FETCH_CAR_DAMAGE", "❌ EXCEPTION - $e")
                 e.localizedMessage?.let { onError(it) }
+            }finally {
+                _isLoading.value = false
             }
         }
     }
