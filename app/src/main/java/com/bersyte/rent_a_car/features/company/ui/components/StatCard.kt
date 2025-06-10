@@ -22,9 +22,12 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun StatCard(title: String, value: String, icon: ImageVector) {
+fun StatCard(
+    title: String, value: String, icon: ImageVector,
+    modifier: Modifier = Modifier,
+) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+       modifier = modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(

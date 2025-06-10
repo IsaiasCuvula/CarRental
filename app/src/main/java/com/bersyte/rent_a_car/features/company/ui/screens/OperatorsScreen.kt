@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.PeopleAlt
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -36,6 +37,7 @@ import com.bersyte.rent_a_car.common.ui.components.CommonSearchBar
 import com.bersyte.rent_a_car.common.ui.components.EmptyState
 import com.bersyte.rent_a_car.features.auth.viewmodels.AuthViewModel
 import com.bersyte.rent_a_car.features.company.ui.components.OperatorCard
+import com.bersyte.rent_a_car.features.company.ui.components.StatCard
 import com.bersyte.rent_a_car.features.company.viewmodels.OperatorViewModel
 import com.bersyte.rent_a_car.utils.enums.UserRole
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
@@ -69,9 +71,9 @@ fun OperatorsScreen(
     val filteredOperators = if (searchQuery.isBlank()) {
         allOperators
     } else {
-        allOperators.filter { customer ->
-            customer.name.contains(searchQuery, ignoreCase = true) ||
-                    customer.email.contains(searchQuery, ignoreCase = true)
+        allOperators.filter { operator ->
+            operator.name.contains(searchQuery, ignoreCase = true) ||
+                    operator.email.contains(searchQuery, ignoreCase = true)
         }
     }
     val focusManager = LocalFocusManager.current
@@ -115,6 +117,7 @@ fun OperatorsScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
+                .padding(16.dp)
         ){
             CommonSearchBar(
                 query = searchQuery,
@@ -123,7 +126,15 @@ fun OperatorsScreen(
                 onSearch = { focusManager.clearFocus() },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+
+            )
+
+            StatCard(
+                title = "",
+                value = "${allOperators.size}",
+                icon = Icons.Default.PeopleAlt,
+                modifier = Modifier
+                    .fillMaxWidth().padding(vertical =  16.dp)
             )
 
             if (filteredOperators.isEmpty()) {
@@ -137,7 +148,7 @@ fun OperatorsScreen(
                 )
             } else {
                 LazyColumn(
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                    contentPadding = PaddingValues(vertical = 8.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier.weight(1f)
                 ){

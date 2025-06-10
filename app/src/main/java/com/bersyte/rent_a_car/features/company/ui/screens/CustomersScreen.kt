@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.People
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -34,6 +35,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bersyte.rent_a_car.common.ui.components.CommonSearchBar
 import com.bersyte.rent_a_car.common.ui.components.CustomerCard
 import com.bersyte.rent_a_car.common.ui.components.EmptyState
+import com.bersyte.rent_a_car.features.company.ui.components.StatCard
 import com.bersyte.rent_a_car.features.company.viewmodels.OperatorViewModel
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
@@ -99,41 +101,48 @@ fun CustomersScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
+                .padding(16.dp)
         ){
             CommonSearchBar(
                 query = searchQuery,
                 onQueryChange = { searchQuery = it },
                 hintText = "Search customer by name or email",
                 onSearch = { focusManager.clearFocus() },
-                modifier = Modifier
-                      .fillMaxWidth()
-                      .padding(16.dp)
-              )
+                modifier = Modifier.fillMaxWidth()
+            )
 
-              if (filteredCustomers.isEmpty()) {
-                  EmptyState(
-                      title = "No customers found",
-                      message = "Add your first customer by tapping the + button",
-                      modifier = Modifier
-                          .fillMaxSize()
-                          .weight(1f)
-                          .padding(16.dp)
-                  )
-              } else {
-                  LazyColumn(
-                      contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                      verticalArrangement = Arrangement.spacedBy(12.dp),
-                      modifier = Modifier.weight(1f)
-                  ){
-                          items(filteredCustomers) { customer ->
-                              CustomerCard(
-                                  customer = customer,
-                                  onClick = { },
-                                  modifier = Modifier.fillMaxWidth()
-                              )
-                          }
-                      }
-              }
+            StatCard(
+                title = "",
+                value = "${allCustomers.size}",
+                icon = Icons.Default.People,
+                modifier =Modifier.fillMaxWidth()
+                    .padding(vertical = 16.dp)
+            )
+
+            if (filteredCustomers.isEmpty()) {
+                EmptyState(
+                    title = "No customers found",
+                    message = "Add your first customer by tapping the + button",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f)
+                        .padding(16.dp)
+                )
+            } else {
+                LazyColumn(
+                    contentPadding = PaddingValues(vertical = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.weight(1f)
+                ){
+                    items(filteredCustomers) { customer ->
+                        CustomerCard(
+                            customer = customer,
+                            onClick = { },
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                }
+            }
         }
     }
 }

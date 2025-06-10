@@ -9,7 +9,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.AppRegistration
 import androidx.compose.material.icons.filled.CarRental
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.Workspaces
@@ -28,7 +27,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import com.bersyte.rent_a_car.features.company.data.models.Operator
 import com.bersyte.rent_a_car.features.company.ui.components.ActionCard
-import com.bersyte.rent_a_car.features.company.ui.components.StatCard
 import com.bersyte.rent_a_car.features.company.ui.components.WelcomeCard
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -130,22 +128,5 @@ fun DashboardScreen(
                )
            }
         }
-
-       Row (
-           horizontalArrangement = Arrangement.spacedBy(16.dp),
-           modifier = Modifier.fillMaxWidth()
-       ){
-           StatCard(
-               title = "New entrie",
-               value = "23",
-               icon = Icons.Default.Home,
-           )
-
-           StatCard(
-               title = "New entrie",
-               value = "23",
-               icon = Icons.Default.Home,
-           )
-       }
     }
 }

@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ElectricCar
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -36,6 +37,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bersyte.rent_a_car.common.ui.components.AddCarScreen
 import com.bersyte.rent_a_car.common.ui.components.CommonSearchBar
 import com.bersyte.rent_a_car.common.ui.components.ScrollableFilterChips
+import com.bersyte.rent_a_car.features.company.ui.components.StatCard
 import com.bersyte.rent_a_car.features.company.viewmodels.OperatorViewModel
 import com.bersyte.rent_a_car.features.customers.home.ui.components.CarCard
 import com.bersyte.rent_a_car.utils.enums.CarType
@@ -124,6 +126,12 @@ fun CarsScreen(
                     onQueryChange = { searchQuery = it },
                     onSearch = { focusManager.clearFocus() },
                     hintText = "Search cars by model or type"
+                )
+
+                StatCard(
+                    title = "",
+                    value = "${allCars.size}",
+                    icon = Icons.Default.ElectricCar,
                 )
 
                 ScrollableFilterChips(

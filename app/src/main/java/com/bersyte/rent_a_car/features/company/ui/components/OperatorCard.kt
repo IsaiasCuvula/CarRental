@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.layout.Row
+import androidx.compose.material.icons.filled.Phone
 import com.bersyte.rent_a_car.common.ui.components.CustomerDetailRow
 import com.bersyte.rent_a_car.features.company.data.models.Operator
 
@@ -120,7 +121,7 @@ fun OperatorCard(
 
                 if(operator.phone !=null){
                     CustomerDetailRow(
-                        icon = Icons.Default.Person,
+                        icon = Icons.Default.Phone,
                         text = operator.phone
                     )
                 }
