@@ -1,6 +1,8 @@
 package com.bersyte.rent_a_car.features.customers.home.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DirectionsCar
@@ -23,6 +27,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -50,7 +56,6 @@ fun CarCard(
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column {
-            // Image section
             Box(modifier = Modifier.fillMaxWidth().height(200.dp)) {
                 Image(
                     painter = painterResource(id = R.drawable.car_holder),
@@ -78,7 +83,6 @@ fun CarCard(
                 }
             }
 
-            // Details section
             Column(modifier = Modifier.padding(16.dp)) {
                 Row (
                     verticalAlignment = Alignment.CenterVertically,
@@ -96,15 +100,30 @@ fun CarCard(
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "${car.model} ${car.year}",
-                    style = MaterialTheme.typography.titleSmall,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = "${car.model} ${car.year}",
+                        style = MaterialTheme.typography.titleSmall,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Box(
+                        modifier = Modifier
+                            .size(16.dp)
+                            .clip(CircleShape)
+                            .background(Color(car.color))
+                            .border(
+                                width = 1.dp,
+                                color = MaterialTheme.colorScheme.outline,
+                                shape = CircleShape
+                            )
+                    )
+                }
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Car type and seats
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier.fillMaxWidth()
@@ -122,7 +141,6 @@ fun CarCard(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Description excerpt
                 Text(
                     text = car.description.take(100) + if (car.description.length > 100) "..." else "",
                     style = MaterialTheme.typography.bodyMedium,
