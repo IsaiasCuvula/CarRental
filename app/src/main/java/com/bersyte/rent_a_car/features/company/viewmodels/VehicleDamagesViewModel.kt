@@ -32,34 +32,32 @@ class VehicleDamagesViewModel : ViewModel() {
     private fun sampleDamages(): List<VehicleDamage> {
         return listOf(
             VehicleDamage(
-                id = 1,
                 description = "Scratch on left rear door",
                 estimatedRepairCost = 250,
                 isPaid = true,
-                paidAt = LocalDateTime.now().minusDays(2),
-                reportedAt = LocalDateTime.now().minusDays(5),
-                fixedAt = LocalDateTime.now().minusDays(1),
+                paidAt = LocalDateTime.now().minusDays(2).toString(),
+                reportedAt = LocalDateTime.now().minusDays(5).toString(),
+                fixedAt = LocalDateTime.now().minusDays(1).toString(),
                 damageLocation = "Left rear door",
-                rentalId = 101,
-                carId = 202,
-                markAsPaidByEmployeeId = 303,
-                markAsFixedEmployeeId = 303,
-                status = VehicleDamageStatus.FIXED
+                rentalCode = "101",
+                carPlate = "202",
+                markAsPaidBy = "303",
+                markAsFixed = 303,
+                status = VehicleDamageStatus.FIXED.name
             ),
             VehicleDamage(
-                id = 2,
                 description = "Dent on front bumper",
                 estimatedRepairCost = 400,
                 isPaid = false,
-                paidAt = LocalDateTime.now(),
-                reportedAt = LocalDateTime.now().minusDays(1),
-                fixedAt = LocalDateTime.now(),
+                paidAt = LocalDateTime.now().toString(),
+                reportedAt = LocalDateTime.now().minusDays(1).toString(),
+                fixedAt = LocalDateTime.now().toString(),
                 damageLocation = "Front bumper",
-                rentalId = 101,
-                carId = 202,
-                markAsPaidByEmployeeId = null,
-                markAsFixedEmployeeId = null,
-                status = VehicleDamageStatus.PENDING
+                rentalCode = "104",
+                carPlate = "202",
+                markAsPaidBy = null,
+                markAsFixed = null,
+                status = VehicleDamageStatus.PENDING.name
             )
         )
     }
