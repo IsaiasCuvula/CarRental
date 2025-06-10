@@ -11,7 +11,8 @@ import com.bersyte.rent_a_car.common.data.models.Car
 import com.bersyte.rent_a_car.common.data.models.CarRequest
 import com.bersyte.rent_a_car.features.company.operator.data.models.CarRegistration
 import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustomerRequest
-import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustomerResponse
+import com.bersyte.rent_a_car.features.company.operator.data.models.CreateOperatorRequest
+import com.bersyte.rent_a_car.features.company.operator.data.models.CreateUserResponse
 import com.bersyte.rent_a_car.features.company.operator.data.models.FinalizeRentalRequest
 import com.bersyte.rent_a_car.features.company.operator.data.models.FinalizeRentalResponse
 import com.bersyte.rent_a_car.features.company.operator.data.models.RentingCarRequest
@@ -47,17 +48,62 @@ class OperatorViewModel @Inject constructor(
     private val _rentals = MutableStateFlow<List<Rental>>(listOf())
     val rentals = _rentals.asStateFlow()
 
+    private val _operators = MutableStateFlow<List<Operator>>(listOf())
+    val operators = _operators.asStateFlow()
+
 
     init {
         fetchOperator(onError = {})
         fetchAllCars(onError = {})
         fetchAllRegistrations(onError = {})
         fetchAllRentals(onError = {})
+        fetchAllOperators(onError = {})
     }
+
+    fun fetchAllOperators(onError:(String)-> Unit) {
+        viewModelScope.launch {
+            try {
+                val response = repository.fetchAllOperators()
+                Log.d("FETCH_OPERATORS", "$response")
+                _operators.value = response
+            }catch (e: HttpException) {
+                val error = e.response()?.errorBody()?.string()
+                Log.d("FETCH_OPERATORS", "Error body: $error")
+                error?.let { onError(error) }
+            } catch (e: Exception) {
+                Log.d("FETCH_OPERATORS", "EXCEPTION - $e")
+                e.localizedMessage?.let { onError(it) }
+            }
+        }
+    }
+
+
+
+    fun createOperator(
+        operator: CreateOperatorRequest,
+        onSuccess: (CreateUserResponse) -> Unit,
+        onError:(String)-> Unit
+    ){
+        viewModelScope.launch {
+            try {
+                val response = repository.createOperator(operator)
+                Log.d("CREATE_OPERATOR", "$response")
+                onSuccess(response)
+            }catch (e: HttpException) {
+                val error = e.response()?.errorBody()?.string()
+                Log.d("CREATE_OPERATOR", "Error body: $error")
+                error?.let { onError(error) }
+            } catch (e: Exception) {
+                Log.d("CREATE_OPERATOR", "EXCEPTION - $e")
+                e.localizedMessage?.let { onError(it) }
+            }
+        }
+    }
+
 
     fun createCustomer(
         customer: CreateCustomerRequest,
-        onSuccess: (CreateCustomerResponse) -> Unit,
+        onSuccess: (CreateUserResponse) -> Unit,
         onError:(String)-> Unit
     ){
         viewModelScope.launch {

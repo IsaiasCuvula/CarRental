@@ -2,7 +2,6 @@ package com.bersyte.rent_a_car.features.company.operator.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -12,18 +11,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
-import java.time.LocalDateTime
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Badge
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationCity
 import androidx.compose.material.icons.filled.Lock
@@ -34,36 +30,26 @@ import androidx.compose.material3.Button
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import com.bersyte.rent_a_car.common.ui.components.CommonTextField
-import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustomerRequest
-import com.bersyte.rent_a_car.features.customers.home.ui.components.ShowDatePickerDialog
-import com.bersyte.rent_a_car.utils.helpers.AppHelpers
+import com.bersyte.rent_a_car.features.company.operator.data.models.CreateOperatorRequest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddCustomerScreen(
-    onSave: (CreateCustomerRequest) -> Unit,
+fun AddOperatorScreen(
+    onSave: (CreateOperatorRequest) -> Unit,
     onCancel: () -> Unit
 ) {
+
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var phone by remember { mutableStateOf("") }
-    var idCardNumber by remember { mutableStateOf("") }
-    var driveLicense by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
     var city by remember { mutableStateOf("") }
     var state by remember { mutableStateOf("") }
     var street by remember { mutableStateOf("") }
-
-    var driveLicenseExpirationDate by remember {
-        mutableStateOf(LocalDateTime.now().plusYears(1))
-    }
-
-    var showDatePicker by remember { mutableStateOf(false) }
 
     val focusManager = LocalFocusManager.current
 
@@ -72,26 +58,22 @@ fun AddCustomerScreen(
         val isEmailValid = email.isNotBlank()
         val isPhoneValid =phone.isNotBlank()
         val isPasswordValid = password.isNotBlank()
-        val isIdCardValid =  idCardNumber.isNotBlank()
 
         val isCityValid =  city.isNotBlank()
         val isStreetValid =  state.isNotBlank()
         val isStateValid =  street.isNotBlank()
 
-        val isDriveLicenseValid = driveLicense.isNotBlank()
-        val isDriveLicenseExpirationValid =  driveLicenseExpirationDate.isAfter(LocalDateTime.now())
 
         return isEmailValid && isPasswordValid && isCityValid &&
                 isStreetValid && isStateValid &&
-                isNameValid && isPhoneValid && isIdCardValid &&
-                isDriveLicenseValid && isDriveLicenseExpirationValid
+                isNameValid && isPhoneValid
     }
 
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Add New Customer") },
+                title = { Text("Add New Operator") },
                 navigationIcon = {
                     IconButton(onClick = onCancel) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -169,49 +151,11 @@ fun AddCustomerScreen(
                         isError = street.isBlank(),
                     )
 
-                    CommonTextField(
-                        value = driveLicense,
-                        onValueChange = { driveLicense = it },
-                        label = "Driver License",
-                        icon = Icons.Default.Badge,
-                        isError = driveLicense.isBlank(),
-                    )
-
-                    CommonTextField(
-                        value = idCardNumber,
-                        onValueChange = { idCardNumber = it },
-                        label = "ID Card Number",
-                        icon = Icons.Default.Badge,
-                        isError = idCardNumber.isBlank(),
-                    )
-
-                    CommonTextField(
-                        value = driveLicense,
-                        onValueChange = { driveLicense = it },
-                        label = "Driver License",
-                        icon = Icons.Default.Badge,
-                        isError = driveLicense.isBlank(),
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(
-                            text = "License Expiration: ${driveLicenseExpirationDate.toLocalDate()}",
-                            modifier = Modifier.weight(1f)
-                        )
-                        Button(onClick = { showDatePicker = true}) {
-                            Text("Change")
-                        }
-                    }
-
                     Spacer(modifier = Modifier.padding(top = 12.dp))
                     Button(
                         onClick = {
                             focusManager.clearFocus()
-                            val customer= CreateCustomerRequest(
+                            val operator = CreateOperatorRequest(
                                 email,
                                 password,
                                 name,
@@ -219,31 +163,17 @@ fun AddCustomerScreen(
                                 street,
                                 state,
                                 city,
-                                driveLicense,
-                                idCardNumber,
-                                driveLicenseExpirationDate.toString()
                             )
-                            onSave(customer)
+                            onSave(operator)
                         },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(12.dp),
                         enabled = validate()
                     ) {
-                        Text(text = "Save Customer")
+                        Text(text = "Save Operator")
                     }
                 }
             }
         }
-    }
-
-    if (showDatePicker) {
-        ShowDatePickerDialog(
-            onDismiss = { showDatePicker = false },
-            onDateSelected = { dateLong ->
-                if(dateLong != null){
-                    driveLicenseExpirationDate =AppHelpers.longToLocalDateTime(dateLong)
-                }
-            }
-        )
     }
 }

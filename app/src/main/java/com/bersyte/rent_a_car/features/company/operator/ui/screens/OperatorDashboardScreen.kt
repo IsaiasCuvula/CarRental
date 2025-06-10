@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.AppRegistration
 import androidx.compose.material.icons.filled.CarRental
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.PersonAdd
+import androidx.compose.material.icons.filled.Workspaces
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
@@ -100,6 +101,28 @@ fun OperatorDashboardScreen(
                    icon = Icons.Default.CarRental,
                    onClick = {
                        navController.navigate("rentalRequests")
+                   },
+                   modifier = Modifier.weight(1f)
+               )
+               ActionCard(
+                   title = "Registrations",
+                   icon = Icons.Default.AppRegistration,
+                   onClick = {
+                       navController.navigate("carRegistrations")
+                   },
+                   modifier = Modifier.weight(1f)
+               )
+           }
+
+           Row(
+               horizontalArrangement = Arrangement.spacedBy(16.dp),
+               modifier = Modifier.fillMaxWidth()
+           ) {
+               ActionCard(
+                   title = "Operators",
+                   icon = Icons.Default.Workspaces,
+                   onClick = {
+                       navController.navigate("operators")
                    },
                    modifier = Modifier.weight(1f)
                )

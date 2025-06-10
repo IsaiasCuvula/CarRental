@@ -1,4 +1,5 @@
 package com.bersyte.rent_a_car.features.company.operator.ui.screens
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -32,27 +33,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bersyte.rent_a_car.common.ui.components.CommonSearchBar
-import com.bersyte.rent_a_car.common.ui.components.CustomerCard
 import com.bersyte.rent_a_car.common.ui.components.EmptyState
+import com.bersyte.rent_a_car.features.company.operator.ui.components.OperatorCard
 import com.bersyte.rent_a_car.features.company.operator.viewmodels.OperatorViewModel
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomersScreen(
+fun OperatorsScreen(
     modifier: Modifier = Modifier,
     onCancel: () -> Unit,
-    onAddCustomer: () -> Unit,
+    onAddOperator: () -> Unit,
     viewModel: OperatorViewModel = hiltViewModel()
 ) {
-
     val context = LocalContext.current
-    val allCustomersState= viewModel.customers.collectAsState()
-    val allCustomers = allCustomersState.value
+    val allOperatorsState= viewModel.operators.collectAsState()
+    val allOperators = allOperatorsState.value
 
     LaunchedEffect(Unit) {
-        viewModel.fetchAllCustomers(
+        viewModel.fetchAllOperators(
             onError = { error ->
                 AppHelpers.showToast(context, error)
             }
@@ -60,10 +59,10 @@ fun CustomersScreen(
     }
 
     var searchQuery by remember { mutableStateOf("") }
-    val filteredCustomers = if (searchQuery.isBlank()) {
-        allCustomers
+    val filteredOperators = if (searchQuery.isBlank()) {
+        allOperators
     } else {
-        allCustomers.filter { customer ->
+        allOperators.filter { customer ->
             customer.name.contains(searchQuery, ignoreCase = true) ||
                     customer.email.contains(searchQuery, ignoreCase = true)
         }
@@ -73,7 +72,7 @@ fun CustomersScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Customers", fontWeight = FontWeight.Bold) },
+                title = { Text("Operators", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onCancel) {
                         Icon(
@@ -86,11 +85,11 @@ fun CustomersScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick =onAddCustomer,
+                onClick =onAddOperator,
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Customer")
+                Icon(Icons.Default.Add, contentDescription = "Add Operator")
             }
         },
         modifier = modifier
@@ -103,37 +102,37 @@ fun CustomersScreen(
             CommonSearchBar(
                 query = searchQuery,
                 onQueryChange = { searchQuery = it },
-                hintText = "Search customer by name or email",
+                hintText = "Search operator by name or email",
                 onSearch = { focusManager.clearFocus() },
                 modifier = Modifier
-                      .fillMaxWidth()
-                      .padding(16.dp)
-              )
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            )
 
-              if (filteredCustomers.isEmpty()) {
-                  EmptyState(
-                      title = "No customers found",
-                      message = "Add your first customer by tapping the + button",
-                      modifier = Modifier
-                          .fillMaxSize()
-                          .weight(1f)
-                          .padding(16.dp)
-                  )
-              } else {
-                  LazyColumn(
-                      contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                      verticalArrangement = Arrangement.spacedBy(12.dp),
-                      modifier = Modifier.weight(1f)
-                  ){
-                          items(filteredCustomers) { customer ->
-                              CustomerCard(
-                                  customer = customer,
-                                  onClick = { },
-                                  modifier = Modifier.fillMaxWidth()
-                              )
-                          }
-                      }
-              }
+            if (filteredOperators.isEmpty()) {
+                EmptyState(
+                    title = "No operators found",
+                    message = "Add your first operator by tapping the + button",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f)
+                        .padding(16.dp)
+                )
+            } else {
+                LazyColumn(
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.weight(1f)
+                ){
+                    items(filteredOperators) { operator ->
+                        OperatorCard(
+                            operator = operator,
+                            onClick = {},
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                }
+            }
         }
     }
 }

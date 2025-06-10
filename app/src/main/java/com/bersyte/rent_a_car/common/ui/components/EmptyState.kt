@@ -16,7 +16,11 @@ import androidx.compose.ui.unit.dp
 import com.bersyte.rent_a_car.R
 
 @Composable
-fun EmptyState(modifier: Modifier = Modifier) {
+fun EmptyState(
+    modifier: Modifier = Modifier,
+    title: String,
+    message: String,
+) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
@@ -24,17 +28,17 @@ fun EmptyState(modifier: Modifier = Modifier) {
     ) {
         Image(
             painter = painterResource(id = R.drawable.car_rental),
-            contentDescription = "No customers",
+            contentDescription = "Empty list state",
             modifier = Modifier.size(120.dp)
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "No customers found",
+            text = title,
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
         )
         Text(
-            text = "Add your first customer by tapping the + button",
+            text = message,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
         )

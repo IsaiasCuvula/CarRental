@@ -11,10 +11,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.bersyte.rent_a_car.features.auth.viewmodels.AuthViewModel
 import com.bersyte.rent_a_car.features.company.operator.ui.screens.AddCustomerScreen
+import com.bersyte.rent_a_car.features.company.operator.ui.screens.AddOperatorScreen
 import com.bersyte.rent_a_car.features.company.operator.ui.screens.CarRegistrationsScreen
 import com.bersyte.rent_a_car.features.company.operator.ui.screens.CarsScreen
 import com.bersyte.rent_a_car.features.company.operator.ui.screens.CustomersScreen
 import com.bersyte.rent_a_car.features.company.operator.ui.screens.OperatorDashboardScreen
+import com.bersyte.rent_a_car.features.company.operator.ui.screens.OperatorsScreen
 import com.bersyte.rent_a_car.features.company.operator.ui.screens.RentalManagementScreen
 import com.bersyte.rent_a_car.features.company.operator.viewmodels.OperatorViewModel
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
@@ -77,6 +79,29 @@ fun OperatorNavigationGraph(
             )
         }
 
+        composable("addOperator") {
+            AddOperatorScreen(
+                onSave = { operatorRequest ->
+                    viewModel.createOperator(
+                        operatorRequest, onSuccess = {customer ->
+
+                            if(customer.email.isNotBlank()){
+                                AppHelpers.showToast(context,
+                                    "Operator Created Successfully"
+                                )
+                                childNavController.popBackStack()
+                            }
+                        },
+                        onError = {error->
+                            AppHelpers.showToast(context, "Something ent wrong \n$error")
+                        }
+                    )
+
+                },
+                onCancel = { childNavController.popBackStack() }
+            )
+        }
+
         composable("carRegistrations") {
             CarRegistrationsScreen(
                 onBack = { childNavController.popBackStack() }
@@ -99,6 +124,13 @@ fun OperatorNavigationGraph(
             CustomersScreen(
                 onCancel = {childNavController.popBackStack()},
                 onAddCustomer = { childNavController.navigate("addCustomer") },
+            )
+        }
+
+        composable("operators") {
+            OperatorsScreen(
+                onCancel = {childNavController.popBackStack()},
+                onAddOperator = { childNavController.navigate("addOperator") },
             )
         }
     }

@@ -48,97 +48,97 @@ fun CustomerCard(
         ),
         shape = RoundedCornerShape(12.dp)
     ){
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(56.dp)
-                ){
-                            AsyncImage(
-                                model = "https://i.pravatar.cc/150?img=${customer.name.hashCode() % 70}",
-                                contentDescription = "Customer Avatar",
-                                modifier = Modifier
-                                    .size(56.dp)
-                                    .clip(CircleShape),
-                                contentScale = ContentScale.Crop,
-                                placeholder = painterResource(id = R.drawable.car_rental),
-                                error = painterResource(id = R.drawable.car_rental)
-                            )
-                        }
-
-                            Spacer(modifier = Modifier.size(16.dp))
-
-                            // Customer Details
-                            Column(
-                            modifier = Modifier.weight(1f)
-                            ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text(
-                                text = customer.name,
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-
-                            // Role badge
-                            Box(
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(8.dp))
-                                    .background(
-                                        when (customer.role) {
-                                            UserRole.ADMIN -> MaterialTheme.colorScheme.errorContainer
-                                            UserRole.OPERATOR -> MaterialTheme.colorScheme.tertiaryContainer
-                                            else -> MaterialTheme.colorScheme.secondaryContainer
-                                        }
-                                    )
-                                    .padding(horizontal = 8.dp, vertical = 4.dp)
-                            ) {
-                                Text(
-                                    text = customer.role.name,
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = when (customer.role) {
-                                        UserRole.ADMIN -> MaterialTheme.colorScheme.onErrorContainer
-                                        UserRole.OPERATOR -> MaterialTheme.colorScheme.onTertiaryContainer
-                                        else -> MaterialTheme.colorScheme.onSecondaryContainer
-                                    }
-                                )
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(4.dp))
-
-                        CustomerDetailRow(
-                            icon = Icons.Default.Person,
-                            text = customer.email
-                        )
-
-                        if(customer.phone !=null){
-                           CustomerDetailRow(
-                               icon = Icons.Default.Person,
-                               text = customer.phone
-                           )
-                        }
-
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        // Loyalty points
-                        Text(
-                            text = "${customer.loyaltyPoints} loyalty points",
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.primary,
-                            fontWeight = FontWeight.Medium
-                        )
-                                   }
-                }
+       Row(
+           modifier = Modifier
+               .fillMaxWidth()
+               .padding(16.dp),
+           verticalAlignment = Alignment.CenterVertically
+       ) {
+           Box(
+               modifier = Modifier
+                   .size(56.dp)
+           ){
+                 AsyncImage(
+                     model = "https://i.pravatar.cc/150?img=${customer.name.hashCode() % 70}",
+                     contentDescription = "Customer Avatar",
+                     modifier = Modifier
+                         .size(56.dp)
+                         .clip(CircleShape),
+                     contentScale = ContentScale.Crop,
+                     placeholder = painterResource(id = R.drawable.car_rental),
+                     error = painterResource(id = R.drawable.car_rental)
+                 )
              }
+
+                 Spacer(modifier = Modifier.size(16.dp))
+
+                 // Customer Details
+                 Column(
+                 modifier = Modifier.weight(1f)
+                 ) {
+             Row(
+                 modifier = Modifier.fillMaxWidth(),
+                 horizontalArrangement = Arrangement.SpaceBetween
+             ) {
+                 Text(
+                     text = customer.name,
+                     style = MaterialTheme.typography.titleMedium,
+                     fontWeight = FontWeight.Bold,
+                     maxLines = 1,
+                     overflow = TextOverflow.Ellipsis
+                 )
+
+                 // Role badge
+                 Box(
+                     modifier = Modifier
+                         .clip(RoundedCornerShape(8.dp))
+                         .background(
+                             when (customer.role) {
+                                 UserRole.ADMIN -> MaterialTheme.colorScheme.errorContainer
+                                 UserRole.OPERATOR -> MaterialTheme.colorScheme.tertiaryContainer
+                                 else -> MaterialTheme.colorScheme.secondaryContainer
+                             }
+                         )
+                         .padding(horizontal = 8.dp, vertical = 4.dp)
+                 ) {
+                     Text(
+                         text = customer.role.name,
+                         style = MaterialTheme.typography.labelSmall,
+                         color = when (customer.role) {
+                             UserRole.ADMIN -> MaterialTheme.colorScheme.onErrorContainer
+                             UserRole.OPERATOR -> MaterialTheme.colorScheme.onTertiaryContainer
+                             else -> MaterialTheme.colorScheme.onSecondaryContainer
+                         }
+                     )
+                 }
+             }
+
+             Spacer(modifier = Modifier.height(4.dp))
+
+             CustomerDetailRow(
+                 icon = Icons.Default.Person,
+                 text = customer.email
+             )
+
+             if(customer.phone !=null){
+                CustomerDetailRow(
+                    icon = Icons.Default.Person,
+                    text = customer.phone
+                )
+             }
+
+
+             Spacer(modifier = Modifier.height(8.dp))
+
+
+             Text(
+                 text = "${customer.loyaltyPoints} loyalty points",
+                 style = MaterialTheme.typography.labelMedium,
+                 color = MaterialTheme.colorScheme.primary,
+                 fontWeight = FontWeight.Medium
+             )
+          }
+       }
+    }
 
 }

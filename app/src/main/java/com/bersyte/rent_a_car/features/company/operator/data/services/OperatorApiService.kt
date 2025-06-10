@@ -7,7 +7,8 @@ import com.bersyte.rent_a_car.common.data.models.CarRequest
 import com.bersyte.rent_a_car.features.company.admin.data.models.Operator
 import com.bersyte.rent_a_car.features.company.operator.data.models.CarRegistration
 import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustomerRequest
-import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustomerResponse
+import com.bersyte.rent_a_car.features.company.operator.data.models.CreateUserResponse
+import com.bersyte.rent_a_car.features.company.operator.data.models.CreateOperatorRequest
 import com.bersyte.rent_a_car.features.company.operator.data.models.FinalizeRentalRequest
 import com.bersyte.rent_a_car.features.company.operator.data.models.FinalizeRentalResponse
 import com.bersyte.rent_a_car.features.company.operator.data.models.RentingCarRequest
@@ -19,6 +20,9 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface OperatorApiService {
+
+    @POST("api/v1/admin/create-operator")
+    suspend fun createOperator(@Body request: CreateOperatorRequest): CreateUserResponse
 
     @POST("api/v1/rentals/renting")
     suspend fun approveRental(@Body request: RentingCarRequest): Rental
@@ -47,10 +51,13 @@ interface OperatorApiService {
     @GET("/api/v1/customers")
     suspend fun fetchAllCustomers(): List<Customer>
 
+    @GET("/api/v1/operators")
+    suspend fun fetchAllOperators(): List<Operator>
+
     @GET("/api/v1/cars")
     suspend fun fetchAllCars(): List<Car>
 
     @POST("/api/v1/operators/create-customer")
-    suspend fun createCustomer(@Body customer: CreateCustomerRequest): CreateCustomerResponse
+    suspend fun createCustomer(@Body customer: CreateCustomerRequest): CreateUserResponse
 
 }
