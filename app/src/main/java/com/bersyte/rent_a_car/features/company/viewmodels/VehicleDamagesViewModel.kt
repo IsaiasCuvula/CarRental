@@ -31,7 +31,7 @@ class VehicleDamagesViewModel @Inject constructor(
         loadDamages(onError = {})
     }
 
-    fun loadDamages(onError:(String)-> Unit){
+    private fun loadDamages(onError:(String)-> Unit){
         _isLoading.value = true
 
         viewModelScope.launch {

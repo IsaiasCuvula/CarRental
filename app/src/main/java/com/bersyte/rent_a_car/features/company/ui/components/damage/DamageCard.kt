@@ -1,5 +1,6 @@
 package com.bersyte.rent_a_car.features.company.ui.components.damage
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,10 @@ import com.bersyte.rent_a_car.features.company.data.models.VehicleDamage
 import com.bersyte.rent_a_car.utils.enums.VehicleDamageStatus
 import androidx.compose.ui.Modifier
 import androidx.compose.material3.Text
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 
@@ -32,12 +37,20 @@ fun DamageCard(damage: VehicleDamage) {
 
     val status = VehicleDamageStatus.valueOf(damage.status)
 
+
+    var showUpdateDamageOption by remember { mutableStateOf<VehicleDamage?>(null) }
+
     Card(
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        modifier = Modifier.clickable(
+            onClick = {
+                showUpdateDamageOption = damage
+            }
+        ),
     ) {
         Column(
             modifier = Modifier
@@ -92,5 +105,12 @@ fun DamageCard(damage: VehicleDamage) {
                 )
             }
         }
+    }
+
+    showUpdateDamageOption?.let { selectedDamage ->
+        UpdateDamage(
+            onDismissRequest ={ showUpdateDamageOption = null},
+            damage = selectedDamage,
+        )
     }
 }
