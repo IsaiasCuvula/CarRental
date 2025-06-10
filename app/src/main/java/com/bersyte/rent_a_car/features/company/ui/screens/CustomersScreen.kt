@@ -36,7 +36,7 @@ import com.bersyte.rent_a_car.common.ui.components.CommonSearchBar
 import com.bersyte.rent_a_car.common.ui.components.CustomerCard
 import com.bersyte.rent_a_car.common.ui.components.EmptyState
 import com.bersyte.rent_a_car.features.company.ui.components.StatCard
-import com.bersyte.rent_a_car.features.company.viewmodels.OperatorViewModel
+import com.bersyte.rent_a_car.features.company.viewmodels.CompanyViewModel
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 
@@ -46,7 +46,7 @@ fun CustomersScreen(
     modifier: Modifier = Modifier,
     onCancel: () -> Unit,
     onAddCustomer: () -> Unit,
-    viewModel: OperatorViewModel = hiltViewModel()
+    viewModel: CompanyViewModel = hiltViewModel()
 ) {
 
     val context = LocalContext.current

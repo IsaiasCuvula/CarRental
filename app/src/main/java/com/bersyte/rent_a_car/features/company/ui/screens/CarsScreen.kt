@@ -38,7 +38,7 @@ import com.bersyte.rent_a_car.common.ui.components.AddCarScreen
 import com.bersyte.rent_a_car.common.ui.components.CommonSearchBar
 import com.bersyte.rent_a_car.common.ui.components.ScrollableFilterChips
 import com.bersyte.rent_a_car.features.company.ui.components.StatCard
-import com.bersyte.rent_a_car.features.company.viewmodels.OperatorViewModel
+import com.bersyte.rent_a_car.features.company.viewmodels.CompanyViewModel
 import com.bersyte.rent_a_car.features.customers.home.ui.components.CarCard
 import com.bersyte.rent_a_car.utils.enums.CarType
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
@@ -47,7 +47,7 @@ import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 @Composable
 fun CarsScreen(
     onCancel: () -> Unit,
-    viewModel: OperatorViewModel = hiltViewModel()
+    viewModel: CompanyViewModel = hiltViewModel()
 ) {
 
     var showAddCarScreen by remember { mutableStateOf(false) }

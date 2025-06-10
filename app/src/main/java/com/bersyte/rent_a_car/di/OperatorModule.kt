@@ -1,6 +1,6 @@
 package com.bersyte.rent_a_car.di
 
-import com.bersyte.rent_a_car.features.company.data.repositories.OperatorRepository
+import com.bersyte.rent_a_car.features.company.data.repositories.CompanyRepository
 import com.bersyte.rent_a_car.features.company.data.services.OperatorApiService
 import dagger.Module
 import dagger.Provides
@@ -21,7 +21,7 @@ object OperatorModule {
 
     @Provides
     @Singleton
-    fun provideOperatorRepository(apiService: OperatorApiService): OperatorRepository {
-        return OperatorRepository(apiService)
+    fun provideOperatorRepository(apiService: OperatorApiService): CompanyRepository {
+        return CompanyRepository(apiService)
     }
 }

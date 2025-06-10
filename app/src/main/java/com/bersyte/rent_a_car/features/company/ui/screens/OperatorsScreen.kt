@@ -38,7 +38,7 @@ import com.bersyte.rent_a_car.common.ui.components.EmptyState
 import com.bersyte.rent_a_car.features.auth.viewmodels.AuthViewModel
 import com.bersyte.rent_a_car.features.company.ui.components.OperatorCard
 import com.bersyte.rent_a_car.features.company.ui.components.StatCard
-import com.bersyte.rent_a_car.features.company.viewmodels.OperatorViewModel
+import com.bersyte.rent_a_car.features.company.viewmodels.CompanyViewModel
 import com.bersyte.rent_a_car.utils.enums.UserRole
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
@@ -48,7 +48,7 @@ fun OperatorsScreen(
     modifier: Modifier = Modifier,
     onCancel: () -> Unit,
     onAddOperator: () -> Unit,
-    viewModel: OperatorViewModel = hiltViewModel(),
+    viewModel: CompanyViewModel = hiltViewModel(),
     authViewModel: AuthViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current

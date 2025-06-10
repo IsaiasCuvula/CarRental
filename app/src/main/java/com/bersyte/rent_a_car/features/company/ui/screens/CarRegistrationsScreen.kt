@@ -30,7 +30,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bersyte.rent_a_car.common.ui.components.CommonSearchBar
 import com.bersyte.rent_a_car.common.ui.components.ScrollableFilterChips
-import com.bersyte.rent_a_car.features.company.viewmodels.OperatorViewModel
+import com.bersyte.rent_a_car.features.company.viewmodels.CompanyViewModel
 import com.bersyte.rent_a_car.utils.enums.RegistrationStatus
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
@@ -39,7 +39,7 @@ import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 @Composable
 fun CarRegistrationsScreen(
     onBack: () -> Unit,
-    viewModel: OperatorViewModel = hiltViewModel()
+    viewModel: CompanyViewModel = hiltViewModel()
 
 ) {
     val registrationsState= viewModel.registrations.collectAsState()

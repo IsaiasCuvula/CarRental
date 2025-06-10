@@ -10,7 +10,7 @@ import com.bersyte.rent_a_car.features.company.data.models.UpdateCarRegistration
 import com.bersyte.rent_a_car.features.company.data.services.OperatorApiService
 import javax.inject.Inject
 
-class OperatorRepository @Inject constructor(
+class CompanyRepository @Inject constructor(
     private val apiService: OperatorApiService
 ) {
     suspend fun fetchOperator() = apiService.fetchOperator()

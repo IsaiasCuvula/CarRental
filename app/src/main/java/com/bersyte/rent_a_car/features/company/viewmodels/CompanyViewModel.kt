@@ -2,7 +2,7 @@ package com.bersyte.rent_a_car.features.company.viewmodels
 
 import android.util.Log
 import com.bersyte.rent_a_car.features.company.data.models.Operator
-import com.bersyte.rent_a_car.features.company.data.repositories.OperatorRepository
+import com.bersyte.rent_a_car.features.company.data.repositories.CompanyRepository
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -28,8 +28,8 @@ import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
-class OperatorViewModel @Inject constructor(
-    private val repository: OperatorRepository
+class CompanyViewModel @Inject constructor(
+    private val repository: CompanyRepository
 ) : ViewModel() {
 
     private val _operator = MutableStateFlow<Operator?>(null)

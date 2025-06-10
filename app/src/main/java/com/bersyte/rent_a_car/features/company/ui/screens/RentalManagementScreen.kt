@@ -32,7 +32,7 @@ import com.bersyte.rent_a_car.features.company.data.models.RentingCarRequest
 import com.bersyte.rent_a_car.features.company.ui.components.EnterInitialConditions
 import com.bersyte.rent_a_car.features.company.ui.components.FinalizeRentalBottomSheet
 import com.bersyte.rent_a_car.features.company.ui.components.RentalRequestCard
-import com.bersyte.rent_a_car.features.company.viewmodels.OperatorViewModel
+import com.bersyte.rent_a_car.features.company.viewmodels.CompanyViewModel
 import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
 import com.bersyte.rent_a_car.utils.enums.RentalStatus
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
@@ -41,7 +41,7 @@ import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 @Composable
 fun RentalManagementScreen(
     onBack: () -> Unit,
-    viewModel: OperatorViewModel = hiltViewModel()
+    viewModel: CompanyViewModel = hiltViewModel()
 ) {
 
     val rentalStatusOptions = RentalStatus.entries.map { it.name }
