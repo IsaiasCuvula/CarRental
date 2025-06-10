@@ -1,6 +1,5 @@
 package com.bersyte.rent_a_car.features.company.ui.screens
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,13 +33,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.bersyte.rent_a_car.common.ui.components.AddCarScreen
+import com.bersyte.rent_a_car.common.ui.screens.AddCarScreen
 import com.bersyte.rent_a_car.common.ui.components.CommonSearchBar
 import com.bersyte.rent_a_car.common.ui.components.ScrollableFilterChips
+import com.bersyte.rent_a_car.common.ui.components.VerticalSpace
 import com.bersyte.rent_a_car.features.company.ui.components.StatCard
 import com.bersyte.rent_a_car.features.company.viewmodels.CompanyViewModel
 import com.bersyte.rent_a_car.features.customers.home.ui.components.CarCard
+import com.bersyte.rent_a_car.utils.enums.CarClass
+import com.bersyte.rent_a_car.utils.enums.CarStatus
 import com.bersyte.rent_a_car.utils.enums.CarType
+import com.bersyte.rent_a_car.utils.enums.FuelType
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -64,24 +67,54 @@ fun CarsScreen(
         )
     }
 
-    val filterOptions = CarType.getAllFilterOptions()
-    var selectedFilter by remember { mutableIntStateOf(0) }
+    val filterCarTypeOptions = CarType.getAllFilterOptions()
+    var selectedCarType by remember { mutableIntStateOf(0)}
     var searchQuery by remember { mutableStateOf("") }
 
-    val filteredCars = remember(allCars, selectedFilter, searchQuery) {
-        // First filter by type if something other than "All" is selected
-        val typeFilteredCars = if (selectedFilter == 0) {
+    val filterCarClassOptions = CarClass.entries.map { it.name }
+    val filterFuelTypeOptions = FuelType.entries.map { it.displayName }
+
+    val filterCarStatusOptions = CarStatus.entries.map { it.name }
+
+    var selectedCarClass by remember { mutableStateOf<CarClass?>(null) }
+    var selectedFuelType by remember { mutableStateOf<FuelType?>(null) }
+    var selectedCarStatus by remember { mutableStateOf<CarStatus?>(null) }
+
+    var selectedYearRange by remember { mutableStateOf<ClosedFloatingPointRange<Int>?>(null) }
+
+
+    val filteredCars = remember(
+        allCars, selectedCarType, searchQuery,
+        selectedCarClass, selectedFuelType, selectedYearRange,
+        selectedCarStatus,
+    ) {
+        val typeFilteredCars = if (selectedCarType == 0) {
             allCars
         } else {
-            val selectedType = CarType.fromDisplayName(filterOptions[selectedFilter])
+            val selectedType = CarType.fromDisplayName(filterCarTypeOptions[selectedCarType])
             allCars.filter { car -> CarType.valueOf(car.carType) == selectedType }
         }
 
-        // Then apply search filter
+        val classFilteredCars = selectedCarClass?.let { carClass ->
+            typeFilteredCars.filter { it.carClass == carClass.name }
+        } ?: typeFilteredCars
+
+        val fuelFilteredCars = selectedFuelType?.let { fuelType ->
+            classFilteredCars.filter { it.fuelType == fuelType.name }
+        } ?: classFilteredCars
+
+        val statusFilteredCars = selectedCarStatus?.let { status ->
+            fuelFilteredCars.filter { it.carStatus == status.name }
+        } ?: fuelFilteredCars
+
+        val yearFilteredCars = selectedYearRange?.let { range ->
+            statusFilteredCars.filter { it.year in range }
+        } ?: statusFilteredCars
+
         if (searchQuery.isEmpty()) {
-            typeFilteredCars
+            yearFilteredCars
         } else {
-            typeFilteredCars.filter { car ->
+            yearFilteredCars.filter { car ->
                 car.name.contains(searchQuery, ignoreCase = true) ||
                         car.model.contains(searchQuery, ignoreCase = true) ||
                         car.description.contains(searchQuery, ignoreCase = true)
@@ -118,8 +151,7 @@ fun CarsScreen(
                 modifier = Modifier
                     .padding(innerPadding)
                     .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                    .padding(horizontal = 16.dp),
             ) {
                 CommonSearchBar(
                     query = searchQuery,
@@ -127,18 +159,46 @@ fun CarsScreen(
                     onSearch = { focusManager.clearFocus() },
                     hintText = "Search cars by model or type"
                 )
-
+                VerticalSpace()
                 StatCard(
                     title = "",
                     value = "${allCars.size}",
                     icon = Icons.Default.ElectricCar,
                 )
+                VerticalSpace()
+                ScrollableFilterChips(
+                    options = filterCarTypeOptions,
+                    selectedIndex = selectedCarType,
+                    onSelected = { selectedCarType = it }
+                )
+                ScrollableFilterChips(
+                    options = filterFuelTypeOptions,
+                    selectedIndex = filterFuelTypeOptions.indexOf(selectedFuelType?.displayName),
+                    onSelected = { index ->
+                        val option = filterFuelTypeOptions[index]
+                        selectedFuelType = if (selectedFuelType?.displayName == option) null
+                        else FuelType.entries.first { it.displayName == option }
+                    }
+                )
 
                 ScrollableFilterChips(
-                    options = filterOptions,
-                    selectedIndex = selectedFilter,
-                    onSelected = { selectedFilter = it }
+                    options = filterCarStatusOptions,
+                    selectedIndex = filterCarStatusOptions.indexOf(selectedCarStatus?.name),
+                    onSelected = { index ->
+                        val option = filterCarStatusOptions[index]
+                        selectedCarStatus = if (selectedCarStatus?.name == option) null else CarStatus.valueOf(option)
+                    }
                 )
+
+                ScrollableFilterChips(
+                    options = filterCarClassOptions,
+                    selectedIndex = filterCarClassOptions.indexOf(selectedCarClass?.name),
+                    onSelected = { index ->
+                        val option = filterCarClassOptions[index]
+                        selectedCarClass = if (selectedCarClass?.name == option) null else CarClass.valueOf(option)
+                    }
+                )
+
 
                 LazyColumn(
                    modifier = Modifier.fillMaxSize(),

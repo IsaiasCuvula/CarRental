@@ -56,7 +56,7 @@ fun CarCard(
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column {
-            Box(modifier = Modifier.fillMaxWidth().height(200.dp)) {
+            Box(modifier = Modifier.fillMaxWidth().height(160.dp)) {
                 Image(
                     painter = painterResource(id = R.drawable.car_holder),
                     contentDescription = "${car.model} image",
