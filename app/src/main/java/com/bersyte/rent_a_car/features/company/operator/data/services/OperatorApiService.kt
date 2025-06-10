@@ -4,7 +4,7 @@ package com.bersyte.rent_a_car.features.company.operator.data.services
 import com.bersyte.rent_a_car.common.data.models.CancelRental
 import com.bersyte.rent_a_car.common.data.models.Car
 import com.bersyte.rent_a_car.common.data.models.CarRequest
-import com.bersyte.rent_a_car.features.company.admin.data.models.Operator
+import com.bersyte.rent_a_car.features.company.operator.data.models.Operator
 import com.bersyte.rent_a_car.features.company.operator.data.models.CarRegistration
 import com.bersyte.rent_a_car.features.company.operator.data.models.CreateCustomerRequest
 import com.bersyte.rent_a_car.features.company.operator.data.models.CreateUserResponse
@@ -46,7 +46,7 @@ interface OperatorApiService {
     suspend fun registerCar(@Body carRequest: CarRequest): Car
 
     @GET("/api/v1/operators/current")
-    suspend fun fetchOperator():Operator
+    suspend fun fetchOperator(): Operator
 
     @GET("/api/v1/customers")
     suspend fun fetchAllCustomers(): List<Customer>

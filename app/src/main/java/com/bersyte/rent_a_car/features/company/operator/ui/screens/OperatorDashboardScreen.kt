@@ -26,7 +26,7 @@ import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
-import com.bersyte.rent_a_car.features.company.admin.data.models.Operator
+import com.bersyte.rent_a_car.features.company.operator.data.models.Operator
 import com.bersyte.rent_a_car.features.company.operator.ui.components.ActionCard
 
 @OptIn(ExperimentalMaterial3Api::class)

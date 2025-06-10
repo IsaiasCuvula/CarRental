@@ -24,7 +24,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.bersyte.rent_a_car.R
-import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
 import com.bersyte.rent_a_car.utils.enums.UserRole
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
@@ -32,7 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.layout.Row
 import com.bersyte.rent_a_car.common.ui.components.CustomerDetailRow
-import com.bersyte.rent_a_car.features.company.admin.data.models.Operator
+import com.bersyte.rent_a_car.features.company.operator.data.models.Operator
 
 
 @Composable

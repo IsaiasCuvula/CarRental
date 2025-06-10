@@ -1,7 +1,7 @@
 package com.bersyte.rent_a_car.features.company.operator.viewmodels
 
 import android.util.Log
-import com.bersyte.rent_a_car.features.company.admin.data.models.Operator
+import com.bersyte.rent_a_car.features.company.operator.data.models.Operator
 import com.bersyte.rent_a_car.features.company.operator.data.repositories.OperatorRepository
 
 import androidx.lifecycle.ViewModel

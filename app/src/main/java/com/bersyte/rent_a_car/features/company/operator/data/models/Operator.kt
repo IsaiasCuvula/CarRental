@@ -1,4 +1,4 @@
-package com.bersyte.rent_a_car.features.company.admin.data.models
+package com.bersyte.rent_a_car.features.company.operator.data.models
 
 import com.bersyte.rent_a_car.common.data.models.Address
 import com.bersyte.rent_a_car.utils.enums.UserRole
