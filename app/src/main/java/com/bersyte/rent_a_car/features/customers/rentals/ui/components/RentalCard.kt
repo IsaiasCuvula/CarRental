@@ -30,16 +30,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.bersyte.rent_a_car.features.customers.rentals.data.models.CarRatingRequest
+import com.bersyte.rent_a_car.features.customers.rentals.viewmodels.RentalViewModel
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 
 @Composable
 fun RentalCard(
     rental: Rental,
-    onCancel: (Rental) -> Unit
+    onCancel: (Rental) -> Unit,
+    viewModel: RentalViewModel = hiltViewModel()
 ) {
     val rentalStatus = RentalStatus.valueOf(rental.status)
     var showReviewSheet by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
 
     val borderColor = when (rentalStatus) {
         RentalStatus.ACTIVE -> Color(0xFF4CAF50)
@@ -167,6 +174,8 @@ fun RentalCard(
                }
 
                if(rentalStatus == RentalStatus.COMPLETED){
+                   Spacer(modifier = Modifier.weight(1f))
+
                    SuggestionChip(
                        label = {
                            Text(
@@ -191,8 +200,23 @@ fun RentalCard(
         ReviewBottomSheet(
             onDismiss = { showReviewSheet = false },
             onSubmitReview = { rating, comment ->
-                // Handle review submission
-                showReviewSheet = false
+                val request = CarRatingRequest(
+                     rating,
+                     comment,
+                     rental.carPlate,
+                     rental.rentalCode,
+                )
+                viewModel.addReview(request,
+                    onSuccess = {savedRating ->
+                        if(savedRating != null){
+                            showReviewSheet = false
+                            AppHelpers.showToast(context, "Review saved successfully")
+                        }
+                    },
+                    onError = {error->
+                        AppHelpers.showToast(context, "Something went wrong $error")
+                    }
+                )
             }
         )
     }

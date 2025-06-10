@@ -7,16 +7,19 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bersyte.rent_a_car.common.data.models.CancelRental
+import com.bersyte.rent_a_car.features.customers.home.data.models.CarRating
+import com.bersyte.rent_a_car.features.customers.rentals.data.models.CarRatingRequest
 import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
 import com.bersyte.rent_a_car.features.customers.rentals.data.repositories.RentalRepository
 import com.bersyte.rent_a_car.features.customers.rentals.data.models.PostponeRentalRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
 class RentalViewModel @Inject constructor(
-    private val rentalRepository: RentalRepository
+    private val repository: RentalRepository
 ) : ViewModel() {
 
     var rentals by mutableStateOf<List<Rental>>(emptyList())
@@ -28,8 +31,30 @@ class RentalViewModel @Inject constructor(
     private var postponedRental by mutableStateOf<Rental?>(null)
     private var cancelRental by mutableStateOf<Rental?>(null)
 
+
     init {
         fetchRentals()
+    }
+
+    fun addReview(
+        request : CarRatingRequest,
+        onSuccess:(CarRating?)-> Unit,
+        onError:(String)-> Unit
+    ) {
+        viewModelScope.launch {
+            try {
+                val response = repository.addReview(request)
+                Log.d("REVIEW_CAR_RATINGS", "$response")
+                onSuccess(response)
+            }catch (e: HttpException) {
+                val error = e.response()?.errorBody()?.string()
+                Log.d("REVIEW_CAR_RATINGS", "Error body: $error")
+                error?.let { onError(error) }
+            } catch (e: Exception) {
+                Log.d("REVIEW_CAR_RATINGS", "EXCEPTION - $e")
+                e.localizedMessage?.let { onError(it) }
+            }
+        }
     }
 
     private fun fetchRentals() {
@@ -37,7 +62,7 @@ class RentalViewModel @Inject constructor(
             isLoading = true
             error = null
             try {
-                rentals = rentalRepository.getAllRentals()
+                rentals = repository.getAllRentals()
             } catch (e: Exception) {
                 error = e.localizedMessage
             } finally {
@@ -51,7 +76,7 @@ class RentalViewModel @Inject constructor(
             isLoading = true
             error = null
             try {
-                postponedRental = rentalRepository.postponeRental(request)
+                postponedRental = repository.postponeRental(request)
                 fetchRentals()
             } catch (e: Exception) {
                 error = e.localizedMessage
@@ -66,7 +91,7 @@ class RentalViewModel @Inject constructor(
             isLoading = true
             error = null
             try {
-                cancelRental = rentalRepository.cancelRenting(request)
+                cancelRental = repository.cancelRenting(request)
                 fetchRentals()
             } catch (e: Exception) {
                 Log.d("CANCEL RENT", "EXCEPTION: $e")
