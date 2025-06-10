@@ -26,6 +26,10 @@ import androidx.compose.ui.graphics.Color
 import com.bersyte.rent_a_car.utils.enums.RentalStatus
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.SuggestionChipDefaults
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 
@@ -35,6 +39,7 @@ fun RentalCard(
     onCancel: (Rental) -> Unit
 ) {
     val rentalStatus = RentalStatus.valueOf(rental.status)
+    var showReviewSheet by remember { mutableStateOf(false) }
 
     val borderColor = when (rentalStatus) {
         RentalStatus.ACTIVE -> Color(0xFF4CAF50)
@@ -55,7 +60,6 @@ fun RentalCard(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // Header with car name and status
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -82,7 +86,6 @@ fun RentalCard(
                 )
             }
 
-            // Car details row
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -97,7 +100,6 @@ fun RentalCard(
                 )
             }
 
-            // Rental period
             HorizontalDivider(
                 modifier = Modifier.padding(vertical = 8.dp),
                 color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
@@ -132,7 +134,6 @@ fun RentalCard(
                 }
             }
 
-            // Total amount and rental code
             HorizontalDivider(
                 modifier = Modifier.padding(vertical = 8.dp),
                 color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
@@ -164,7 +165,35 @@ fun RentalCard(
                        )
                    }
                }
+
+               if(rentalStatus == RentalStatus.COMPLETED){
+                   SuggestionChip(
+                       label = {
+                           Text(
+                               text = "Rate car",
+                               style = MaterialTheme.typography.labelSmall
+                           )
+                       },
+                       colors = SuggestionChipDefaults.suggestionChipColors(
+                           containerColor = borderColor.copy(alpha = 0.2f),
+                           labelColor = borderColor
+                       ),
+                       onClick = {
+                           showReviewSheet = true
+                       },
+                   )
+                }
+               }
            }
         }
+
+    if (showReviewSheet) {
+        ReviewBottomSheet(
+            onDismiss = { showReviewSheet = false },
+            onSubmitReview = { rating, comment ->
+                // Handle review submission
+                showReviewSheet = false
+            }
+        )
     }
 }
