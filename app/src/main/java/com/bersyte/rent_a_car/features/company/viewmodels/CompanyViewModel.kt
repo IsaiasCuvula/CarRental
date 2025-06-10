@@ -68,14 +68,14 @@ class CompanyViewModel @Inject constructor(
          viewModelScope.launch {
              try {
                  val response = repository.fetchRentalByOperator(email)
-                 Log.d("FETCH_RENTALS_BY_OPERATORS", " ✅ $response")
+                 Log.d("✅ FETCH_RENTALS_BY_OPERATORS", " ✅ $response")
                  _operatorRentals.value = response
              }catch (e: HttpException) {
                  val error = e.response()?.errorBody()?.string()
-                 Log.d("FETCH_OPERATORS", "Error body: $error")
+                 Log.e("❌ FETCH_OPERATORS", "Error body: $error")
                  error?.let { onError(error) }
              } catch (e: Exception) {
-                 Log.d("FETCH_OPERATORS", "EXCEPTION - $e")
+                 Log.e("❌ FETCH_OPERATORS", "❌ EXCEPTION - $e")
                  e.localizedMessage?.let { onError(it) }
              }
          }
@@ -85,15 +85,15 @@ class CompanyViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = repository.fetchAllOperators()
-                Log.d("FETCH_OPERATORS", "$response")
+                Log.d("✅ FETCH_OPERATORS", "$response")
                 _operators.value = response
             }catch (e: HttpException) {
                 val error = e.response()?.errorBody()?.string()
-                Log.d("FETCH_OPERATORS", "Error body: $error")
+                Log.d("❌ FETCH_OPERATORS", "❌ Error body: $error")
                 error?.let { onError(error) }
                 return@launch
             } catch (e: Exception) {
-                Log.d("FETCH_OPERATORS", "EXCEPTION - $e")
+                Log.d("❌ FETCH_OPERATORS", "❌ EXCEPTION - $e")
                 e.localizedMessage?.let { onError(it) }
                 return@launch
             }
@@ -110,15 +110,15 @@ class CompanyViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = repository.createOperator(operator)
-                Log.d("CREATE_OPERATOR", "$response")
+                Log.d("✅ CREATE_OPERATOR", "$response")
                 onSuccess(response)
             }catch (e: HttpException) {
                 val error = e.response()?.errorBody()?.string()
-                Log.d("CREATE_OPERATOR", "Error body: $error")
+                Log.e("❌ CREATE_OPERATOR", "❌ Error body: $error")
                 error?.let { onError(error) }
                 return@launch
             } catch (e: Exception) {
-                Log.d("CREATE_OPERATOR", "EXCEPTION - $e")
+                Log.e("❌ CREATE_OPERATOR", "❌EXCEPTION - $e")
                 e.localizedMessage?.let { onError(it) }
                 return@launch
             }
@@ -134,15 +134,15 @@ class CompanyViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = repository.createCustomer(customer)
-                Log.d("CREATE_CUSTOMER", "$response")
+                Log.d("✅ CREATE_CUSTOMER", "$response")
                 onSuccess(response)
             }catch (e: HttpException) {
                 val error = e.response()?.errorBody()?.string()
-                Log.d("CREATE_CUSTOMER", "Error body: $error")
+                Log.e("❌ CREATE_CUSTOMER", "❌ Error body: $error")
                 error?.let { onError(error) }
                 return@launch
             } catch (e: Exception) {
-                Log.d("CREATE_CUSTOMER", "EXCEPTION - $e")
+                Log.e("❌ CREATE_CUSTOMER", "❌ EXCEPTION - $e")
                 e.localizedMessage?.let { onError(it) }
                 return@launch
             }
@@ -154,13 +154,13 @@ class CompanyViewModel @Inject constructor(
             try {
                 val response = repository.fetchOperator()
                 _operator.value = response
-                Log.d("FETCH_OPERATOR", "$response")
+                Log.d("✅ FETCH_OPERATOR", "$response")
             }catch (e: HttpException) {
                 val error = e.response()?.errorBody()?.string()
-                Log.d("FETCH_OPERATOR", "Error body: $error")
+                Log.e("❌ FETCH_OPERATOR", "❌ Error body: $error")
                 error?.let { onError(error) }
             } catch (e: Exception) {
-                Log.d("FETCH_OPERATOR", "EXCEPTION - $e")
+                Log.e("❌ FETCH_OPERATOR", "❌ EXCEPTION - $e")
                 e.localizedMessage?.let { onError(it) }
             }
         }
@@ -170,14 +170,14 @@ class CompanyViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = repository.fetchAllRentals()
-                Log.d("FETCH_RENTALS", "$response")
+                Log.d("✅ FETCH_RENTALS", "$response")
                 _rentals.value = response
             }catch (e: HttpException) {
                 val error = e.response()?.errorBody()?.string()
-                Log.d("FETCH_RENTALS", "Error body: $error")
+                Log.d("❌ FETCH_RENTALS", "❌ Error body: $error")
                 error?.let { onError(error) }
             } catch (e: Exception) {
-                Log.d("FETCH_RENTALS", "EXCEPTION - $e")
+                Log.d("❌ FETCH_RENTALS", "❌ EXCEPTION - $e")
                 e.localizedMessage?.let { onError(it) }
             }
         }
@@ -187,14 +187,14 @@ class CompanyViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = repository.fetchAllCustomers()
-                Log.d("FETCH_CUSTOMERS", "$response")
+                Log.d("✅ FETCH_CUSTOMERS", "$response")
                 _customers.value = response
             }catch (e: HttpException) {
                 val error = e.response()?.errorBody()?.string()
-                Log.d("FETCH_CUSTOMERS", "Error body: $error")
+                Log.d("❌ FETCH_CUSTOMERS", "❌ Error body: $error")
                 error?.let { onError(error) }
             } catch (e: Exception) {
-                Log.d("FETCH_CUSTOMERS", "EXCEPTION - $e")
+                Log.d("❌ FETCH_CUSTOMERS", "❌ EXCEPTION - $e")
                 e.localizedMessage?.let { onError(it) }
             }
         }
@@ -204,14 +204,14 @@ class CompanyViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = repository.fetchAllCars()
-                Log.d("FETCH_CARS", "$response")
+                Log.d("✅ FETCH_CARS", "$response")
                 _cars.value = response
             }catch (e: HttpException) {
                 val error = e.response()?.errorBody()?.string()
-                Log.d("FETCH_CARS", "Error body: $error")
+                Log.d("❌ FETCH_CARS", "❌ Error body: $error")
                 error?.let { onError(error) }
             } catch (e: Exception) {
-                Log.d("FETCH_CARS", "EXCEPTION - $e")
+                Log.d("❌ FETCH_CARS", "❌ EXCEPTION - $e")
                 e.localizedMessage?.let { onError(it) }
             }
         }
@@ -225,10 +225,10 @@ class CompanyViewModel @Inject constructor(
                 fetchAllCars(onError = {})
             } catch (e: HttpException) {
                 val errorBody = e.response()?.errorBody()?.string()
-                Log.d("SAVE_CAR_OPERATOR", "HTTP Error: ${e.code()}, Body: $errorBody")
+                Log.d("❌ SAVE_CAR_OPERATOR", "❌ HTTP Error: ${e.code()}, Body: $errorBody")
                 onError(e.localizedMessage)
             }catch (e: Exception){
-                Log.d("SAVE_CAR_OPERATOR", "exception: $e")
+                Log.d("❌ SAVE_CAR_OPERATOR", "❌ exception: $e")
                 onError(e.localizedMessage)
             }
         }
@@ -238,14 +238,14 @@ class CompanyViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = repository.fetchAllRegistrations()
-                Log.d("FETCH_CAR_REGISTRATIONS", "$response")
+                Log.d("✅ FETCH_CAR_REGISTRATIONS", "$response")
                 _registrations.value = response
             }catch (e: HttpException) {
                 val error = e.response()?.errorBody()?.string()
-                Log.d("FETCH_CAR_REGISTRATIONS", "Error body: $error")
+                Log.d("❌ FETCH_CAR_REGISTRATIONS", "❌ Error body: $error")
                 error?.let { onError(error) }
             } catch (e: Exception) {
-                Log.d("FETCH_CAR_REGISTRATIONS", "EXCEPTION - $e")
+                Log.d("❌ FETCH_CAR_REGISTRATIONS", "❌ EXCEPTION - $e")
                 e.localizedMessage?.let { onError(it) }
             }
         }
@@ -295,78 +295,77 @@ class CompanyViewModel @Inject constructor(
                 onSuccess(result)
             } catch (e: HttpException) {
                 val errorBody = e.response()?.errorBody()?.string()
-                Log.d("UPDATE_CAR_REGISTRATION", "HTTP Error: ${e.code()}, Body: $errorBody")
+                Log.d("❌ UPDATE_CAR_REGISTRATION", "HTTP Error: ${e.code()}, Body: $errorBody")
                 onError(e.localizedMessage)
             }catch (e: Exception){
-                Log.d("UPDATE_CAR_REGISTRATION", "exception: $e")
+                Log.d("❌ UPDATE_CAR_REGISTRATION", "exception: $e")
                 onError(e.localizedMessage)
             }
         }
-    }
+   }
 
-    fun cancelRenting(
-        rentalCode: String,
-        onSuccess: (Rental?)-> Unit,
-        onError: (String?) -> Unit
-    ) {
-        viewModelScope.launch {
-            try {
-                val request = CancelRental(rentalCode)
-               val result = repository.cancelRental(request)
-                fetchAllRentals(onError = {})
-                onSuccess(result)
-            } catch (e: HttpException) {
-                val errorBody = e.response()?.errorBody()?.string()
-                Log.d("CANCEL_RENTAL", "HTTP Error: ${e.code()}, Body: $errorBody")
-                onError(e.localizedMessage)
-            }catch (e: Exception){
-                Log.d("CANCEL_RENTAL", "exception: $e")
-                onError(e.localizedMessage)
-            }
-        }
-    }
+   fun cancelRenting(
+       rentalCode: String,
+       onSuccess: (Rental?)-> Unit,
+       onError: (String?) -> Unit
+   ) {
+       viewModelScope.launch {
+           try {
+               val request = CancelRental(rentalCode)
+              val result = repository.cancelRental(request)
+               fetchAllRentals(onError = {})
+               onSuccess(result)
+           } catch (e: HttpException) {
+               val errorBody = e.response()?.errorBody()?.string()
+               Log.d("❌ CANCEL_RENTAL", "HTTP Error: ${e.code()}, Body: $errorBody")
+               onError(e.localizedMessage)
+           }catch (e: Exception){
+               Log.d("❌ CANCEL_RENTAL", "exception: $e")
+               onError(e.localizedMessage)
+           }
+       }
+   }
 
 
-    fun finalizeRental(
-        request: FinalizeRentalRequest,
-        onSuccess: (FinalizeRentalResponse?)-> Unit,
-        onError: (String?) -> Unit
-    ) {
-        viewModelScope.launch {
-            try {
-                val result = repository.finalizeRental(request)
-                fetchAllRentals(onError = {})
-                onSuccess(result)
-            } catch (e: HttpException) {
-                val errorBody = e.response()?.errorBody()?.string()
-                Log.d("FINALIZE_RENTAL", "HTTP Error: ${e.code()}, Body: $errorBody")
-                onError(e.localizedMessage)
-            }catch (e: Exception){
-                Log.d("FINALIZE_RENTAL", "exception: $e")
-                onError(e.localizedMessage)
-            }
-        }
-    }
+   fun finalizeRental(
+       request: FinalizeRentalRequest,
+       onSuccess: (FinalizeRentalResponse?)-> Unit,
+       onError: (String?) -> Unit
+   ) {
+       viewModelScope.launch {
+           try {
+               val result = repository.finalizeRental(request)
+               fetchAllRentals(onError = {})
+               onSuccess(result)
+           } catch (e: HttpException) {
+               val errorBody = e.response()?.errorBody()?.string()
+               Log.d("❌ FINALIZE_RENTAL", "❌ HTTP Error: ${e.code()}, Body: $errorBody")
+               onError(e.localizedMessage)
+           }catch (e: Exception){
+               Log.d("❌ FINALIZE_RENTAL", "❌ exception: $e")
+               onError(e.localizedMessage)
+           }
+       }
+   }
 
-    fun approveRental(
-        request: RentingCarRequest,
-        onSuccess: (Rental?)-> Unit,
-        onError: (String?) -> Unit
-    ) {
-        viewModelScope.launch {
-            try {
-                val result = repository.approveRental(request)
-                fetchAllRentals(onError = {})
-                onSuccess(result)
-            } catch (e: HttpException) {
-                val errorBody = e.response()?.errorBody()?.string()
-                Log.d("APPROVE_RENTAL", "HTTP Error: ${e.code()}, Body: $errorBody")
-                onError(e.localizedMessage)
-            }catch (e: Exception){
-                Log.d("APPROVE_RENTAL", "exception: $e")
-                onError(e.localizedMessage)
-            }
-        }
-    }
-
+   fun approveRental(
+       request: RentingCarRequest,
+       onSuccess: (Rental?)-> Unit,
+       onError: (String?) -> Unit
+   ) {
+       viewModelScope.launch {
+           try {
+               val result = repository.approveRental(request)
+               fetchAllRentals(onError = {})
+               onSuccess(result)
+           } catch (e: HttpException) {
+               val errorBody = e.response()?.errorBody()?.string()
+               Log.d("❌ APPROVE_RENTAL", "❌ HTTP Error: ${e.code()}, Body: $errorBody")
+               onError(e.localizedMessage)
+           }catch (e: Exception){
+               Log.d("❌ APPROVE_RENTAL", "❌ exception: $e")
+               onError(e.localizedMessage)
+           }
+       }
+   }
 }

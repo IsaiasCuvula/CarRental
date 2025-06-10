@@ -5,6 +5,8 @@ import com.bersyte.rent_a_car.common.data.models.CarRequest
 import com.bersyte.rent_a_car.features.company.data.models.CreateCustomerRequest
 import com.bersyte.rent_a_car.features.company.data.models.CreateOperatorRequest
 import com.bersyte.rent_a_car.features.company.data.models.FinalizeRentalRequest
+import com.bersyte.rent_a_car.features.company.data.models.FixDamageRequest
+import com.bersyte.rent_a_car.features.company.data.models.PayDamageRequest
 import com.bersyte.rent_a_car.features.company.data.models.RentingCarRequest
 import com.bersyte.rent_a_car.features.company.data.models.UpdateCarRegistrationStatus
 import com.bersyte.rent_a_car.features.company.data.services.CompanyApiService
@@ -13,6 +15,11 @@ import javax.inject.Inject
 class CompanyRepository @Inject constructor(
     private val apiService: CompanyApiService
 ) {
+
+    suspend fun markDamageAsFixed(request: FixDamageRequest) = apiService.markDamageAsFixed(request)
+    suspend fun payDamage(request: PayDamageRequest) = apiService.payDamage(request)
+    suspend fun fetchAllDamages() = apiService.fetchAllDamages()
+
     suspend fun fetchOperator() = apiService.fetchOperator()
     suspend fun fetchRentalByOperator(email: String) = apiService.fetchRentalByOperator(email)
     suspend fun createCustomer(customer: CreateCustomerRequest) = apiService.createCustomer(customer)
