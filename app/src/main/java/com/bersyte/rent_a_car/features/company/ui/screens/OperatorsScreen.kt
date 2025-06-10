@@ -17,9 +17,11 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -36,6 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bersyte.rent_a_car.common.ui.components.CommonSearchBar
 import com.bersyte.rent_a_car.common.ui.components.EmptyState
 import com.bersyte.rent_a_car.features.auth.viewmodels.AuthViewModel
+import com.bersyte.rent_a_car.features.company.data.models.Operator
 import com.bersyte.rent_a_car.features.company.ui.components.OperatorCard
 import com.bersyte.rent_a_car.features.company.ui.components.StatCard
 import com.bersyte.rent_a_car.features.company.viewmodels.CompanyViewModel
@@ -57,6 +60,8 @@ fun OperatorsScreen(
 
     val authResponse = authViewModel.authResponse.collectAsState()
     val auth = authResponse.value
+
+    var selectedOperator by remember { mutableStateOf<Operator?>(null) }
 
     LaunchedEffect(Unit) {
         authViewModel.tokenManager.getAuthResponse()
@@ -155,12 +160,31 @@ fun OperatorsScreen(
                     items(filteredOperators) { operator ->
                         OperatorCard(
                             operator = operator,
-                            onClick = {},
+                            onClick = {
+                                val authData = auth?.data
+
+                                if( authData != null){
+                                    val role = UserRole.valueOf(authData.role)
+
+                                    if(role == UserRole.ADMIN){
+                                        selectedOperator = operator
+                                    }
+                                }
+                            },
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
                 }
             }
+        }
+    }
+
+    selectedOperator?.let { operator ->
+        ModalBottomSheet(
+            onDismissRequest = {selectedOperator = null},
+            sheetState = rememberModalBottomSheetState()
+        ) {
+            OperatorRentals(operator)
         }
     }
 }
