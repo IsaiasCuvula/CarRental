@@ -8,7 +8,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.bersyte.rent_a_car.features.company.admin.ui.screens.AdminDashboardManagement
 import com.bersyte.rent_a_car.features.auth.ui.screens.AuthScreen
 import com.bersyte.rent_a_car.features.auth.viewmodels.AuthViewModel
 
@@ -65,9 +64,6 @@ fun MainAppNavigation(
         }
         composable("operator_dashboard") {
             OperatorNavigationGraph(navController = navController)
-        }
-        composable("admin_dashboard") {
-            AdminDashboardManagement()
         }
     }
 }

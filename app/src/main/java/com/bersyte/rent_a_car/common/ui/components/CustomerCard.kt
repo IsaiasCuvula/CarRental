@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.layout.Row
+import androidx.compose.material.icons.filled.Phone
 
 @Composable
 fun CustomerCard(
@@ -122,7 +123,7 @@ fun CustomerCard(
 
              if(customer.phone !=null){
                 CustomerDetailRow(
-                    icon = Icons.Default.Person,
+                    icon = Icons.Default.Phone,
                     text = customer.phone
                 )
              }

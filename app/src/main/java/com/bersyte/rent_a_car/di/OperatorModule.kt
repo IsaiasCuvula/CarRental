@@ -1,7 +1,7 @@
 package com.bersyte.rent_a_car.di
 
-import com.bersyte.rent_a_car.features.company.operator.data.repositories.OperatorRepository
-import com.bersyte.rent_a_car.features.company.operator.data.services.OperatorApiService
+import com.bersyte.rent_a_car.features.company.data.repositories.OperatorRepository
+import com.bersyte.rent_a_car.features.company.data.services.OperatorApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

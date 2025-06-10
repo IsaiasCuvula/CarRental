@@ -10,15 +10,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.bersyte.rent_a_car.features.auth.viewmodels.AuthViewModel
-import com.bersyte.rent_a_car.features.company.operator.ui.screens.AddCustomerScreen
-import com.bersyte.rent_a_car.features.company.operator.ui.screens.AddOperatorScreen
-import com.bersyte.rent_a_car.features.company.operator.ui.screens.CarRegistrationsScreen
-import com.bersyte.rent_a_car.features.company.operator.ui.screens.CarsScreen
-import com.bersyte.rent_a_car.features.company.operator.ui.screens.CustomersScreen
-import com.bersyte.rent_a_car.features.company.operator.ui.screens.OperatorDashboardScreen
-import com.bersyte.rent_a_car.features.company.operator.ui.screens.OperatorsScreen
-import com.bersyte.rent_a_car.features.company.operator.ui.screens.RentalManagementScreen
-import com.bersyte.rent_a_car.features.company.operator.viewmodels.OperatorViewModel
+import com.bersyte.rent_a_car.features.company.ui.screens.AddCustomerScreen
+import com.bersyte.rent_a_car.features.company.ui.screens.AddOperatorScreen
+import com.bersyte.rent_a_car.features.company.ui.screens.CarRegistrationsScreen
+import com.bersyte.rent_a_car.features.company.ui.screens.CarsScreen
+import com.bersyte.rent_a_car.features.company.ui.screens.CustomersScreen
+import com.bersyte.rent_a_car.features.company.ui.screens.DashboardScreen
+import com.bersyte.rent_a_car.features.company.ui.screens.OperatorsScreen
+import com.bersyte.rent_a_car.features.company.ui.screens.RentalManagementScreen
+import com.bersyte.rent_a_car.features.company.viewmodels.OperatorViewModel
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 @Composable
@@ -44,7 +44,7 @@ fun OperatorNavigationGraph(
         startDestination = "dashboard"
     ) {
         composable("dashboard") {
-            OperatorDashboardScreen(
+            DashboardScreen(
                 operator = operator,
                 navController = childNavController,
                 onLogout = {
