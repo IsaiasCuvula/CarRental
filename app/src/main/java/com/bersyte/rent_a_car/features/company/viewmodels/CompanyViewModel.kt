@@ -52,6 +52,10 @@ class CompanyViewModel @Inject constructor(
     val operators = _operators.asStateFlow()
 
 
+    private val _operatorRentals = MutableStateFlow<List<Rental>>(listOf())
+    val operatorRentals = _operatorRentals.asStateFlow()
+
+
     init {
         fetchOperator(onError = {})
         fetchAllCars(onError = {})
@@ -59,6 +63,23 @@ class CompanyViewModel @Inject constructor(
         fetchAllRentals(onError = {})
         fetchAllOperators(onError = {})
     }
+
+     fun fetchRentalByOperator(email: String, onError:(String)-> Unit){
+         viewModelScope.launch {
+             try {
+                 val response = repository.fetchRentalByOperator(email)
+                 Log.d("FETCH_RENTALS_BY_OPERATORS", " ✅ $response")
+                 _operatorRentals.value = response
+             }catch (e: HttpException) {
+                 val error = e.response()?.errorBody()?.string()
+                 Log.d("FETCH_OPERATORS", "Error body: $error")
+                 error?.let { onError(error) }
+             } catch (e: Exception) {
+                 Log.d("FETCH_OPERATORS", "EXCEPTION - $e")
+                 e.localizedMessage?.let { onError(it) }
+             }
+         }
+     }
 
     fun fetchAllOperators(onError:(String)-> Unit) {
         viewModelScope.launch {
@@ -70,9 +91,11 @@ class CompanyViewModel @Inject constructor(
                 val error = e.response()?.errorBody()?.string()
                 Log.d("FETCH_OPERATORS", "Error body: $error")
                 error?.let { onError(error) }
+                return@launch
             } catch (e: Exception) {
                 Log.d("FETCH_OPERATORS", "EXCEPTION - $e")
                 e.localizedMessage?.let { onError(it) }
+                return@launch
             }
         }
     }
@@ -93,9 +116,11 @@ class CompanyViewModel @Inject constructor(
                 val error = e.response()?.errorBody()?.string()
                 Log.d("CREATE_OPERATOR", "Error body: $error")
                 error?.let { onError(error) }
+                return@launch
             } catch (e: Exception) {
                 Log.d("CREATE_OPERATOR", "EXCEPTION - $e")
                 e.localizedMessage?.let { onError(it) }
+                return@launch
             }
         }
     }
@@ -115,9 +140,11 @@ class CompanyViewModel @Inject constructor(
                 val error = e.response()?.errorBody()?.string()
                 Log.d("CREATE_CUSTOMER", "Error body: $error")
                 error?.let { onError(error) }
+                return@launch
             } catch (e: Exception) {
                 Log.d("CREATE_CUSTOMER", "EXCEPTION - $e")
                 e.localizedMessage?.let { onError(it) }
+                return@launch
             }
         }
     }

@@ -18,8 +18,12 @@ import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface CompanyApiService {
+
+    @GET("api/v1/rentals/history/{email}")
+    suspend fun fetchRentalByOperator(@Path("email") email: String): List<Rental>
 
     @POST("api/v1/admin/create-operator")
     suspend fun createOperator(@Body request: CreateOperatorRequest): CreateUserResponse

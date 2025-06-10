@@ -14,6 +14,7 @@ class CompanyRepository @Inject constructor(
     private val apiService: CompanyApiService
 ) {
     suspend fun fetchOperator() = apiService.fetchOperator()
+    suspend fun fetchRentalByOperator(email: String) = apiService.fetchRentalByOperator(email)
     suspend fun createCustomer(customer: CreateCustomerRequest) = apiService.createCustomer(customer)
     suspend fun fetchAllCustomers() = apiService.fetchAllCustomers()
     suspend fun fetchAllCars() = apiService.fetchAllCars()
