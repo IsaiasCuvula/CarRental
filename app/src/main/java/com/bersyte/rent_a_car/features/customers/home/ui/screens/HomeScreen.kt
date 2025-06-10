@@ -32,10 +32,14 @@ import com.bersyte.rent_a_car.common.data.models.Car
 import com.bersyte.rent_a_car.features.customers.home.ui.components.CarCard
 import com.bersyte.rent_a_car.common.ui.components.CommonSearchBar
 import com.bersyte.rent_a_car.common.ui.components.ScrollableFilterChips
+import com.bersyte.rent_a_car.common.ui.components.VerticalSpace
 import com.bersyte.rent_a_car.features.customers.home.data.models.ReservationRequest
 import com.bersyte.rent_a_car.features.customers.home.ui.components.ReservationDateBottomSheet
 import com.bersyte.rent_a_car.features.customers.home.viewmodels.HomeViewModel
+import com.bersyte.rent_a_car.utils.enums.CarClass
+import com.bersyte.rent_a_car.utils.enums.CarStatus
 import com.bersyte.rent_a_car.utils.enums.CarType
+import com.bersyte.rent_a_car.utils.enums.FuelType
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 import java.time.format.DateTimeFormatter
 import androidx.compose.material3.TopAppBar as TopAppBar
@@ -45,13 +49,12 @@ import androidx.compose.material3.TopAppBar as TopAppBar
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    // Filter chips
-    val filterOptions = CarType.getAllFilterOptions()
-    var selectedFilter by remember { mutableIntStateOf(0) }
 
-    var searchQuery by remember { mutableStateOf("") }
-    val cars by viewModel.cars.collectAsState()
+    val allCars by viewModel.cars.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
+
+    var selectedCar by remember { mutableStateOf<Car?>(null) }
+    var showDateDialog by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
@@ -60,25 +63,47 @@ fun HomeScreen(
         viewModel.loadAvailableCars()
     }
 
-    // Add these state variables to your HomeScreen
-    var selectedCar by remember { mutableStateOf<Car?>(null) }
-    var showDateDialog by remember { mutableStateOf(false) }
+    val filterCarTypeOptions = CarType.getAllFilterOptions()
+    var selectedCarType by remember { mutableIntStateOf(0)}
+    var searchQuery by remember { mutableStateOf("") }
+
+    val filterCarClassOptions = CarClass.entries.map { it.name }
+    val filterFuelTypeOptions = FuelType.entries.map { it.displayName }
+
+    var selectedCarClass by remember { mutableStateOf<CarClass?>(null) }
+    var selectedFuelType by remember { mutableStateOf<FuelType?>(null) }
+
+    val years = listOf("All") + (2004..2030).map { it.toString() }
+    var selectedYear by remember { mutableStateOf<String?>("All") }
 
 
-    val filteredCars = remember(cars, selectedFilter, searchQuery) {
-        // First filter by type if something other than "All" is selected
-        val typeFilteredCars = if (selectedFilter == 0) {
-            cars
+    val filteredCars = remember(
+        allCars, selectedCarType, searchQuery,
+        selectedCarClass, selectedFuelType, selectedYear,
+    ) {
+        val typeFilteredCars = if (selectedCarType == 0) {
+            allCars
         } else {
-            val selectedType = CarType.fromDisplayName(filterOptions[selectedFilter])
-            cars.filter { car -> CarType.valueOf(car.carType) == selectedType }
+            val selectedType = CarType.fromDisplayName(filterCarTypeOptions[selectedCarType])
+            allCars.filter { car -> CarType.valueOf(car.carType) == selectedType }
         }
 
-        // Then apply search filter
+        val classFilteredCars = selectedCarClass?.let { carClass ->
+            typeFilteredCars.filter { it.carClass == carClass.name }
+        } ?: typeFilteredCars
+
+        val fuelFilteredCars = selectedFuelType?.let { fuelType ->
+            classFilteredCars.filter { it.fuelType == fuelType.name }
+        } ?: classFilteredCars
+
+        val yearFilteredCars = selectedYear?.toIntOrNull()?.let { year ->
+            fuelFilteredCars.filter { it.year == year }
+        } ?: fuelFilteredCars
+
         if (searchQuery.isEmpty()) {
-            typeFilteredCars
+            yearFilteredCars
         } else {
-            typeFilteredCars.filter { car ->
+            yearFilteredCars.filter { car ->
                 car.name.contains(searchQuery, ignoreCase = true) ||
                         car.model.contains(searchQuery, ignoreCase = true) ||
                         car.description.contains(searchQuery, ignoreCase = true)
@@ -111,12 +136,40 @@ fun HomeScreen(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
+                VerticalSpace()
                 ScrollableFilterChips(
-                    options = filterOptions,
-                    selectedIndex = selectedFilter,
-                    onSelected = { selectedFilter = it }
+                    options = years,
+                    selectedIndex = years.indexOf(selectedYear),
+                    onSelected = { index ->
+                        val option = years[index]
+                        selectedYear = if (selectedYear == option) null else option
+                    }
+                )
+                ScrollableFilterChips(
+                    options = filterCarTypeOptions,
+                    selectedIndex = selectedCarType,
+                    onSelected = { selectedCarType = it }
+                )
+                ScrollableFilterChips(
+                    options = filterFuelTypeOptions,
+                    selectedIndex = filterFuelTypeOptions.indexOf(selectedFuelType?.displayName),
+                    onSelected = { index ->
+                        val option = filterFuelTypeOptions[index]
+                        selectedFuelType = if (selectedFuelType?.displayName == option) null
+                        else FuelType.entries.first { it.displayName == option }
+                    }
                 )
 
+                ScrollableFilterChips(
+                    options = filterCarClassOptions,
+                    selectedIndex = filterCarClassOptions.indexOf(selectedCarClass?.name),
+                    onSelected = { index ->
+                        val option = filterCarClassOptions[index]
+                        selectedCarClass = if (selectedCarClass?.name == option) null else CarClass.valueOf(option)
+                    }
+                )
+
+                VerticalSpace()
                 if (isLoading) {
                     CircularProgressIndicator()
                 } else {
