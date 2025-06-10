@@ -80,12 +80,13 @@ fun CarsScreen(
     var selectedFuelType by remember { mutableStateOf<FuelType?>(null) }
     var selectedCarStatus by remember { mutableStateOf<CarStatus?>(null) }
 
-    var selectedYearRange by remember { mutableStateOf<ClosedFloatingPointRange<Int>?>(null) }
+    val years = listOf("All") + (2004..2030).map { it.toString() }
+    var selectedYear by remember { mutableStateOf<String?>("All") }
 
 
     val filteredCars = remember(
         allCars, selectedCarType, searchQuery,
-        selectedCarClass, selectedFuelType, selectedYearRange,
+        selectedCarClass, selectedFuelType, selectedYear,
         selectedCarStatus,
     ) {
         val typeFilteredCars = if (selectedCarType == 0) {
@@ -107,8 +108,8 @@ fun CarsScreen(
             fuelFilteredCars.filter { it.carStatus == status.name }
         } ?: fuelFilteredCars
 
-        val yearFilteredCars = selectedYearRange?.let { range ->
-            statusFilteredCars.filter { it.year in range }
+        val yearFilteredCars = selectedYear?.toIntOrNull()?.let { year ->
+            statusFilteredCars.filter { it.year == year }
         } ?: statusFilteredCars
 
         if (searchQuery.isEmpty()) {
@@ -167,6 +168,14 @@ fun CarsScreen(
                 )
                 VerticalSpace()
                 ScrollableFilterChips(
+                    options = years,
+                    selectedIndex = years.indexOf(selectedYear),
+                    onSelected = { index ->
+                        val option = years[index]
+                        selectedYear = if (selectedYear == option) null else option
+                    }
+                )
+                ScrollableFilterChips(
                     options = filterCarTypeOptions,
                     selectedIndex = selectedCarType,
                     onSelected = { selectedCarType = it }
@@ -199,6 +208,7 @@ fun CarsScreen(
                     }
                 )
 
+                VerticalSpace()
 
                 LazyColumn(
                    modifier = Modifier.fillMaxSize(),
