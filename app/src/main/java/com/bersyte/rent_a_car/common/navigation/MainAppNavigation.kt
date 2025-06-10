@@ -63,7 +63,7 @@ fun MainAppNavigation(
             CustomerNavigationGraph(navController = navController)
         }
         composable("operator_dashboard") {
-            OperatorNavigationGraph(navController = navController)
+            CompanyNavigationGraph(navController = navController)
         }
     }
 }

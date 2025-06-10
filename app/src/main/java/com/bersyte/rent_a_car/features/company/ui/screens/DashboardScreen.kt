@@ -9,6 +9,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.AppRegistration
 import androidx.compose.material.icons.filled.CarRental
+import androidx.compose.material.icons.filled.CarRepair
+import androidx.compose.material.icons.filled.DirectionsCar
+import androidx.compose.material.icons.filled.HeartBroken
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.Workspaces
@@ -84,9 +87,32 @@ fun DashboardScreen(
                )
                ActionCard(
                    title = "Cars",
-                   icon = Icons.Default.PersonAdd,
+                   icon = Icons.Default.DirectionsCar,
                    onClick = {
                        navController.navigate("createRental")
+                   },
+                   modifier = Modifier.weight(1f)
+               )
+           }
+
+           Row(
+               horizontalArrangement = Arrangement.spacedBy(16.dp),
+               modifier = Modifier.fillMaxWidth()
+           ) {
+               ActionCard(
+                   title = "Operators",
+                   icon = Icons.Default.Workspaces,
+                   onClick = {
+                       navController.navigate("operators")
+                   },
+                   modifier = Modifier.weight(1f)
+               )
+
+               ActionCard(
+                   title = "Registrations",
+                   icon = Icons.Default.AppRegistration,
+                   onClick = {
+                       navController.navigate("carRegistrations")
                    },
                    modifier = Modifier.weight(1f)
                )
@@ -104,27 +130,14 @@ fun DashboardScreen(
                    },
                    modifier = Modifier.weight(1f)
                )
+
                ActionCard(
-                   title = "Registrations",
-                   icon = Icons.Default.AppRegistration,
+                   title = "Damages",
+                   icon = Icons.Default.CarRepair,
                    onClick = {
-                       navController.navigate("carRegistrations")
+                       navController.navigate("damages")
                    },
                    modifier = Modifier.weight(1f)
-               )
-           }
-
-           Row(
-               horizontalArrangement = Arrangement.spacedBy(16.dp),
-               modifier = Modifier.fillMaxWidth()
-           ) {
-               ActionCard(
-                   title = "Operators",
-                   icon = Icons.Default.Workspaces,
-                   onClick = {
-                       navController.navigate("operators")
-                   },
-                   modifier = Modifier.fillMaxWidth()
                )
            }
         }

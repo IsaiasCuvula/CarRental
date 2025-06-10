@@ -15,6 +15,7 @@ import com.bersyte.rent_a_car.features.company.ui.screens.AddOperatorScreen
 import com.bersyte.rent_a_car.features.company.ui.screens.CarRegistrationsScreen
 import com.bersyte.rent_a_car.features.company.ui.screens.CarsScreen
 import com.bersyte.rent_a_car.features.company.ui.screens.CustomersScreen
+import com.bersyte.rent_a_car.features.company.ui.screens.DamagesScreen
 import com.bersyte.rent_a_car.features.company.ui.screens.DashboardScreen
 import com.bersyte.rent_a_car.features.company.ui.screens.OperatorsScreen
 import com.bersyte.rent_a_car.features.company.ui.screens.RentalManagementScreen
@@ -22,7 +23,7 @@ import com.bersyte.rent_a_car.features.company.viewmodels.CompanyViewModel
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 @Composable
-fun OperatorNavigationGraph(
+fun CompanyNavigationGraph(
     navController: NavController,
     viewModel: CompanyViewModel = hiltViewModel(),
     authVM: AuthViewModel = hiltViewModel()
@@ -131,6 +132,12 @@ fun OperatorNavigationGraph(
             OperatorsScreen(
                 onCancel = {childNavController.popBackStack()},
                 onAddOperator = { childNavController.navigate("addOperator") },
+            )
+        }
+
+        composable("damages") {
+            DamagesScreen(
+                onCancel = {childNavController.popBackStack()},
             )
         }
     }
