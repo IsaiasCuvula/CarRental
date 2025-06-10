@@ -10,7 +10,7 @@ import retrofit2.http.POST
 interface RentalsApiService {
 
     @GET("api/v1/rentals")
-    suspend fun getCustomerRentals(): List<Rental>
+    suspend fun fetchCustomerRentals(): List<Rental>
 
     @POST("api/v1/rentals/postpone")
     suspend fun postponeRental(@Body request: PostponeRentalRequest): Rental

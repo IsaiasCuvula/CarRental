@@ -7,11 +7,11 @@ import com.bersyte.rent_a_car.features.company.data.models.CreateOperatorRequest
 import com.bersyte.rent_a_car.features.company.data.models.FinalizeRentalRequest
 import com.bersyte.rent_a_car.features.company.data.models.RentingCarRequest
 import com.bersyte.rent_a_car.features.company.data.models.UpdateCarRegistrationStatus
-import com.bersyte.rent_a_car.features.company.data.services.OperatorApiService
+import com.bersyte.rent_a_car.features.company.data.services.CompanyApiService
 import javax.inject.Inject
 
 class CompanyRepository @Inject constructor(
-    private val apiService: OperatorApiService
+    private val apiService: CompanyApiService
 ) {
     suspend fun fetchOperator() = apiService.fetchOperator()
     suspend fun createCustomer(customer: CreateCustomerRequest) = apiService.createCustomer(customer)

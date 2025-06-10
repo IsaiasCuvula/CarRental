@@ -1,7 +1,7 @@
 package com.bersyte.rent_a_car.di
 
 import com.bersyte.rent_a_car.features.company.data.repositories.CompanyRepository
-import com.bersyte.rent_a_car.features.company.data.services.OperatorApiService
+import com.bersyte.rent_a_car.features.company.data.services.CompanyApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,17 +11,17 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object OperatorModule {
+object CompanyModule {
 
     @Provides
     @Singleton
-    fun provideOperatorApiService(retrofit: Retrofit): OperatorApiService {
-        return retrofit.create(OperatorApiService::class.java)
+    fun provideCompanyApiService(retrofit: Retrofit): CompanyApiService {
+        return retrofit.create(CompanyApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideOperatorRepository(apiService: OperatorApiService): CompanyRepository {
+    fun provideCompanyRepository(apiService: CompanyApiService): CompanyRepository {
         return CompanyRepository(apiService)
     }
 }

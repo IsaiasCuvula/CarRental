@@ -19,7 +19,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 
-interface OperatorApiService {
+interface CompanyApiService {
 
     @POST("api/v1/admin/create-operator")
     suspend fun createOperator(@Body request: CreateOperatorRequest): CreateUserResponse
