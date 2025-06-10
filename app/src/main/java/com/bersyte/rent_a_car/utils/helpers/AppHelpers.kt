@@ -134,15 +134,6 @@ object AppHelpers{
             .toLocalDateTime()
     }
 
-    fun calculateRoundedRatingAverage(
-        ratings: List<CarRating>,
-        decimals: Int = 1
-    ): Double {
-        if (ratings.isEmpty()) return 0.0
-        val average = ratings.map { it.rating }.average()
-        return "%.${decimals}f".format(average).toDouble()
-    }
-
     fun showToast(context: Context, msg: String){
         return Toast.makeText(context,msg,Toast.LENGTH_SHORT).show()
     }

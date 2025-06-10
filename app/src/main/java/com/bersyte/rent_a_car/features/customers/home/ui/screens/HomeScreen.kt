@@ -29,7 +29,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bersyte.rent_a_car.common.data.models.Car
-import com.bersyte.rent_a_car.features.customers.home.ui.components.CarCard
+import com.bersyte.rent_a_car.common.ui.components.CarCard
 import com.bersyte.rent_a_car.common.ui.components.CommonSearchBar
 import com.bersyte.rent_a_car.common.ui.components.ScrollableFilterChips
 import com.bersyte.rent_a_car.common.ui.components.VerticalSpace

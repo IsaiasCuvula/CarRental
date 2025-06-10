@@ -39,7 +39,7 @@ import com.bersyte.rent_a_car.common.ui.components.ScrollableFilterChips
 import com.bersyte.rent_a_car.common.ui.components.VerticalSpace
 import com.bersyte.rent_a_car.features.company.ui.components.StatCard
 import com.bersyte.rent_a_car.features.company.viewmodels.CompanyViewModel
-import com.bersyte.rent_a_car.features.customers.home.ui.components.CarCard
+import com.bersyte.rent_a_car.common.ui.components.CarCard
 import com.bersyte.rent_a_car.utils.enums.CarClass
 import com.bersyte.rent_a_car.utils.enums.CarStatus
 import com.bersyte.rent_a_car.utils.enums.CarType

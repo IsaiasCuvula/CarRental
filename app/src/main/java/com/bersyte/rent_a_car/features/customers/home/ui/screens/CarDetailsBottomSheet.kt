@@ -22,10 +22,6 @@ import com.bersyte.rent_a_car.common.data.models.Car
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableDoubleStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -33,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bersyte.rent_a_car.R
 import com.bersyte.rent_a_car.common.ui.components.RatingItem
+import com.bersyte.rent_a_car.common.ui.components.VerticalSpace
 import com.bersyte.rent_a_car.features.customers.home.ui.components.CarDetailsGrid
 import com.bersyte.rent_a_car.features.customers.home.ui.components.TotalCarRatings
 import com.bersyte.rent_a_car.features.customers.home.viewmodels.HomeViewModel
@@ -47,13 +44,14 @@ fun CarDetailsBottomSheet(
     onReserveClick: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val ratingsState = viewModel.ratings.collectAsState()
-    val ratings = ratingsState.value
-    val plate = car.plate
+     val plate = car.plate
 
     LaunchedEffect(plate) {
         viewModel.getCarRatings(plate)
     }
+
+    val ratingsState = viewModel.ratings.collectAsState()
+    val ratings = ratingsState.value
 
     val pricePerHour = AppHelpers.centsToUsd(car.hourlyPrice)
 
@@ -94,14 +92,7 @@ fun CarDetailsBottomSheet(
 
                 Spacer(Modifier.weight(1f))
 
-                TotalCarRatings(plate)
-            }
-
-            LazyColumn {
-                items(ratings) { rating ->
-                    RatingItem(rating = rating)
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-                }
+                TotalCarRatings(car)
             }
 
             CarDetailsGrid(
@@ -111,12 +102,20 @@ fun CarDetailsBottomSheet(
                 fuelType = car.fuelType
             )
 
-            Spacer(Modifier.height(16.dp))
+            VerticalSpace()
 
             Text(
                 text = car.description,
                 style = MaterialTheme.typography.bodyMedium
             )
+            VerticalSpace()
+            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+            LazyColumn {
+                items(ratings) { rating ->
+                    RatingItem(rating = rating)
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                }
+            }
 
             Spacer(Modifier.height(24.dp))
 

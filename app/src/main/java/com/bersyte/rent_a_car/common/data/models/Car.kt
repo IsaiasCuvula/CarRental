@@ -18,5 +18,7 @@ data class Car(
     val year: Int,
     val plate: String,
     val address: Address,
+    val ratingSum: Double,
+    val ratingCount: Int,
     val createdAt: String
 )

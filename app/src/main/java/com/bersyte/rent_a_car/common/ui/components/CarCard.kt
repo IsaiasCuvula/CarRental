@@ -1,4 +1,4 @@
-package com.bersyte.rent_a_car.features.customers.home.ui.components
+package com.bersyte.rent_a_car.common.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -35,6 +35,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.bersyte.rent_a_car.R
 import com.bersyte.rent_a_car.common.data.models.Car
+import com.bersyte.rent_a_car.features.customers.home.ui.components.InfoChip
+import com.bersyte.rent_a_car.features.customers.home.ui.components.TotalCarRatings
+import com.bersyte.rent_a_car.features.customers.home.ui.components.TotalCarRentals
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 
@@ -96,7 +99,7 @@ fun CarCard(
                         overflow = TextOverflow.Ellipsis
                     )
                     // Rating
-                    TotalCarRatings(plate = car.plate)
+                    TotalCarRatings(car)
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
