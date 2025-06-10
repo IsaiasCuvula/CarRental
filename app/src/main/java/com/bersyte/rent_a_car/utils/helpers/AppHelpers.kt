@@ -3,7 +3,6 @@ package com.bersyte.rent_a_car.utils.helpers
 import android.content.Context
 import android.widget.Toast
 import com.bersyte.rent_a_car.common.data.models.CarRequest
-import com.bersyte.rent_a_car.features.customers.home.data.models.CarRating
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.Year
@@ -11,6 +10,11 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 object AppHelpers{
+
+    fun formatDateTime(dateTime: LocalDateTime): String {
+        val formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy hh:mm a")
+        return dateTime.format(formatter)
+    }
 
     fun validateAndSave(
         context: Context,

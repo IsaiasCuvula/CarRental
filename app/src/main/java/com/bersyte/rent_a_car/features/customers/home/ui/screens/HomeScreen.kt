@@ -114,7 +114,8 @@ fun HomeScreen(
             topBar = {
                 TopAppBar(
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor =  MaterialTheme.colorScheme.primary
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = Color.White
                     ),
                     title = { Text("Find Your Perfect Ride", color = Color.White)}
                 )
