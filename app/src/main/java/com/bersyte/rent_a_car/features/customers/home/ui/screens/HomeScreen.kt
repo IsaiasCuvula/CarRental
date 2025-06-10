@@ -37,7 +37,6 @@ import com.bersyte.rent_a_car.features.customers.home.data.models.ReservationReq
 import com.bersyte.rent_a_car.features.customers.home.ui.components.ReservationDateBottomSheet
 import com.bersyte.rent_a_car.features.customers.home.viewmodels.HomeViewModel
 import com.bersyte.rent_a_car.utils.enums.CarClass
-import com.bersyte.rent_a_car.utils.enums.CarStatus
 import com.bersyte.rent_a_car.utils.enums.CarType
 import com.bersyte.rent_a_car.utils.enums.FuelType
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
@@ -197,7 +196,6 @@ fun HomeScreen(
             }
         }
 
-    // Show date selection dialog
     if (showDateDialog) {
         ReservationDateBottomSheet(
             onDismiss = { showDateDialog = false },

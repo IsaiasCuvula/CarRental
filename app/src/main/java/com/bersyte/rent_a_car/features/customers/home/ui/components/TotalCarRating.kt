@@ -11,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.remember
@@ -23,19 +24,21 @@ import com.bersyte.rent_a_car.features.customers.home.viewmodels.HomeViewModel
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 @Composable
-fun DisplayCarRating(
+fun TotalCarRatings(
     plate: String,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
+    val ratingsState = viewModel.ratings.collectAsState()
+    val ratings = ratingsState.value
+
     var totalRatings by remember { mutableDoubleStateOf(0.0) }
 
     LaunchedEffect(plate) {
-        viewModel.getCarRatings(plate) { ratings ->
-            totalRatings = if (ratings.isEmpty()) {
-                0.0
-            } else {
-                AppHelpers.calculateRoundedRatingAverage(ratings)
-            }
+        viewModel.getCarRatings(plate)
+        totalRatings = if (ratings.isEmpty()) {
+            0.0
+        } else {
+            AppHelpers.calculateRoundedRatingAverage(ratings)
         }
     }
 
@@ -52,5 +55,4 @@ fun DisplayCarRating(
             style = MaterialTheme.typography.bodyMedium
         )
     }
-
 }

@@ -96,7 +96,7 @@ fun CarCard(
                         overflow = TextOverflow.Ellipsis
                     )
                     // Rating
-                    DisplayCarRating(plate = car.plate)
+                    TotalCarRatings(plate = car.plate)
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))

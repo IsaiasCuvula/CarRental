@@ -8,11 +8,11 @@ import com.bersyte.rent_a_car.features.customers.home.data.models.CarRating
 import com.bersyte.rent_a_car.features.customers.home.data.models.ReservationRequest
 import com.bersyte.rent_a_car.features.customers.home.data.repositories.HomeRepository
 import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
-import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -24,7 +24,10 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _cars = MutableStateFlow<List<Car>>(emptyList())
-    val cars: StateFlow<List<Car>> = _cars
+    val cars = _cars.asStateFlow()
+
+    private val _ratings = MutableStateFlow<List<CarRating>>(emptyList())
+    val ratings = _ratings.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
@@ -56,14 +59,13 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    fun getCarRatings(plate: String, onResult: (List<CarRating>) -> Unit) {
+    fun getCarRatings(plate: String) {
         viewModelScope.launch {
             try {
-                val total = repository.getCarRatings(plate)
-                onResult(total)
+                _ratings.value = repository.getCarRatings(plate)
             } catch (e: Exception) {
                 Log.d("TOTAL_RATINGS", "$e")
-                onResult(listOf())
+                _ratings.value = listOf()
             }
         }
     }

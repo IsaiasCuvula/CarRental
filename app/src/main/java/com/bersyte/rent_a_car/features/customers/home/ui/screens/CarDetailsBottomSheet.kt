@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -17,13 +20,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.bersyte.rent_a_car.common.data.models.Car
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.bersyte.rent_a_car.R
+import com.bersyte.rent_a_car.common.ui.components.RatingItem
 import com.bersyte.rent_a_car.features.customers.home.ui.components.CarDetailsGrid
-import com.bersyte.rent_a_car.features.customers.home.ui.components.DisplayCarRating
+import com.bersyte.rent_a_car.features.customers.home.ui.components.TotalCarRatings
+import com.bersyte.rent_a_car.features.customers.home.viewmodels.HomeViewModel
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 
@@ -32,8 +44,17 @@ import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 fun CarDetailsBottomSheet(
     car: Car,
     onDismiss: () -> Unit,
-    onReserveClick: () -> Unit
+    onReserveClick: () -> Unit,
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
+    val ratingsState = viewModel.ratings.collectAsState()
+    val ratings = ratingsState.value
+    val plate = car.plate
+
+    LaunchedEffect(plate) {
+        viewModel.getCarRatings(plate)
+    }
+
     val pricePerHour = AppHelpers.centsToUsd(car.hourlyPrice)
 
     ModalBottomSheet(
@@ -45,33 +66,22 @@ fun CarDetailsBottomSheet(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            // Car Image Gallery (using photos string)
             Image(
                 painter = painterResource(id = R.drawable.car_holder),
                 contentDescription = "${car.model} image",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxWidth()
-                    .height(200.dp)
+                    .height(120.dp)
             )
-//            AsyncImage(
-//                model = car.photos.split(",").firstOrNull(),
-//                contentDescription = car.name,
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .height(200.dp)
-//                    .clip(RoundedCornerShape(8.dp))
-//            )
 
             Spacer(Modifier.height(16.dp))
 
-            // Car Title
             Text(
                 text = "${car.name} ${car.model}",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold
             )
 
-            // Price and Rating Row
             Row (
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(vertical = 8.dp)
@@ -84,10 +94,16 @@ fun CarDetailsBottomSheet(
 
                 Spacer(Modifier.weight(1f))
 
-                DisplayCarRating(plate = car.plate)
+                TotalCarRatings(plate)
             }
 
-            // Details Grid
+            LazyColumn {
+                items(ratings) { rating ->
+                    RatingItem(rating = rating)
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                }
+            }
+
             CarDetailsGrid(
                 year = car.year,
                 seats = car.seats,
@@ -97,7 +113,6 @@ fun CarDetailsBottomSheet(
 
             Spacer(Modifier.height(16.dp))
 
-            // Description
             Text(
                 text = car.description,
                 style = MaterialTheme.typography.bodyMedium
@@ -105,7 +120,6 @@ fun CarDetailsBottomSheet(
 
             Spacer(Modifier.height(24.dp))
 
-            // Reserve Button
             Button(
                 onClick = onReserveClick,
                 modifier = Modifier.fillMaxWidth()
