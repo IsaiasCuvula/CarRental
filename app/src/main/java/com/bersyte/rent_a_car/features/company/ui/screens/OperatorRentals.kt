@@ -20,7 +20,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -31,10 +30,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.bersyte.rent_a_car.common.data.models.Car
 import com.bersyte.rent_a_car.features.company.data.models.Operator
 import com.bersyte.rent_a_car.features.company.viewmodels.CompanyViewModel
-import com.bersyte.rent_a_car.features.customers.home.ui.screens.CarDetailsBottomSheet
 import com.bersyte.rent_a_car.utils.enums.RentalStatus
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
