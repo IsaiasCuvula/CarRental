@@ -30,8 +30,8 @@ fun MainAppNavigation(
         composable("start") {
             val target = when (authResponse?.role?.lowercase()) {
                 "customer" -> "customer_dashboard"
-                "operator" -> "operator_dashboard"
-                "admin" -> "admin_dashboard"
+                "operator" -> "company_dashboard"
+                "admin" -> "company_dashboard"
                 else -> "login"
             }
 
@@ -48,8 +48,8 @@ fun MainAppNavigation(
                 onLoginSuccess = { role ->
                     val route = when (role.name.lowercase()) {
                         "customer" -> "customer_dashboard"
-                        "operator" -> "operator_dashboard"
-                        "admin" -> "admin_dashboard"
+                        "operator" -> "company_dashboard"
+                        "admin" -> "company_dashboard"
                         else -> "login"
                     }
                     navController.navigate(route) {
@@ -61,7 +61,7 @@ fun MainAppNavigation(
         composable("customer_dashboard") {
             CustomerNavigationGraph(navController = navController)
         }
-        composable("operator_dashboard") {
+        composable("company_dashboard") {
             CompanyNavigationGraph(navController = navController)
         }
     }
