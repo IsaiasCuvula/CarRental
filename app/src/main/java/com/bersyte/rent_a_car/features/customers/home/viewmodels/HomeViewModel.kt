@@ -8,6 +8,7 @@ import com.bersyte.rent_a_car.features.customers.home.data.models.CarRating
 import com.bersyte.rent_a_car.features.customers.home.data.models.ReservationRequest
 import com.bersyte.rent_a_car.features.customers.home.data.repositories.HomeRepository
 import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
+import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -76,17 +77,16 @@ class HomeViewModel @Inject constructor(
                  Log.d("RESERVING_CAR", "Request: $request")
                  val response = repository.reserveCar(request)
                  Log.d("RESERVING_CAR", "RESULT: $response")
-                 response
+                response
              } catch (e: HttpException) {
-                 val errorBody = e.response()?.errorBody()?.string()
-                 Log.d("RESERVING_CAR", "HTTP Error: ${e.code()}, Body: $errorBody")
+                 val errorMessage = AppHelpers.extractErrorMsg(e)
+                 Log.d("RESERVING_CAR", "HTTP Error: ${e.code()}, $errorMessage")
                  null
              } catch (e: Exception) {
                  Log.d("RESERVING_CAR", "Error: ${e.message}")
                  null
              }
 
-             // Make sure to call onResult on the main thread
              withContext(Dispatchers.Main) {
                  onResult(result)
              }

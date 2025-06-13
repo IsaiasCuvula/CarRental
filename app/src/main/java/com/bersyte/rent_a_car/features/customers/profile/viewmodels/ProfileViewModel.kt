@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.bersyte.rent_a_car.features.customers.profile.data.repositories.ProfileRepository
+import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -37,16 +38,23 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun updateCustomer(request: UpdateCustomerRequest) {
+    fun updateCustomer(
+        request: UpdateCustomerRequest,
+        onSuccess: (Customer?) -> Unit,
+        onError: (String)-> Unit
+    ) {
         Log.d("UPDATE_CUSTOMER", "$request")
         viewModelScope.launch {
             try {
                 val response = repository.updateCustomer(request)
                 _customer.value = response
                 Log.d("UPDATE_CUSTOMER", "$response")
+                onSuccess(response)
             }catch (e: HttpException) {
-                Log.d("UPDATE_CUSTOMER", "Error body: ${e.response()?.errorBody()?.string()}")
+                val error = AppHelpers.extractErrorMsg(e)
+                Log.d("UPDATE_CUSTOMER", "Error body: $error")
                 _error.value = e.message
+                onError(error)
             } catch (e: Exception) {
                 Log.d("UPDATE_CUSTOMER", "EXCEPTION - $e")
                 _error.value = e.message

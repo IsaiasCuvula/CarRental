@@ -21,6 +21,7 @@ import com.bersyte.rent_a_car.features.company.data.models.UpdateCarStatus
 import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
 import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
 import com.bersyte.rent_a_car.utils.enums.RegistrationStatus
+import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -83,12 +84,12 @@ class CompanyViewModel @Inject constructor(
                 fetchAllCars {  }
                 onSuccess(response)
             }catch (e: HttpException) {
-                val error = e.response()?.errorBody()?.string()
+                val error = AppHelpers.extractErrorMsg(e)
                 Log.e("❌ UPDATE_CAR_STATUS", "ERROR BODY: $error")
-                error?.let { onError(error) }
+                onError(error)
             } catch (e: Exception) {
                 Log.e("❌ UPDATE_CAR_STATUS", "❌ EXCEPTION - $e")
-                e.localizedMessage?.let { onError(it) }
+                onError("Something went wrong")
             }finally {
                 _isLoading.value = false
             }
@@ -102,12 +103,12 @@ class CompanyViewModel @Inject constructor(
                  Log.d("✅ FETCH_RENTALS_BY_OPERATORS", " ✅ $response")
                  _operatorRentals.value = response
              }catch (e: HttpException) {
-                 val error = e.response()?.errorBody()?.string()
+                 val error = AppHelpers.extractErrorMsg(e)
                  Log.e("❌ FETCH_OPERATORS", "Error body: $error")
-                 error?.let { onError(error) }
+                  onError(error)
              } catch (e: Exception) {
                  Log.e("❌ FETCH_OPERATORS", "❌ EXCEPTION - $e")
-                 e.localizedMessage?.let { onError(it) }
+                 onError("Something went wrong")
              }
          }
      }
@@ -119,13 +120,13 @@ class CompanyViewModel @Inject constructor(
                 Log.d("✅ FETCH_OPERATORS", "$response")
                 _operators.value = response
             }catch (e: HttpException) {
-                val error = e.response()?.errorBody()?.string()
+                val error = AppHelpers.extractErrorMsg(e)
                 Log.d("❌ FETCH_OPERATORS", "❌ Error body: $error")
-                error?.let { onError(error) }
+                onError(error)
                 return@launch
             } catch (e: Exception) {
                 Log.d("❌ FETCH_OPERATORS", "❌ EXCEPTION - $e")
-                e.localizedMessage?.let { onError(it) }
+                onError("Something went wrong")
                 return@launch
             }
         }
@@ -144,13 +145,13 @@ class CompanyViewModel @Inject constructor(
                 Log.d("✅ CREATE_OPERATOR", "$response")
                 onSuccess(response)
             }catch (e: HttpException) {
-                val error = e.response()?.errorBody()?.string()
+                val error = AppHelpers.extractErrorMsg(e)
                 Log.e("❌ CREATE_OPERATOR", "❌ Error body: $error")
-                error?.let { onError(error) }
+                 onError(error)
                 return@launch
             } catch (e: Exception) {
                 Log.e("❌ CREATE_OPERATOR", "❌EXCEPTION - $e")
-                e.localizedMessage?.let { onError(it) }
+                onError("Something went wrong")
                 return@launch
             }
         }
@@ -168,13 +169,13 @@ class CompanyViewModel @Inject constructor(
                 Log.d("✅ CREATE_CUSTOMER", "$response")
                 onSuccess(response)
             }catch (e: HttpException) {
-                val error = e.response()?.errorBody()?.string()
+                val error = AppHelpers.extractErrorMsg(e)
                 Log.e("❌ CREATE_CUSTOMER", "❌ Error body: $error")
-                error?.let { onError(error) }
+                onError(error)
                 return@launch
             } catch (e: Exception) {
                 Log.e("❌ CREATE_CUSTOMER", "❌ EXCEPTION - $e")
-                e.localizedMessage?.let { onError(it) }
+                onError("Something went wrong")
                 return@launch
             }
         }
@@ -187,12 +188,12 @@ class CompanyViewModel @Inject constructor(
                 _operator.value = response
                 Log.d("✅ FETCH_OPERATOR", "$response")
             }catch (e: HttpException) {
-                val error = e.response()?.errorBody()?.string()
+                val error = AppHelpers.extractErrorMsg(e)
                 Log.e("❌ FETCH_OPERATOR", "❌ Error body: $error")
-                error?.let { onError(error) }
+                onError(error)
             } catch (e: Exception) {
                 Log.e("❌ FETCH_OPERATOR", "❌ EXCEPTION - $e")
-                e.localizedMessage?.let { onError(it) }
+                onError("Something went wrong")
             }
         }
     }
@@ -204,12 +205,12 @@ class CompanyViewModel @Inject constructor(
                 Log.d("✅ FETCH_RENTALS", "$response")
                 _rentals.value = response
             }catch (e: HttpException) {
-                val error = e.response()?.errorBody()?.string()
+                val error = AppHelpers.extractErrorMsg(e)
                 Log.d("❌ FETCH_RENTALS", "❌ Error body: $error")
-                error?.let { onError(error) }
+                onError(error)
             } catch (e: Exception) {
                 Log.d("❌ FETCH_RENTALS", "❌ EXCEPTION - $e")
-                e.localizedMessage?.let { onError(it) }
+                onError("Something went wrong")
             }
         }
     }
@@ -221,12 +222,12 @@ class CompanyViewModel @Inject constructor(
                 Log.d("✅ FETCH_CUSTOMERS", "$response")
                 _customers.value = response
             }catch (e: HttpException) {
-                val error = e.response()?.errorBody()?.string()
+                val error = AppHelpers.extractErrorMsg(e)
                 Log.d("❌ FETCH_CUSTOMERS", "❌ Error body: $error")
-                error?.let { onError(error) }
+                onError(error)
             } catch (e: Exception) {
                 Log.d("❌ FETCH_CUSTOMERS", "❌ EXCEPTION - $e")
-                e.localizedMessage?.let { onError(it) }
+                onError("Something went wrong")
             }
         }
     }
@@ -238,12 +239,12 @@ class CompanyViewModel @Inject constructor(
                 Log.d("✅ FETCH_CARS", "$response")
                 _cars.value = response
             }catch (e: HttpException) {
-                val error = e.response()?.errorBody()?.string()
+                val error = AppHelpers.extractErrorMsg(e)
                 Log.d("❌ FETCH_CARS", "❌ Error body: $error")
-                error?.let { onError(error) }
+                onError(error)
             } catch (e: Exception) {
                 Log.d("❌ FETCH_CARS", "❌ EXCEPTION - $e")
-                e.localizedMessage?.let { onError(it) }
+                onError("Something went wrong")
             }
         }
     }
@@ -255,12 +256,12 @@ class CompanyViewModel @Inject constructor(
                 onSuccess(result)
                 fetchAllCars(onError = {})
             } catch (e: HttpException) {
-                val errorBody = e.response()?.errorBody()?.string()
-                Log.d("❌ SAVE_CAR_OPERATOR", "❌ HTTP Error: ${e.code()}, Body: $errorBody")
+                val error = AppHelpers.extractErrorMsg(e)
+                Log.d("❌ SAVE_CAR_OPERATOR", "❌ HTTP Error: ${e.code()}, Body: $error")
                 onError(e.localizedMessage)
             }catch (e: Exception){
                 Log.d("❌ SAVE_CAR_OPERATOR", "❌ exception: $e")
-                onError(e.localizedMessage)
+                onError("Something went wrong")
             }
         }
     }
@@ -272,12 +273,13 @@ class CompanyViewModel @Inject constructor(
                 Log.d("✅ FETCH_CAR_REGISTRATIONS", "$response")
                 _registrations.value = response
             }catch (e: HttpException) {
-                val error = e.response()?.errorBody()?.string()
+                val error = AppHelpers.extractErrorMsg(e)
                 Log.d("❌ FETCH_CAR_REGISTRATIONS", "❌ Error body: $error")
-                error?.let { onError(error) }
+                onError(error)
             } catch (e: Exception) {
                 Log.d("❌ FETCH_CAR_REGISTRATIONS", "❌ EXCEPTION - $e")
                 e.localizedMessage?.let { onError(it) }
+                onError("Something went wrong")
             }
         }
     }
@@ -325,8 +327,8 @@ class CompanyViewModel @Inject constructor(
                 fetchAllRegistrations(onError = {})
                 onSuccess(result)
             } catch (e: HttpException) {
-                val errorBody = e.response()?.errorBody()?.string()
-                Log.d("❌ UPDATE_CAR_REGISTRATION", "HTTP Error: ${e.code()}, Body: $errorBody")
+                val error = AppHelpers.extractErrorMsg(e)
+                Log.d("❌ UPDATE_CAR_REGISTRATION", "HTTP Error: ${e.code()}, Body: $error")
                 onError(e.localizedMessage)
             }catch (e: Exception){
                 Log.d("❌ UPDATE_CAR_REGISTRATION", "exception: $e")
@@ -347,9 +349,9 @@ class CompanyViewModel @Inject constructor(
                fetchAllRentals(onError = {})
                onSuccess(result)
            } catch (e: HttpException) {
-               val errorBody = e.response()?.errorBody()?.string()
-               Log.d("❌ CANCEL_RENTAL", "HTTP Error: ${e.code()}, Body: $errorBody")
-               onError(e.localizedMessage)
+               val error = AppHelpers.extractErrorMsg(e)
+               Log.d("❌ CANCEL_RENTAL", "HTTP Error: ${e.code()}, Body: $error")
+               onError(error)
            }catch (e: Exception){
                Log.d("❌ CANCEL_RENTAL", "exception: $e")
                onError(e.localizedMessage)
@@ -369,8 +371,8 @@ class CompanyViewModel @Inject constructor(
                fetchAllRentals(onError = {})
                onSuccess(result)
            } catch (e: HttpException) {
-               val errorBody = e.response()?.errorBody()?.string()
-               Log.d("❌ FINALIZE_RENTAL", "❌ HTTP Error: ${e.code()}, Body: $errorBody")
+               val error = AppHelpers.extractErrorMsg(e)
+               Log.d("❌ FINALIZE_RENTAL", "❌ HTTP Error: ${e.code()}, Body: $error")
                onError(e.localizedMessage)
            }catch (e: Exception){
                Log.d("❌ FINALIZE_RENTAL", "❌ exception: $e")
@@ -390,8 +392,8 @@ class CompanyViewModel @Inject constructor(
                fetchAllRentals(onError = {})
                onSuccess(result)
            } catch (e: HttpException) {
-               val errorBody = e.response()?.errorBody()?.string()
-               Log.d("❌ APPROVE_RENTAL", "❌ HTTP Error: ${e.code()}, Body: $errorBody")
+               val error = AppHelpers.extractErrorMsg(e)
+               Log.d("❌ APPROVE_RENTAL", "❌ HTTP Error: ${e.code()}, Body: $error")
                onError(e.localizedMessage)
            }catch (e: Exception){
                Log.d("❌ APPROVE_RENTAL", "❌ exception: $e")

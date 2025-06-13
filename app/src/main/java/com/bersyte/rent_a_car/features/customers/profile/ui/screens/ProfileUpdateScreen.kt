@@ -39,11 +39,11 @@ fun ProfileUpdateScreen(
 ) {
     val address = currentUser.address
     val customerPhone = currentUser.phone ?: ""
-    // State for form fields
+
     var name by remember { mutableStateOf(currentUser.name) }
     var phone by remember { mutableStateOf(customerPhone) }
-    var idCardNumber by remember { mutableStateOf(currentUser.idCardNumber.toString()) }
-    var driveLicense by remember { mutableStateOf(currentUser.driverLicenseNumber.toString()) }
+    var idCardNumber by remember { mutableStateOf(currentUser.idCardNumber ?: "") }
+    var driveLicense by remember { mutableStateOf(currentUser.driverLicenseNumber?: "") }
     var driveLicenseExpirationDate by remember {
         mutableStateOf(AppHelpers.safeParseIsoDateTime(currentUser.driverLicenseExpirationDate))
     }
@@ -92,7 +92,6 @@ fun ProfileUpdateScreen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
         )
 
-        // Address Information Section
         Text(
             text = "Address Information",
             style = MaterialTheme.typography.titleMedium,
@@ -126,7 +125,6 @@ fun ProfileUpdateScreen(
             )
         }
 
-        // Identification Section
         Text(
             text = "Identification",
             style = MaterialTheme.typography.titleMedium,
@@ -161,7 +159,6 @@ fun ProfileUpdateScreen(
             }
         }
 
-        // Action Buttons
         Row(
             modifier = Modifier
                 .fillMaxWidth()

@@ -203,7 +203,7 @@ fun AuthScreen(
                                             }
                                         },
                                         onError = { error ->
-                                            AppHelpers.showToast(context, "Something went wrong.\n$error")
+                                            AppHelpers.showToast(context, error)
                                         }
                                     )
                                 } else {
@@ -221,7 +221,7 @@ fun AuthScreen(
                                             }
                                         },
                                         onError = { error ->
-                                            AppHelpers.showToast(context, "Something went wrong.\n$error")
+                                            AppHelpers.showToast(context, error)
                                         }
                                     )
                                 }

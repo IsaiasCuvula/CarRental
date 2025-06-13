@@ -3,6 +3,8 @@ package com.bersyte.rent_a_car.utils.helpers
 import android.content.Context
 import android.widget.Toast
 import com.bersyte.rent_a_car.common.data.models.CarRequest
+import org.json.JSONObject
+import retrofit2.HttpException
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.Year
@@ -10,6 +12,33 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 object AppHelpers{
+
+
+    fun extractErrorMsg(e: HttpException): String {
+        val msg = e.response()?.errorBody()?.string()
+        return try {
+            if (msg != null) {
+                val jsonObject = JSONObject(msg)
+                val message = jsonObject.getString("message")
+
+                val nestedJsonStart = message.indexOf("{")
+                val nestedJson = if (nestedJsonStart != -1) message.substring(nestedJsonStart) else null
+
+                nestedJson?.let {
+                    val nestedObject = JSONObject(it)
+                    when {
+                        nestedObject.has("error_description") -> nestedObject.getString("error_description")
+                        nestedObject.has("errorMessage") -> nestedObject.getString("errorMessage")
+                        else -> message
+                    }
+                } ?: message
+            } else {
+                "Unknown error occurred\n$msg"
+            }
+        } catch (ex: Exception) {
+            "Unknown error occurred\n$msg"
+        }
+    }
 
     fun formatDateTime(dateTime: LocalDateTime): String {
         val formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy hh:mm a")

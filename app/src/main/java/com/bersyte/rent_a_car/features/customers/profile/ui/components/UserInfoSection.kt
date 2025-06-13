@@ -20,9 +20,12 @@ import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 @Composable
  fun UserInfoSection(user: Customer) {
 
-    val driverLicenseExpirationDate = AppHelpers.formatDateOnly(
-        user.driverLicenseExpirationDate
-    )
+    val driverLicenseExpirationDate = user.driverLicenseExpirationDate?.let {
+        AppHelpers.formatDateOnly(it)
+    } ?: ""
+
+    val idCard = user.idCardNumber ?: ""
+    val driveLicense = user.driverLicenseNumber ?: ""
 
     Card(
         modifier = Modifier
@@ -35,8 +38,8 @@ import com.bersyte.rent_a_car.utils.helpers.AppHelpers
         ) {
             InfoRow(icon = Icons.Default.Email, text = user.email)
             user.phone?.let { InfoRow(icon = Icons.Default.Phone, text = it) }
-            InfoRow(icon = Icons.Default.Badge, text = "ID: ${user.idCardNumber}")
-            InfoRow(icon = Icons.Default.Badge, text = "Drive License: ${user.driverLicenseNumber}")
+            InfoRow(icon = Icons.Default.Badge, text = "ID: $idCard")
+            InfoRow(icon = Icons.Default.Badge, text = "Drive License: $driveLicense")
             InfoRow(icon = Icons.Default.CalendarMonth, text = "Expires at: $driverLicenseExpirationDate")
         }
     }
