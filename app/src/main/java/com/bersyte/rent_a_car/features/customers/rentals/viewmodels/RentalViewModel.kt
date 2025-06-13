@@ -57,7 +57,7 @@ class RentalViewModel @Inject constructor(
         }
     }
 
-    private fun fetchRentals() {
+     fun fetchRentals() {
         viewModelScope.launch {
             isLoading = true
             error = null

@@ -16,6 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -48,6 +49,10 @@ fun RentalScreen(
         if (selectedFilterIndex == 0) rentals else {
             rentals.filter { it.status == rentalStatusOptions[selectedFilterIndex] }
         }
+    }
+
+    LaunchedEffect("My Rentals") {
+        viewModel.fetchRentals()
     }
 
     Scaffold (
