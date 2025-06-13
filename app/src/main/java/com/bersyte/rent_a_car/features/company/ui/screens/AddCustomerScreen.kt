@@ -39,7 +39,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import com.bersyte.rent_a_car.common.ui.components.CommonTextField
 import com.bersyte.rent_a_car.features.company.data.models.CreateCustomerRequest
-import com.bersyte.rent_a_car.features.customers.home.ui.components.ShowDatePickerDialog
+import com.bersyte.rent_a_car.common.ui.components.ShowDatePickerDialog
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 @OptIn(ExperimentalMaterial3Api::class)

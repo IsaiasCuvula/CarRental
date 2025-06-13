@@ -28,7 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.bersyte.rent_a_car.features.customers.home.ui.components.ShowDatePickerDialog
+import com.bersyte.rent_a_car.common.ui.components.ShowDatePickerDialog
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 @Composable

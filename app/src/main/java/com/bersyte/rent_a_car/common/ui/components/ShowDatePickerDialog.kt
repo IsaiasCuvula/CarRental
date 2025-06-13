@@ -1,4 +1,4 @@
-package com.bersyte.rent_a_car.features.customers.home.ui.components
+package com.bersyte.rent_a_car.common.ui.components
 
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
