@@ -8,6 +8,7 @@ import com.bersyte.rent_a_car.features.company.data.models.FinalizeRentalRequest
 import com.bersyte.rent_a_car.features.company.data.models.UpdateDamageRequest
 import com.bersyte.rent_a_car.features.company.data.models.RentingCarRequest
 import com.bersyte.rent_a_car.features.company.data.models.UpdateCarRegistrationStatus
+import com.bersyte.rent_a_car.features.company.data.models.UpdateCarStatus
 import com.bersyte.rent_a_car.features.company.data.services.CompanyApiService
 import javax.inject.Inject
 
@@ -33,4 +34,5 @@ class CompanyRepository @Inject constructor(
     suspend fun finalizeRental(request: FinalizeRentalRequest)= apiService.finalizeRental(request)
     suspend fun cancelRental(request: CancelRental)= apiService.cancelRental(request)
     suspend fun createOperator(request: CreateOperatorRequest)= apiService.createOperator(request)
+    suspend fun updateCarStatus(request: UpdateCarStatus)= apiService.updateCarStatus(request)
 }

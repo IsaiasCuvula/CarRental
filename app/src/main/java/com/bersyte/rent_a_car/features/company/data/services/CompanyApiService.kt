@@ -14,6 +14,7 @@ import com.bersyte.rent_a_car.features.company.data.models.Operator
 import com.bersyte.rent_a_car.features.company.data.models.UpdateDamageRequest
 import com.bersyte.rent_a_car.features.company.data.models.RentingCarRequest
 import com.bersyte.rent_a_car.features.company.data.models.UpdateCarRegistrationStatus
+import com.bersyte.rent_a_car.features.company.data.models.UpdateCarStatus
 import com.bersyte.rent_a_car.features.company.data.models.VehicleDamage
 import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
 import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
@@ -23,6 +24,9 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface CompanyApiService {
+
+    @POST("api/v1/cars/update")
+    suspend fun updateCarStatus(@Body request: UpdateCarStatus): Car
 
     @POST("api/v1/vehicle/damage/update")
     suspend fun payDamage(@Body request: UpdateDamageRequest): VehicleDamage

@@ -63,6 +63,7 @@ fun CarsScreen(
 
     var showUpdateCar by remember { mutableStateOf<Car?>(null) }
 
+
     LaunchedEffect(Unit) {
         viewModel.fetchAllCars(
            onError = { error ->
@@ -254,7 +255,7 @@ fun CarsScreen(
     showUpdateCar?.let { selectedCar ->
         UpdateCarStatusBottomSheet(
             onDismissRequest ={ showUpdateCar = null},
-            car = selectedCar,
+            car = selectedCar
         )
     }
 }

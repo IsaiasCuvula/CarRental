@@ -17,11 +17,13 @@ import com.bersyte.rent_a_car.features.company.data.models.FinalizeRentalRequest
 import com.bersyte.rent_a_car.features.company.data.models.FinalizeRentalResponse
 import com.bersyte.rent_a_car.features.company.data.models.RentingCarRequest
 import com.bersyte.rent_a_car.features.company.data.models.UpdateCarRegistrationStatus
+import com.bersyte.rent_a_car.features.company.data.models.UpdateCarStatus
 import com.bersyte.rent_a_car.features.customers.profile.data.models.Customer
 import com.bersyte.rent_a_car.features.customers.rentals.data.models.Rental
 import com.bersyte.rent_a_car.utils.enums.RegistrationStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -55,6 +57,9 @@ class CompanyViewModel @Inject constructor(
     private val _operatorRentals = MutableStateFlow<List<Rental>>(listOf())
     val operatorRentals = _operatorRentals.asStateFlow()
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
 
     init {
         fetchOperator(onError = {})
@@ -62,6 +67,32 @@ class CompanyViewModel @Inject constructor(
         fetchAllRegistrations(onError = {})
         fetchAllRentals(onError = {})
         fetchAllOperators(onError = {})
+    }
+
+    fun updateCarStatus(
+        request: UpdateCarStatus,
+        onSuccess: (Car?) -> Unit,
+        onError:(String)-> Unit
+    ){
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                Log.d("✅ UPDATE_CAR_STATUS", " ✅DATA: $request")
+                val response = repository.updateCarStatus(request)
+                Log.d("✅ UPDATE_CAR_STATUS", " ✅ $response")
+                fetchAllCars {  }
+                onSuccess(response)
+            }catch (e: HttpException) {
+                val error = e.response()?.errorBody()?.string()
+                Log.e("❌ UPDATE_CAR_STATUS", "ERROR BODY: $error")
+                error?.let { onError(error) }
+            } catch (e: Exception) {
+                Log.e("❌ UPDATE_CAR_STATUS", "❌ EXCEPTION - $e")
+                e.localizedMessage?.let { onError(it) }
+            }finally {
+                _isLoading.value = false
+            }
+        }
     }
 
      fun fetchRentalByOperator(email: String, onError:(String)-> Unit){

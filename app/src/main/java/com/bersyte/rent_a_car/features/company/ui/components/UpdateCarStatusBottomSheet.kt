@@ -1,24 +1,32 @@
 package com.bersyte.rent_a_car.features.company.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.bersyte.rent_a_car.common.data.models.Car
+import com.bersyte.rent_a_car.features.company.data.models.UpdateCarStatus
+import com.bersyte.rent_a_car.features.company.viewmodels.CompanyViewModel
 import com.bersyte.rent_a_car.utils.enums.CarStatus
+import com.bersyte.rent_a_car.utils.helpers.AppHelpers
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,11 +35,15 @@ fun UpdateCarStatusBottomSheet(
     car: Car,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
+    viewModel: CompanyViewModel = hiltViewModel()
 ) {
 
     val sheetState = rememberModalBottomSheetState()
     val oldStatus = CarStatus.valueOf(car.carStatus)
-    var carStatus by remember { mutableStateOf(oldStatus) }
+    var newCarStatus by remember { mutableStateOf(oldStatus) }
+
+    val isLoading by viewModel.isLoading.collectAsState()
+    val context = LocalContext.current
 
 
     ModalBottomSheet(
@@ -48,32 +60,42 @@ fun UpdateCarStatusBottomSheet(
         ) {
 
             CarStatusSelector(
-                selectedStatus = carStatus.displayName,
-                onStatusSelected = { carStatus = it },
+                selectedStatus = newCarStatus.displayName,
+                onStatusSelected = { newCarStatus = it },
                 modifier = Modifier.fillMaxWidth(),
             )
-
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = {
-//                    val request = UpdateDamageRequest(
-//                        damage.carPlate , selectedDate.toString()
-//                    )
-//                    viewModel.updateDamage(
-//                        request,
-//                        onSuccess = {vehicleDamage ->
-//                            if (vehicleDamage != null) {
-//                                AppHelpers.showToast(context, "Update successfully")
-//                                showDatePicker = false
-//                            }
-//                        },
-//                        onError = {error ->
-//                            AppHelpers.showToast(context, "Something went wrong.\n$error")
-//                        }
-//                    )
+            if (isLoading) {
+                Box(
+                    modifier = Modifier
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
                 }
-            ) {
-                Text("Update Status")
+            } else {
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {
+                        val request = UpdateCarStatus(
+                            newCarStatus.name, car.plate
+                        )
+                        viewModel.updateCarStatus(
+                            request,
+                            onSuccess = {result ->
+                                if (result != null) {
+                                    AppHelpers.showToast(context, "Update successfully")
+                                    onDismissRequest()
+                                }
+                            },
+                            onError = {error ->
+                                AppHelpers.showToast(context, "Something went wrong.\n$error")
+                            }
+                        )
+                    },
+                    enabled = newCarStatus != oldStatus
+                ) {
+                    Text("Update Status")
+                }
             }
         }
     }
