@@ -11,8 +11,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.HomeWork
+import androidx.compose.material.icons.filled.LocationCity
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Streetview
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
@@ -77,7 +80,7 @@ fun AuthScreen(
     var cityName by remember { mutableStateOf("") }
     var street by remember { mutableStateOf("") }
     var state by remember { mutableStateOf("") }
-    var showPassword by remember { mutableStateOf(false) }
+    var hidePassword by remember { mutableStateOf(true) }
 
     fun validate(): Boolean {
         val isEmailValid = email.isNotBlank()
@@ -141,13 +144,13 @@ fun AuthScreen(
                         label = "Password",
                         icon = Icons.Default.Lock,
                         keyboardType = KeyboardType.Password,
-                        isPassword = showPassword,
+                        isPassword = hidePassword,
                         trailingIcon = {
                             IconButton(
-                                onClick = {showPassword = !showPassword}
+                                onClick = {hidePassword = !hidePassword}
                             ) {
                                 Icon(
-                                    imageVector = if (showPassword) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                                    imageVector = if (hidePassword) Icons.Default.Visibility else Icons.Default.VisibilityOff,
                                     contentDescription = "Toggle password visibility",
                                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -168,18 +171,21 @@ fun AuthScreen(
                                 value = cityName,
                                 onValueChange = { cityName = it },
                                 label = "City",
+                                icon = Icons.Default.LocationCity,
                                 isError = cityName.isBlank()
                             )
                             CommonTextField(
                                 value = street,
                                 onValueChange = { street = it },
                                 label = "Street",
+                                icon = Icons.Default.Streetview,
                                 isError = street.isBlank()
                             )
                             CommonTextField(
                                 value = state,
                                 onValueChange = { state = it },
                                 label = "State",
+                                icon = Icons.Default.HomeWork,
                                 isError = state.isBlank()
                             )
                         }

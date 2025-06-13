@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import retrofit2.HttpException
 import javax.inject.Inject
 
@@ -59,9 +60,9 @@ class AuthViewModel @Inject constructor(
             Log.d("✅ LOGIN", " ✅ $response")
             onSuccess(response)
         }catch (e: HttpException) {
-            val msg = e.response()?.errorBody()?.string()
-            Log.d("❌ LOGIN", "❌ ERROR BODY: $msg")
-            onError(e.message ?: "Unknown error occurred \n$msg")
+            val errorMessage = getFormattedMsg(e)
+            Log.d("❌ LOGIN", "❌ ERROR BODY: $errorMessage")
+            onError(errorMessage)
         }catch (e: Exception) {
             logout()
             Log.i("❌ LOGIN", "❌ EXCEPTION: $e")
@@ -84,9 +85,9 @@ class AuthViewModel @Inject constructor(
             _authResponse.value = response
             onSuccess(response)
         }catch (e: HttpException) {
-            val msg = e.response()?.errorBody()?.string()
-            Log.d("❌ SIGNUP", "❌ ERROR BODY: $msg")
-            onError(e.message ?: "Unknown error occurred \n$msg")
+            val errorMessage = getFormattedMsg(e)
+            Log.d("❌ SIGNUP", "❌ ERROR BODY: $errorMessage")
+            onError(errorMessage)
         }catch (e: Exception) {
             logout()
             Log.i("❌ SIGNUP", "❌ EXCEPTION: $e")
@@ -101,6 +102,29 @@ class AuthViewModel @Inject constructor(
             Log.i("LOGOUT", "LOGOUT")
             tokenManager.clearAuthResponse()
             _authResponse.value = null
+        }
+    }
+
+    private fun getFormattedMsg(e: HttpException): String{
+        val msg = e.response()?.errorBody()?.string()
+        return try {
+            if(msg != null){
+
+                val jsonObject = JSONObject(msg)
+                val message = jsonObject.getString("message")
+
+                val nestedJsonStart = message.indexOf("{")
+                val nestedJson = if (nestedJsonStart != -1) message.substring(nestedJsonStart) else null
+
+                nestedJson?.let {
+                    val nestedObject = JSONObject(it)
+                    nestedObject.getString("error_description")
+                } ?: message
+            }else{
+                "Unknown error occurred\n$msg"
+            }
+        } catch (ex: Exception) {
+            "Unknown error occurred\n$msg"
         }
     }
 }
