@@ -3,7 +3,6 @@ package com.bersyte.rent_a_car.features.auth.viewmodels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bersyte.rent_a_car.common.data.models.Resource
 import com.bersyte.rent_a_car.core.token.TokenManager
 import com.bersyte.rent_a_car.features.auth.data.models.AuthResponse
 import com.bersyte.rent_a_car.features.auth.data.models.LoginRequest
@@ -11,6 +10,7 @@ import com.bersyte.rent_a_car.features.auth.data.models.SignUpRequest
 import com.bersyte.rent_a_car.features.auth.data.repositories.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -22,59 +22,77 @@ class AuthViewModel @Inject constructor(
     val tokenManager: TokenManager
 ) : ViewModel() {
 
-    private val _authResponse = MutableStateFlow<Resource<AuthResponse>?>(null)
+    private val _authResponse = MutableStateFlow<AuthResponse?>(null)
     val authResponse = _authResponse.asStateFlow()
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
     init {
-        viewModelScope.launch {
+        initState()
+    }
+
+   private fun initState() = viewModelScope.launch {
+        try {
+            _isLoading.value = true
             val cachedResponse = tokenManager.getAuthResponse()
-            _authResponse.value = cachedResponse?.let { Resource.Success(it) }
+            if(cachedResponse != null){
+                _authResponse.value = cachedResponse
+            }
+        }catch (e: Exception) {
+            Log.i("❌ GET INITIAL STATE", "❌ EXCEPTION: $e")
+        }finally {
+            _isLoading.value = false
         }
     }
 
-
-    fun login(request : LoginRequest) = viewModelScope.launch {
-        _authResponse.value = Resource.loading()
+    fun login(
+        request : LoginRequest,
+        onSuccess: (AuthResponse?) -> Unit,
+        onError:(String) -> Unit
+    ) = viewModelScope.launch {
+        _isLoading.value = true
         try {
             val response = repository.login(request)
-            if (response is Resource.Success) {
-                response.data?.let { data ->
-                    tokenManager.saveAuthResponse(data)
-                    _authResponse.value = response
-                }
-            }
-            if (response is Resource.Error) {
-                response.data?.let { data ->
-                    Log.i("LOGIN EXCEPTION", "Exception: $data")
-                    _authResponse.value = response
-                }
-            }
+            tokenManager.saveAuthResponse(response)
+            _authResponse.value = response
+            Log.d("✅ LOGIN", " ✅ $response")
+            onSuccess(response)
         }catch (e: HttpException) {
-            Log.d("LOGIN EXCEPTION", "Error body: ${e.response()?.errorBody()?.string()}")
-            _authResponse.value = Resource.Error(e.message ?: "Log in- Unknown error occurred")
-        }
-        catch (e: Exception) {
-                logout()
-                Log.i("LOGIN EXCEPTION", "Exception: $e")
-                _authResponse.value = Resource.Error(e.message ?: "Log in- Unknown error occurred")
+            val msg = e.response()?.errorBody()?.string()
+            Log.d("❌ LOGIN", "❌ ERROR BODY: $msg")
+            onError(e.message ?: "Unknown error occurred \n$msg")
+        }catch (e: Exception) {
+            logout()
+            Log.i("❌ LOGIN", "❌ EXCEPTION: $e")
+            onError(e.message ?: "Unknown error occurred\n$e")
+        }finally {
+            _isLoading.value = false
         }
     }
 
-    fun signup(request: SignUpRequest) = viewModelScope.launch {
-        _authResponse.value = Resource.loading()
+    fun signup(
+        request: SignUpRequest,
+        onSuccess: (AuthResponse?) -> Unit,
+        onError:(String) -> Unit
+    ) = viewModelScope.launch {
+        _isLoading.value = true
         try {
             val response = repository.signup(request)
-            if (response is Resource.Success) {
-                response.data?.let { data ->
-                    Log.i("SIGNUP SUCCESS", "SAVE DATA: $data")
-                    tokenManager.saveAuthResponse(data)
-                    _authResponse.value = response
-                }
-            }
-        } catch (e: Exception) {
+            tokenManager.saveAuthResponse(response)
+            Log.d("✅ SIGNUP", " ✅ $response")
+            _authResponse.value = response
+            onSuccess(response)
+        }catch (e: HttpException) {
+            val msg = e.response()?.errorBody()?.string()
+            Log.d("❌ SIGNUP", "❌ ERROR BODY: $msg")
+            onError(e.message ?: "Unknown error occurred \n$msg")
+        }catch (e: Exception) {
             logout()
-            Log.i("SIGNUP EXCEPTION", "Exception: $e")
-            _authResponse.value = Resource.Error(e.message ?: "Sign up - Unknown error occurred")
+            Log.i("❌ SIGNUP", "❌ EXCEPTION: $e")
+            onError(e.message ?: "Unknown error occurred\n$e")
+        }finally {
+            _isLoading.value = false
         }
     }
 

@@ -59,7 +59,7 @@ fun OperatorsScreen(
     val allOperators = allOperatorsState.value
 
     val authResponse = authViewModel.authResponse.collectAsState()
-    val auth = authResponse.value
+    val authData = authResponse.value
 
     var selectedOperator by remember { mutableStateOf<Operator?>(null) }
 
@@ -98,11 +98,8 @@ fun OperatorsScreen(
             )
         },
         floatingActionButton = {
-            val authData = auth?.data
-
-            if( authData != null){
-                val role = UserRole.valueOf(authData.role)
-
+            authData?.let {
+                val role = UserRole.valueOf(it.role)
                 if(role == UserRole.ADMIN){
                     FloatingActionButton(
                         onClick =onAddOperator,
@@ -161,11 +158,9 @@ fun OperatorsScreen(
                         OperatorCard(
                             operator = operator,
                             onClick = {
-                                val authData = auth?.data
 
-                                if( authData != null){
-                                    val role = UserRole.valueOf(authData.role)
-
+                               authData?.let{
+                                    val role = UserRole.valueOf(it.role)
                                     if(role == UserRole.ADMIN){
                                         selectedOperator = operator
                                     }

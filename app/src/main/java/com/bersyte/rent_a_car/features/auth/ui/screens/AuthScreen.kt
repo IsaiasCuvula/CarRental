@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TextButton
@@ -38,7 +39,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.bersyte.rent_a_car.common.data.models.Resource
 import com.bersyte.rent_a_car.common.ui.components.CommonTextField
 import com.bersyte.rent_a_car.features.auth.data.models.LoginRequest
 import com.bersyte.rent_a_car.features.auth.data.models.SignUpRequest
@@ -52,9 +52,9 @@ fun AuthScreen(
     viewModel: AuthViewModel = hiltViewModel()
 ) {
 
-    val loginState by viewModel.authResponse.collectAsState()
+    val authState by viewModel.authResponse.collectAsState()
 
-    var isLogin by remember { mutableStateOf(true) }
+    var isLoginUI by remember { mutableStateOf(true) }
 
     val colors = MaterialTheme.colorScheme
 
@@ -62,8 +62,9 @@ fun AuthScreen(
         colors = listOf(colors.secondary, colors.primary)
     )
 
+    val isLoading by viewModel.isLoading.collectAsState()
+
     val context = LocalContext.current
-    // Add this line to get focus manager
     val focusManager = LocalFocusManager.current
 
     var email by remember { mutableStateOf("") }
@@ -73,31 +74,19 @@ fun AuthScreen(
     var street by remember { mutableStateOf("") }
     var state by remember { mutableStateOf("") }
 
-    // Validation function
     fun validate(): Boolean {
         val isEmailValid = email.isNotBlank()
         val isPasswordValid = password.isNotBlank()
-        val isRoleValid = isLogin || role.isNotBlank()
-        val isCityValid = isLogin || cityName.isNotBlank()
+        val isRoleValid = isLoginUI || role.isNotBlank()
+        val isCityValid = isLoginUI || cityName.isNotBlank()
 
         return isEmailValid && isPasswordValid && isRoleValid && isCityValid
     }
 
-    LaunchedEffect(loginState) {
-        when (loginState) {
-            is Resource.Success -> {
-                val userState = loginState as Resource.Success
-                if (userState.data != null) {
-                    val userRole = UserRole.valueOf(userState.data.role.uppercase())
-                    onLoginSuccess(userRole)
-                }
-            }
-            is Resource.Error -> {
-               val error = "Invalid user credentials"
-               AppHelpers.showToast(context, error)
-               viewModel.logout()
-            }
-            else -> {}
+    LaunchedEffect(authState) {
+         authState?.let {
+           val userRole = UserRole.valueOf(it.role.uppercase())
+           onLoginSuccess(userRole)
         }
     }
 
@@ -126,7 +115,7 @@ fun AuthScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = if (isLogin) "Login" else "Sign Up",
+                        text = if (isLoginUI) "Login" else "Sign Up",
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold,
                     )
@@ -151,7 +140,7 @@ fun AuthScreen(
                         isError = password.isBlank()
                     )
 
-                    AnimatedVisibility(visible = !isLogin) {
+                    AnimatedVisibility(visible = !isLoginUI) {
                         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                             CommonTextField(
                                 value = role,
@@ -181,40 +170,64 @@ fun AuthScreen(
                         }
                     }
 
-                    Button(
-                        onClick = {
-                            focusManager.clearFocus()
+                    if (isLoading) {
+                        Box(
+                            modifier = Modifier
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    } else {
+                        Button(
+                            onClick = {
+                                focusManager.clearFocus()
 
-                            if (isLogin) {
-                                viewModel.login(
-                                    LoginRequest(
-                                        email = email,
-                                        password = password
+                                if (isLoginUI) {
+                                    viewModel.login(
+                                        LoginRequest( email = email,password = password),
+                                        onSuccess = { response ->
+                                            if(response != null){
+                                                AppHelpers.showToast(context, "Login successful")
+                                            }
+                                        },
+                                        onError = { error ->
+                                            AppHelpers.showToast(context, "Something went wrong.\n$error")
+                                        }
                                     )
-                                )
-                            } else {
-                                viewModel.signup(
-                                    SignUpRequest(
-                                        email = email,
-                                        password = password,
-                                        role = role.uppercase(),
-                                        cityName = cityName
+                                } else {
+                                    viewModel.signup(
+                                        SignUpRequest(
+                                            email = email,
+                                            password = password,
+                                            role = role.uppercase(),
+                                            cityName = cityName
+                                        ),
+                                        onSuccess = { response ->
+                                            if(response != null){
+                                                AppHelpers.showToast(context, "Login successful")
+                                            }
+                                        },
+                                        onError = { error ->
+                                            AppHelpers.showToast(context, "Something went wrong.\n$error")
+                                        }
                                     )
-                                )
-                            }
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp),
-                        enabled = validate()
-                    ) {
-                        Text(text = if (isLogin) "Login" else "Sign Up")
-                    }
+                                }
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp),
+                            enabled = validate()
+                        ) {
+                            Text(text = if (isLoginUI) "Login" else "Sign Up")
+                        }
 
-                    TextButton(onClick = { isLogin = !isLogin }) {
-                        Text(
-                            text = if (isLogin) "Don't have an account? Sign Up" else "Already have an account? Login",
-                            color = Color.Gray
-                        )
+                        TextButton(onClick = { isLoginUI = !isLoginUI }) {
+                            Text(
+                                text = if (isLoginUI) "Don't have an account? Sign Up" else "Already have an account? Login",
+                                color = Color.Gray
+                            )
+                        }
+
                     }
                 }
             }

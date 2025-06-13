@@ -1,7 +1,5 @@
 package com.bersyte.rent_a_car.di
 
-import com.bersyte.rent_a_car.features.auth.data.datasource.AuthRemoteDataSource
-import com.bersyte.rent_a_car.features.auth.data.datasource.AuthRemoteDataSourceImpl
 import com.bersyte.rent_a_car.features.auth.data.repositories.AuthRepository
 import com.bersyte.rent_a_car.features.auth.data.repositories.AuthRepositoryImpl
 import com.bersyte.rent_a_car.features.auth.data.services.AuthApiService
@@ -22,13 +20,9 @@ object AuthModule {
         return retrofit.create(AuthApiService::class.java)
     }
 
-    @Provides
-    fun provideAuthRemoteDataSource(apiService: AuthApiService): AuthRemoteDataSource {
-        return AuthRemoteDataSourceImpl(apiService)
-    }
 
     @Provides
-    fun provideAuthRepository(remoteDataSource: AuthRemoteDataSource): AuthRepository {
-        return AuthRepositoryImpl(remoteDataSource)
+    fun provideAuthRepository(apiService: AuthApiService): AuthRepository {
+        return AuthRepositoryImpl(apiService)
     }
 }

@@ -28,8 +28,7 @@ fun MainAppNavigation(
     ) {
 
         composable("start") {
-            val data = authResponse?.data
-            val target = when (data?.role?.lowercase()) {
+            val target = when (authResponse?.role?.lowercase()) {
                 "customer" -> "customer_dashboard"
                 "operator" -> "operator_dashboard"
                 "admin" -> "admin_dashboard"
