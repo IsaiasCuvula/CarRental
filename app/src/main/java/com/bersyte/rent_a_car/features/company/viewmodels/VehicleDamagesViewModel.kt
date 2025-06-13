@@ -3,8 +3,7 @@ package com.bersyte.rent_a_car.features.company.viewmodels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bersyte.rent_a_car.features.company.data.models.FixDamageRequest
-import com.bersyte.rent_a_car.features.company.data.models.PayDamageRequest
+import com.bersyte.rent_a_car.features.company.data.models.UpdateDamageRequest
 import com.bersyte.rent_a_car.features.company.data.models.VehicleDamage
 import com.bersyte.rent_a_car.features.company.data.repositories.CompanyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -53,45 +52,23 @@ class VehicleDamagesViewModel @Inject constructor(
     }
 
 
-    fun markDamageAsFixed(
-        request: FixDamageRequest,
-        onSuccess: (VehicleDamage?)-> Unit,
-        onError:(String)-> Unit
-    ) {
-        viewModelScope.launch {
-            try {
-                val response = repository.markDamageAsFixed(request)
-                Log.d("✅ FIX_CAR_DAMAGE", "✅ $response")
-                loadDamages {  }
-                onSuccess(response)
-            }catch (e: HttpException) {
-                val error = e.response()?.errorBody()?.string()
-                Log.e("❌ FIX_CAR_DAMAGE", "❌ Error body: $error")
-                error?.let { onError(error) }
-            } catch (e: Exception) {
-                Log.e("❌ FIX_CAR_DAMAGE", "❌ EXCEPTION - $e")
-                e.localizedMessage?.let { onError(it) }
-            }
-        }
-    }
-
-    fun payDamage(
-        request: PayDamageRequest,
+    fun updateDamage(
+        request: UpdateDamageRequest,
         onSuccess: (VehicleDamage?)-> Unit,
         onError:(String)-> Unit
     ) {
         viewModelScope.launch {
             try {
                 val response = repository.payDamage(request)
-                Log.d("✅ PAY_CAR_DAMAGE", "✅ $response")
+                Log.d("✅ UPDATE_CAR_DAMAGE", "✅ $response")
                 loadDamages {  }
                 onSuccess(response)
             }catch (e: HttpException) {
                 val error = e.response()?.errorBody()?.string()
-                Log.e("❌ PAY_CAR_DAMAGE", "❌ Error body: $error")
+                Log.e("❌ UPDATE_CAR_DAMAGE", "❌ Error body: $error")
                 error?.let { onError(error) }
             } catch (e: Exception) {
-                Log.e("❌ PAY_CAR_DAMAGE", "❌ EXCEPTION - $e")
+                Log.e("❌ UPDATE_CAR_DAMAGE", "❌ EXCEPTION - $e")
                 e.localizedMessage?.let { onError(it) }
             }
         }

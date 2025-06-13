@@ -10,9 +10,8 @@ import com.bersyte.rent_a_car.features.company.data.models.CreateOperatorRequest
 import com.bersyte.rent_a_car.features.company.data.models.CreateUserResponse
 import com.bersyte.rent_a_car.features.company.data.models.FinalizeRentalRequest
 import com.bersyte.rent_a_car.features.company.data.models.FinalizeRentalResponse
-import com.bersyte.rent_a_car.features.company.data.models.FixDamageRequest
 import com.bersyte.rent_a_car.features.company.data.models.Operator
-import com.bersyte.rent_a_car.features.company.data.models.PayDamageRequest
+import com.bersyte.rent_a_car.features.company.data.models.UpdateDamageRequest
 import com.bersyte.rent_a_car.features.company.data.models.RentingCarRequest
 import com.bersyte.rent_a_car.features.company.data.models.UpdateCarRegistrationStatus
 import com.bersyte.rent_a_car.features.company.data.models.VehicleDamage
@@ -25,11 +24,8 @@ import retrofit2.http.Path
 
 interface CompanyApiService {
 
-    @POST("api/v1/vehicle/damage/fixed")
-    suspend fun markDamageAsFixed(@Body request: FixDamageRequest): VehicleDamage
-
-    @POST("api/v1/vehicle/damage/pay")
-    suspend fun payDamage(@Body request: PayDamageRequest): VehicleDamage
+    @POST("api/v1/vehicle/damage/update")
+    suspend fun payDamage(@Body request: UpdateDamageRequest): VehicleDamage
 
     @GET("api/v1/vehicle/damage")
     suspend fun fetchAllDamages(): List<VehicleDamage>

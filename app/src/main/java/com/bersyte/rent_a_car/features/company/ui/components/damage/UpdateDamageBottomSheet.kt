@@ -3,9 +3,7 @@ package com.bersyte.rent_a_car.features.company.ui.components.damage
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,19 +29,23 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.ui.Alignment
-import com.bersyte.rent_a_car.features.company.data.models.PayDamageRequest
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.bersyte.rent_a_car.common.ui.components.VerticalSpace
+import com.bersyte.rent_a_car.features.company.data.models.UpdateDamageRequest
+import com.bersyte.rent_a_car.features.company.data.models.VehicleDamage
+import com.bersyte.rent_a_car.features.company.viewmodels.VehicleDamagesViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PayDamageBottomSheet(
-    carPlate: String,
+fun UpdateDamageBottomSheet(
+    damage: VehicleDamage,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
-    onSelected: (PayDamageRequest) -> Unit,
+    viewModel: VehicleDamagesViewModel = hiltViewModel()
 ) {
     val sheetState = rememberModalBottomSheetState()
-    var amount by remember { mutableStateOf(0) }
+    var amount by remember { mutableStateOf("") }
     var selectedDate by remember { mutableStateOf(LocalDate.now()) }
     val dateFormatter = remember { DateTimeFormatter.ofPattern("MMM dd, yyyy") }
 
@@ -69,7 +71,7 @@ fun PayDamageBottomSheet(
                     if (it.isEmpty() || it.toLongOrNull() != null) {
                         amount = it
                         it.toLongOrNull()?.let {
-                            longValue -> amount = longValue
+                            longValue -> amount = longValue.toString()
                         }
                     } },
                 label = { Text("Amount") },
@@ -119,15 +121,14 @@ fun PayDamageBottomSheet(
                     }
                 }
             }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
+            VerticalSpace()
             Button(
+                modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    val request = PayDamageRequest(
-                        carPlate ,amount, selectedDate.toString()
-                    )
-                    onSelected(request)
+//                    val request = UpdateDamageRequest(
+//                        carPlate ,amount, selectedDate.toString()
+//                    )
+//                    onSelected(request)
                 }
             ) {
                 Text("Update damage")

@@ -108,7 +108,7 @@ fun DamageCard(damage: VehicleDamage) {
     }
 
     showUpdateDamageOption?.let { selectedDamage ->
-        UpdateDamage(
+        UpdateDamageBottomSheet(
             onDismissRequest ={ showUpdateDamageOption = null},
             damage = selectedDamage,
         )
