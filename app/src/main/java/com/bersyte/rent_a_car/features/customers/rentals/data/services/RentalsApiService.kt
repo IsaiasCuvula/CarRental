@@ -20,6 +20,6 @@ interface RentalsApiService {
     @POST("api/v1/rentals/postpone")
     suspend fun postponeRental(@Body request: PostponeRentalRequest): Rental
 
-    @POST("api/v1/rentals/cancel")
+    @POST("api/v1/rentals/customer/cancel")
     suspend fun cancelRenting(@Body request: CancelRental): Rental
 }
