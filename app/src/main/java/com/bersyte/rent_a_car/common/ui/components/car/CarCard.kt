@@ -1,4 +1,4 @@
-package com.bersyte.rent_a_car.common.ui.components
+package com.bersyte.rent_a_car.common.ui.components.car
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

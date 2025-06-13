@@ -2,7 +2,6 @@ package com.bersyte.rent_a_car.di
 
 import com.bersyte.rent_a_car.core.interceptor.AuthInterceptor
 import com.bersyte.rent_a_car.core.token.TokenManager
-import com.bersyte.rent_a_car.features.auth.data.services.AuthApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,7 +19,8 @@ object NetworkModule {
     //private const val BASE_URL = "http://10.0.2.2:8888"
 
     //Real device
-    private const val BASE_URL = "http://192.168.8.114:8888/"
+  //  private const val BASE_URL = "http://192.168.10.90:8888/"
+    private const val BASE_URL = " https://8d4a-37-63-19-86.ngrok-free.app"
 
     @Provides
     @Singleton

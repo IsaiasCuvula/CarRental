@@ -1,4 +1,4 @@
-package com.bersyte.rent_a_car.features.customers.my_cars.ui.components
+package com.bersyte.rent_a_car.common.ui.components.car
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

@@ -29,8 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.bersyte.rent_a_car.common.ui.components.CarCard
-import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.CarStatsSection
+import com.bersyte.rent_a_car.common.ui.components.car.CarCard
+import com.bersyte.rent_a_car.common.ui.components.car.CarStatsSection
 import com.bersyte.rent_a_car.features.customers.my_cars.viewmodels.MyCarsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

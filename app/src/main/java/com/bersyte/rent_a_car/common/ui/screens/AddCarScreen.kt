@@ -38,13 +38,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.CarClassSelector
-import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.CarSeatsSelector
-import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.CarTypeSelector
-import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.ColorPicker
-import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.FuelTypeSelector
-import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.SmokingAllowedToggle
-import com.bersyte.rent_a_car.features.customers.my_cars.ui.components.YearSelector
+import com.bersyte.rent_a_car.common.ui.components.car.CarClassSelector
+import com.bersyte.rent_a_car.common.ui.components.car.CarSeatsSelector
+import com.bersyte.rent_a_car.common.ui.components.car.CarTypeSelector
+import com.bersyte.rent_a_car.common.ui.components.car.ColorPicker
+import com.bersyte.rent_a_car.common.ui.components.car.FuelTypeSelector
+import com.bersyte.rent_a_car.common.ui.components.car.SmokingAllowedToggle
+import com.bersyte.rent_a_car.common.ui.components.car.YearSelector
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers.validateAndSave
 import java.time.LocalDateTime
 

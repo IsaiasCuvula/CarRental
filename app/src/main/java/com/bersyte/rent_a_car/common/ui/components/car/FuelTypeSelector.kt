@@ -1,24 +1,24 @@
-package com.bersyte.rent_a_car.features.customers.my_cars.ui.components
+package com.bersyte.rent_a_car.common.ui.components.car
 
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import com.bersyte.rent_a_car.utils.enums.FuelType
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.bersyte.rent_a_car.utils.enums.CarType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CarTypeSelector(
-    selectedType: String,
-    onTypeSelected: (String) -> Unit,
+fun FuelTypeSelector(
+    selectedFuel: String,
+    onFuelSelected: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -31,9 +31,9 @@ fun CarTypeSelector(
         OutlinedTextField(
             modifier = Modifier.menuAnchor(),
             readOnly = true,
-            value = selectedType,
+            value = selectedFuel,
             onValueChange = {},
-            label = { Text("Car Type") },
+            label = { Text("Fuel Type") },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
             }
@@ -42,11 +42,11 @@ fun CarTypeSelector(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            CarType.entries.forEach { item ->
+            FuelType.entries.forEach { item ->
                 DropdownMenuItem(
-                    text = { Text(item.displayName) },
+                    text = { Text(item.name) },
                     onClick = {
-                        onTypeSelected(item.name)
+                        onFuelSelected(item.name)
                         expanded = false
                     }
                 )

@@ -1,4 +1,4 @@
-package com.bersyte.rent_a_car.features.customers.my_cars.ui.components
+package com.bersyte.rent_a_car.common.ui.components.car
 
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -12,16 +12,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.bersyte.rent_a_car.utils.enums.CarType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun YearSelector(
-    selectedYear: String,
-    onYearSelected: (String) -> Unit,
+fun CarTypeSelector(
+    selectedType: String,
+    onTypeSelected: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val years = (2004..2030).map { it.toString() }
 
     ExposedDropdownMenuBox(
         expanded = expanded,
@@ -31,9 +31,9 @@ fun YearSelector(
         OutlinedTextField(
             modifier = Modifier.menuAnchor(),
             readOnly = true,
-            value = selectedYear,
+            value = selectedType,
             onValueChange = {},
-            label = { Text("Year") },
+            label = { Text("Car Type") },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
             }
@@ -42,11 +42,11 @@ fun YearSelector(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            years.forEach { year ->
+            CarType.entries.forEach { item ->
                 DropdownMenuItem(
-                    text = { Text(year) },
+                    text = { Text(item.displayName) },
                     onClick = {
-                        onYearSelected(year)
+                        onTypeSelected(item.name)
                         expanded = false
                     }
                 )

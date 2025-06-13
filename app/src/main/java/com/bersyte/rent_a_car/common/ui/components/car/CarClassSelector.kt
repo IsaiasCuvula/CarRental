@@ -1,4 +1,4 @@
-package com.bersyte.rent_a_car.features.customers.my_cars.ui.components
+package com.bersyte.rent_a_car.common.ui.components.car
 
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api

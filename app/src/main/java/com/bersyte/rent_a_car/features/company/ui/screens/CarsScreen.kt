@@ -33,13 +33,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.bersyte.rent_a_car.common.data.models.Car
 import com.bersyte.rent_a_car.common.ui.screens.AddCarScreen
 import com.bersyte.rent_a_car.common.ui.components.CommonSearchBar
 import com.bersyte.rent_a_car.common.ui.components.ScrollableFilterChips
 import com.bersyte.rent_a_car.common.ui.components.VerticalSpace
 import com.bersyte.rent_a_car.features.company.ui.components.StatCard
 import com.bersyte.rent_a_car.features.company.viewmodels.CompanyViewModel
-import com.bersyte.rent_a_car.common.ui.components.CarCard
+import com.bersyte.rent_a_car.common.ui.components.car.CarCard
+import com.bersyte.rent_a_car.features.company.ui.components.UpdateCarStatusBottomSheet
 import com.bersyte.rent_a_car.utils.enums.CarClass
 import com.bersyte.rent_a_car.utils.enums.CarStatus
 import com.bersyte.rent_a_car.utils.enums.CarType
@@ -58,6 +60,8 @@ fun CarsScreen(
     val allCars = allCarsState.value
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
+
+    var showUpdateCar by remember { mutableStateOf<Car?>(null) }
 
     LaunchedEffect(Unit) {
         viewModel.fetchAllCars(
@@ -207,9 +211,7 @@ fun CarsScreen(
                         selectedCarClass = if (selectedCarClass?.name == option) null else CarClass.valueOf(option)
                     }
                 )
-
                 VerticalSpace()
-
                 LazyColumn(
                    modifier = Modifier.fillMaxSize(),
                    contentPadding = PaddingValues(top = 8.dp)
@@ -217,7 +219,9 @@ fun CarsScreen(
                    items(filteredCars) { car ->
                        CarCard(
                            car = car,
-                           onClick = {  }
+                           onClick = {
+                               showUpdateCar = car
+                           }
                        )
                    }
                }
@@ -245,5 +249,12 @@ fun CarsScreen(
                 onCancel = { showAddCarScreen = false }
             )
         }
+    }
+
+    showUpdateCar?.let { selectedCar ->
+        UpdateCarStatusBottomSheet(
+            onDismissRequest ={ showUpdateCar = null},
+            car = selectedCar,
+        )
     }
 }
