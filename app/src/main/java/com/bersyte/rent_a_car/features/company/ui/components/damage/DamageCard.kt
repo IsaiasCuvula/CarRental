@@ -97,13 +97,6 @@ fun DamageCard(damage: VehicleDamage) {
                     text = "Fixed: ${AppHelpers.formatDateTime(damage.fixedAt)}"
                 )
             }
-
-            if (status == VehicleDamageStatus.PAID) {
-                DamageDetailRow(
-                    icon = Icons.Default.Payment,
-                    text = "Paid: ${AppHelpers.formatDateTime(damage.paidAt)}"
-                )
-            }
         }
     }
 

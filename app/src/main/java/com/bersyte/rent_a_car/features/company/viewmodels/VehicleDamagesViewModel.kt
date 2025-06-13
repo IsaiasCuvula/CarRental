@@ -59,6 +59,7 @@ class VehicleDamagesViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             try {
+                Log.d("✅ UPDATE_CAR_DAMAGE", "✅ Data: $request")
                 val response = repository.payDamage(request)
                 Log.d("✅ UPDATE_CAR_DAMAGE", "✅ $response")
                 loadDamages {  }

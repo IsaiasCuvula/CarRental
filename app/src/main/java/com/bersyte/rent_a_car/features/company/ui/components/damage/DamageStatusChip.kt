@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.Color
 fun DamageStatusChip(status: VehicleDamageStatus) {
     val (text, color) = when (status) {
         VehicleDamageStatus.PENDING -> "Reported" to Color.Red
-        VehicleDamageStatus.PAID -> "Paid" to Color(0xFFFFA000)
         VehicleDamageStatus.FIXED -> "Fixed" to Color(0xFF388E3C)
     }
 

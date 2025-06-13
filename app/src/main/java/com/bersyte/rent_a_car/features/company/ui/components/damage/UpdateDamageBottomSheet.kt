@@ -5,35 +5,29 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneId
 import androidx.compose.ui.Modifier
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.text.input.KeyboardType
-import java.time.format.DateTimeFormatter
 import androidx.compose.material3.Button
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.bersyte.rent_a_car.common.ui.components.ShowDatePickerDialog
 import com.bersyte.rent_a_car.common.ui.components.VerticalSpace
 import com.bersyte.rent_a_car.features.company.data.models.UpdateDamageRequest
 import com.bersyte.rent_a_car.features.company.data.models.VehicleDamage
 import com.bersyte.rent_a_car.features.company.viewmodels.VehicleDamagesViewModel
+import com.bersyte.rent_a_car.utils.helpers.AppHelpers
+import java.time.LocalDateTime
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,9 +39,9 @@ fun UpdateDamageBottomSheet(
     viewModel: VehicleDamagesViewModel = hiltViewModel()
 ) {
     val sheetState = rememberModalBottomSheetState()
-    var amount by remember { mutableStateOf("") }
-    var selectedDate by remember { mutableStateOf(LocalDate.now()) }
-    val dateFormatter = remember { DateTimeFormatter.ofPattern("MMM dd, yyyy") }
+    var selectedDate by remember { mutableStateOf(LocalDateTime.now()) }
+    var showDatePicker by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
@@ -61,22 +55,8 @@ fun UpdateDamageBottomSheet(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                text = "Enter Amount",
+                text = "Select the car damage fix date",
                 style = MaterialTheme.typography.titleMedium
-            )
-
-            OutlinedTextField(
-                value = amount,
-                onValueChange = {
-                    if (it.isEmpty() || it.toLongOrNull() != null) {
-                        amount = it
-                        it.toLongOrNull()?.let {
-                            longValue -> amount = longValue.toString()
-                        }
-                    } },
-                label = { Text("Amount") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                modifier = Modifier.fillMaxWidth()
             )
 
             Row(
@@ -85,54 +65,48 @@ fun UpdateDamageBottomSheet(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Selected Date: ${selectedDate.format(dateFormatter)}",
+                    text = "Selected Date: ${selectedDate.toLocalDate()}",
                     style = MaterialTheme.typography.bodyMedium
                 )
 
-                val datePickerState = rememberDatePickerState(
-                    initialSelectedDateMillis = selectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
-                )
-                val showDatePicker = remember { mutableStateOf(false) }
-
-                Button(onClick = { showDatePicker.value = true }) {
+                Button(onClick = { showDatePicker = true }) {
                     Text("Pick Date")
-                }
-
-                if (showDatePicker.value) {
-                    DatePickerDialog(
-                        onDismissRequest = { showDatePicker.value = false },
-                        confirmButton = {
-                            Button(
-                                onClick = {
-                                    datePickerState.selectedDateMillis?.let { millis ->
-                                        selectedDate = Instant.ofEpochMilli(millis)
-                                            .atZone(ZoneId.systemDefault())
-                                            .toLocalDate()
-
-                                    }
-                                    showDatePicker.value = false
-                                }
-                            ) {
-                                Text("OK")
-                            }
-                        }
-                    ) {
-                        DatePicker(state = datePickerState)
-                    }
                 }
             }
             VerticalSpace()
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-//                    val request = UpdateDamageRequest(
-//                        carPlate ,amount, selectedDate.toString()
-//                    )
-//                    onSelected(request)
+                    val request = UpdateDamageRequest(
+                        damage.carPlate , selectedDate.toString()
+                    )
+                    viewModel.updateDamage(
+                        request,
+                        onSuccess = {vehicleDamage ->
+                            if (vehicleDamage != null) {
+                                AppHelpers.showToast(context, "Update successfully")
+                                showDatePicker = false
+                            }
+                        },
+                        onError = {error ->
+                            AppHelpers.showToast(context, "Something went wrong.\n$error")
+                        }
+                    )
                 }
             ) {
                 Text("Update damage")
             }
         }
+    }
+
+    if (showDatePicker) {
+        ShowDatePickerDialog(
+            onDismiss = { showDatePicker = false },
+            onDateSelected = { dateLong ->
+                dateLong?.let {
+                    selectedDate = AppHelpers.longToLocalDateTime(it)
+                }
+            }
+        )
     }
 }
