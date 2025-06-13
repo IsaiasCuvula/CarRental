@@ -13,10 +13,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TextButton
@@ -73,6 +77,7 @@ fun AuthScreen(
     var cityName by remember { mutableStateOf("") }
     var street by remember { mutableStateOf("") }
     var state by remember { mutableStateOf("") }
+    var showPassword by remember { mutableStateOf(false) }
 
     fun validate(): Boolean {
         val isEmailValid = email.isNotBlank()
@@ -136,10 +141,20 @@ fun AuthScreen(
                         label = "Password",
                         icon = Icons.Default.Lock,
                         keyboardType = KeyboardType.Password,
-                        isPassword = true,
+                        isPassword = showPassword,
+                        trailingIcon = {
+                            IconButton(
+                                onClick = {showPassword = !showPassword}
+                            ) {
+                                Icon(
+                                    imageVector = if (showPassword) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                                    contentDescription = "Toggle password visibility",
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        },
                         isError = password.isBlank()
                     )
-
                     AnimatedVisibility(visible = !isLoginUI) {
                         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                             CommonTextField(

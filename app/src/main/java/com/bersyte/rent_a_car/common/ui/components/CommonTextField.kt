@@ -24,6 +24,7 @@ fun CommonTextField(
     onValueChange: (String) -> Unit,
     label: String,
     icon: ImageVector? = null,
+    trailingIcon:@Composable (() -> Unit)? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
     isPassword: Boolean = false,
     isError: Boolean = false,
@@ -37,6 +38,7 @@ fun CommonTextField(
             onValueChange = onValueChange,
             label = { Text(label) },
             leadingIcon = icon?.let { { Icon(it, contentDescription = null) } },
+            trailingIcon = trailingIcon,
             visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyboardType,
