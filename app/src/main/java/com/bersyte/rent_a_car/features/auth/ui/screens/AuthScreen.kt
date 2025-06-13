@@ -14,7 +14,6 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.HomeWork
 import androidx.compose.material.icons.filled.LocationCity
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Streetview
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -76,7 +75,6 @@ fun AuthScreen(
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var role by remember { mutableStateOf("") }
     var cityName by remember { mutableStateOf("") }
     var street by remember { mutableStateOf("") }
     var state by remember { mutableStateOf("") }
@@ -85,10 +83,9 @@ fun AuthScreen(
     fun validate(): Boolean {
         val isEmailValid = email.isNotBlank()
         val isPasswordValid = password.isNotBlank()
-        val isRoleValid = isLoginUI || role.isNotBlank()
         val isCityValid = isLoginUI || cityName.isNotBlank()
 
-        return isEmailValid && isPasswordValid && isRoleValid && isCityValid
+        return isEmailValid && isPasswordValid && isCityValid
     }
 
     LaunchedEffect(authState) {
@@ -161,13 +158,6 @@ fun AuthScreen(
                     AnimatedVisibility(visible = !isLoginUI) {
                         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                             CommonTextField(
-                                value = role,
-                                onValueChange = { role = it },
-                                label = "Role",
-                                icon = Icons.Default.Person,
-                                isError = role.isBlank()
-                            )
-                            CommonTextField(
                                 value = cityName,
                                 onValueChange = { cityName = it },
                                 label = "City",
@@ -221,12 +211,13 @@ fun AuthScreen(
                                         SignUpRequest(
                                             email = email,
                                             password = password,
-                                            role = role.uppercase(),
-                                            cityName = cityName
+                                            cityName = cityName,
+                                            street = street,
+                                            state = state
                                         ),
                                         onSuccess = { response ->
                                             if(response != null){
-                                                AppHelpers.showToast(context, "Login successful")
+                                                AppHelpers.showToast(context, "Signup successful")
                                             }
                                         },
                                         onError = { error ->
