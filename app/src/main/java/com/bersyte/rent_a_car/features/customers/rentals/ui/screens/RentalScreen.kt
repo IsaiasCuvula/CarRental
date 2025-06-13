@@ -15,7 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -26,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import com.bersyte.rent_a_car.common.ui.components.ScrollableFilterChips
 import com.bersyte.rent_a_car.features.customers.rentals.ui.components.RentalCard
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bersyte.rent_a_car.common.data.models.CancelRental
 import com.bersyte.rent_a_car.features.customers.rentals.viewmodels.RentalViewModel
@@ -55,10 +53,7 @@ fun RentalScreen(
     Scaffold (
         topBar = {
             TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor =  MaterialTheme.colorScheme.primary
-                ),
-                title = { Text("My rentals", color = Color.White)}
+                title = { Text("My rentals")}
             )
         }
     ){ innerPadding ->
