@@ -1,6 +1,7 @@
 package com.bersyte.rent_a_car.utils.helpers
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import com.bersyte.rent_a_car.common.data.models.CarRequest
 import org.json.JSONObject
@@ -185,6 +186,7 @@ object AppHelpers{
         return try {
             LocalDateTime.parse(dateString, DateTimeFormatter.ISO_DATE_TIME)
         } catch (e: Exception) {
+            Log.d("DATETIME PARSER APP_HELPER", "$dateString - error: $e")
             LocalDateTime.now()
         }
     }

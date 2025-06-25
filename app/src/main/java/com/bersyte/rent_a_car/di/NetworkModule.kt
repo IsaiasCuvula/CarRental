@@ -20,7 +20,7 @@ object NetworkModule {
 
     //Real device
   //  private const val BASE_URL = "http://192.168.10.90:8888/"
-    private const val BASE_URL = " https://8d4a-37-63-19-86.ngrok-free.app"
+    private const val BASE_URL = "https://cf89-37-63-19-45.ngrok-free.app"
 
     @Provides
     @Singleton

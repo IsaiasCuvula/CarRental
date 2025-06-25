@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.bersyte.rent_a_car.common.ui.components.ShowDatePickerDialog
 import com.bersyte.rent_a_car.utils.helpers.AppHelpers
+import java.time.LocalDateTime
 
 @Composable
 fun ProfileUpdateScreen(
@@ -38,19 +39,19 @@ fun ProfileUpdateScreen(
     onCancel: () -> Unit
 ) {
     val address = currentUser.address
-    val customerPhone = currentUser.phone ?: ""
 
-    var name by remember { mutableStateOf(currentUser.name) }
-    var phone by remember { mutableStateOf(customerPhone) }
+    var name by remember { mutableStateOf(currentUser.name ?: "") }
+    var phone by remember { mutableStateOf(currentUser.phone ?: "") }
     var idCardNumber by remember { mutableStateOf(currentUser.idCardNumber ?: "") }
-    var driveLicense by remember { mutableStateOf(currentUser.driverLicenseNumber?: "") }
+    var driveLicense by remember { mutableStateOf(currentUser.driverLicenseNumber ?: "") }
+
     var driveLicenseExpirationDate by remember {
         mutableStateOf(AppHelpers.safeParseIsoDateTime(currentUser.driverLicenseExpirationDate))
     }
 
+    var street by remember { mutableStateOf(address.street ?: "") }
+    var state by remember { mutableStateOf(address.state ?: "") }
     var cityName by remember { mutableStateOf(address.city.name) }
-    var street by remember { mutableStateOf(address.street) }
-    var state by remember { mutableStateOf(address.state) }
 
     var showDatePicker by remember { mutableStateOf(false) }
 
