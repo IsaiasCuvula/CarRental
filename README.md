@@ -1,0 +1,98 @@
+[![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org/)
+[![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-4285F4?logo=jetpackcompose&logoColor=white)](https://developer.android.com/jetpack/compose)
+[![Android](https://img.shields.io/badge/Android-3DDC84?logo=android&logoColor=white)](https://developer.android.com/)
+[![Hilt](https://img.shields.io/badge/Hilt-4285F4?logo=android&logoColor=white)](https://developer.android.com/training/dependency-injection/hilt-android)
+[![Retrofit](https://img.shields.io/badge/Retrofit-48B983?logo=retrofit&logoColor=white)](https://square.github.io/retrofit/)
+[![Quarkus](https://img.shields.io/badge/Quarkus-4695EB?logo=quarkus&logoColor=white)](https://quarkus.io/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Keycloak](https://img.shields.io/badge/Keycloak-4D4D4D?logo=keycloak&logoColor=white)](https://www.keycloak.org/)
+
+# Car Rental Management System
+
+**Car Rental Management System** is an Android application for managing the day-to-day operations of a car rental business, including vehicles, customers, rentals, returns, inspections, and rental history.
+
+The application is built with Kotlin and Jetpack Compose using MVVM, with a repository layer responsible for communication with a REST API. Hilt is used for dependency injection, Retrofit for HTTP communication, and Keycloak for authentication and authorization.
+
+The project is part of a client-server system, with a separate Java/Quarkus backend and PostgreSQL database. The Android application communicates with the backend through a RESTful API and keeps the UI, application logic, and data access separated.
+
+## Features
+
+* User authentication and role-based access
+* Vehicle registration and management
+* Customer management
+* Vehicle availability and search
+* Rental creation and management
+* Vehicle rental and return workflows
+* Vehicle condition and damage reports
+* Rental history
+* Customer ratings
+* Reporting and filtering
+* Notifications for relevant rental events
+
+## Architecture
+
+The Android application follows the **MVVM** architecture with a clear separation between the UI, application logic, and data access layers.
+
+```text
+Compose UI
+↓
+ViewModel
+↓
+Repository
+↓
+Retrofit API
+↓
+Quarkus REST API
+```
+
+### Android
+
+* **Kotlin**
+* **Jetpack Compose**
+* **MVVM**
+* **Hilt**
+* **Retrofit**
+* **StateFlow**
+* **JUnit / Mockito**
+
+### Backend
+
+* **Java**
+* **Quarkus**
+* **REST API**
+* **Hibernate ORM / Panache**
+* **PostgreSQL**
+* **Keycloak**
+
+## Project Structure
+
+The Android client is organized around the following responsibilities:
+
+* **UI** — Compose screens and UI components
+* **ViewModel** — UI state and application logic
+* **Repository** — data access and API communication
+* **Models / DTOs** — representation of application and API data
+* **Dependency Injection** — Hilt modules for providing repositories, API clients, and other dependencies
+
+The backend follows a layered architecture with separate repository, service, and resource layers.
+
+## System
+
+The project is structured as a client-server application:
+
+```text
+Android Application
+│
+│ REST / JSON
+▼
+Quarkus API
+│
+▼
+PostgreSQL
+```
+
+Authentication and authorization are handled through Keycloak, with access controlled according to the user's role.
+
+## Purpose
+
+This project was developed as a Master's project in Software Engineering, with a focus on mobile application architecture, REST API integration, authentication, and the design of a real-world business workflow.
